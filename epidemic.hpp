@@ -243,7 +243,7 @@ class Population
     }
   }
 };
-
+/*
 int main()
 {
   int dim = 10;
@@ -278,4 +278,4 @@ int main()
   population.trend();
   std::cout << '\n' << '\n';
   population.parameters();
-}
+}*/
