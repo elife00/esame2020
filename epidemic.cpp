@@ -183,15 +183,17 @@ class Population
     }
   }
 
-  void trend() const
-  {
-    /*std::cout << std::setw(4) << "days" << ' ' << std::setw(4) << "S" << ' '
-              << std::setw(4) << "I" << ' ' << std::setw(4) << "R" << '\n';*/
-    for (auto& v : evolution_) {
-      std::cout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' '
-                << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << '\n';
+ void trend() const {
+
+        std::ofstream fout;
+        fout.open("trend.txt");
+        for (auto&v : evolution_)
+        {
+            fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' ' << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << '\n';
+        }
+
+        fout.close();
     }
-  }
 
   bool count() const
   {
