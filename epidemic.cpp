@@ -8,6 +8,9 @@
 #include <vector>
 
 enum class State : char { Susceptible, Infected, Recovered };
+constexpr State S = State::Susceptible;
+constexpr State I = State::Infected;
+constexpr State R = State::Recovered;
 
 struct Situation
 {
@@ -29,7 +32,7 @@ class Population
  public:
   Population(int const& n)
       : n_{n}
-      , population_(n * n, State::Susceptible)
+      , population_(n * n, S)
       , stay_(n_ * n_, 0)
       , evolution_{{0, n * n, 0, 0}}
   {
@@ -49,14 +52,14 @@ class Population
   State get(int const& x, int const& y) const
   {
     return (x < 0 || x >= n_ || y < 0 || y >= n_)
-               ? State::Susceptible
+               ? S
                : population_[(x - 1) + (y - 1) * n_];
   }
 
   auto infection(double const& ratInf)
   {
     for (int i = 0; i != n_ * n_ * ratInf; ++i) {
-      population_[i] = State::Infected;
+      population_[i] = I;
     }
     std::random_device sed;
     std::mt19937 gen(sed());
@@ -72,7 +75,7 @@ class Population
     for (int i = x - 1; i != x + 2; ++i) {
       for (int j = y - 1; j != y + 2; ++j) {
         if (x < 0 || x >= n_ || y < 0 || y >= n_) {
-        } else if (population_[(x - 1) + (y - 1) * n_] == State::Infected) {
+        } else if (population_[(x - 1) + (y - 1) * n_] == I) {
           ++infected;
         }
       }
@@ -92,7 +95,7 @@ class Population
     for (int x = 1; x != n_ + 1; ++x) {
       for (int y = 1; y != n_ + 1; ++y) {
         int coordinate = (x - 1) + (y - 1) * n_;
-        if (population_[coordinate] == State::Susceptible) {
+        if (population_[coordinate] == S) {
           ++sit.s;
           int infected = contact(x, y);
           int infections = 0;
@@ -107,13 +110,13 @@ class Population
             }
           }
           if (infections > 0) {
-            next.set(x, y, State::Infected);
+            next.set(x, y, I);
           } else {
-            next.set(x, y, State::Susceptible);
+            next.set(x, y, S);
           }
         }
 
-        if (population_[coordinate] == State::Infected) {
+        if (population_[coordinate] == I) {
           ++sit.i;
           ++next.stay_[coordinate];
 
@@ -121,16 +124,16 @@ class Population
           std::mt19937 gen(rd());
           std::uniform_real_distribution<> dis(0., 1.0);
           if (dis(gen) <= pGua) {
-            next.set(x, y, State::Recovered);
+            next.set(x, y, R);
 
           } else {
-            next.set(x, y, State::Infected);
+            next.set(x, y, I);
           }
         }
 
-        if (population_[coordinate] == State::Recovered) {
+        if (population_[coordinate] == R) {
           ++sit.r;
-          next.set(x, y, State::Recovered);
+          next.set(x, y, R);
         }
       }
     }
@@ -147,13 +150,13 @@ class Population
     for (auto const& v : population_) {
       std::string symbol;
       switch (v) {
-        case State::Susceptible:
+        case S:
           symbol = '|';
           break;
-        case State::Infected:
+        case I:
           symbol = "\033[1;31m|\033[0m";
           break;
-        case State::Recovered:
+        case R:
           symbol = ' ';
           break;
       }
@@ -196,11 +199,11 @@ class Population
     int S = 0;
     int R = 0;
     for (auto const& v : population_) {
-      if (v == State::Susceptible) {
+      if (v == S) {
         ++S;
-      } else if (v == State::Infected) {
+      } else if (v == I) {
         ++I;
-      } else if (v == State::Recovered) {
+      } else if (v == R) {
         ++R;
       }
     }
