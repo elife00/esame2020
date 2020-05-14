@@ -82,7 +82,7 @@ int main()
 
         sf::Texture texture;
         sf::Image image;
-        if (!texture.loadFromFile("image.png"))
+        if (!texture.loadFromFile("tileset.png"))
         {
             return EXIT_FAILURE;;
         }
