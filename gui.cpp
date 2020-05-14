@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <thread>
+#include </home/elisabetta-ferri/projects/myproject/esame2020/epidemic.hpp>
 
 
+//g++ gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
 
 class TileMap : public sf::Drawable, public sf::Transformable // classe figlia
 {
@@ -80,6 +82,7 @@ int main()
     epidemic.setPosition(sf::Vector2i(10, 50));
     graph.setPosition(sf::Vector2i(850, 50));
 
+        // immagine su finestra graph
         sf::Texture texture;
         sf::Image image;
         if (!texture.loadFromFile("image.png"))
@@ -90,8 +93,9 @@ int main()
         sf::Sprite sprite;
         sprite.setTexture(texture);
         auto n = texture.getSize();
-        float x = (600-n.x) / 2;
-        float y = (600-n.y) / 2;
+        auto graphSize = graph.getSize();
+        float x = (graphSize.x-n.x) / 2;
+        float y = (graphSize.y-n.y) / 2;
         sprite.setPosition(sf::Vector2f(x, y)); // absolute position
 
         std::vector<int> level =
