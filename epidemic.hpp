@@ -210,7 +210,7 @@ class Population
         ++r;
       }
     }
-    if (I == 0) {
+    if (i == 0) {
       return true;
     }
 
