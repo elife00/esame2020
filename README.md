@@ -1,9 +1,9 @@
 # esame2020
 esame di programmazione per la fisica 2019/20
 
-Let's start!
+Modello SIR 
 
-Let's experiment
+C++
 
-New experiment
+
 
