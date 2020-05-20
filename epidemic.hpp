@@ -75,7 +75,7 @@ class Population
 
     for (int i = x - 1; i != x + 2; ++i) {
       for (int j = y - 1; j != y + 2; ++j) {
-        if (x < 0 || x >= n_ || y < 0 || y >= n_) {
+        if (i < 0 || i >= n_ || j < 0 || j >= n_) {
         } else if (population_[(i - 1) + (j - 1) * n_] == I) {
           ++infected;
         }
