@@ -1,0 +1,68 @@
+int factorial(int n){
+    int factorial=1;
+    for (int i=1; i<=n; ++i){
+        factorial*=i;
+    }
+    return factorial;
+}
+
+double cumulative (int k, int mu) {
+    assert (k>0);
+    double p=0;
+    for (int i=0; i<=k; ++i){
+        p+=(pow(mu,i)*exp(-mu)/factorial(i));
+    }
+    return p;
+}
+Population epidemic2 (double pInf, int tMean)
+       {
+           assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40);
+           Population next(n_);
+           next.evolution_ = evolution_;
+           next.stay_ = stay_;
+           Situation sit = {0,0,0,0};
+           
+           for (int x = 1; x != n_ + 1; ++x) {
+               for (int y = 1; y != n_ + 1; ++y) {
+                   
+                   int coordinate = (y - 1) * n_ + (x - 1);
+                   if (population_[coordinate] == S) {
+                       ++sit.s;
+                       int infected = contact(x, y);
+                
+                       std::random_device rd;
+                       std::mt19937 gen(rd());
+                       std::binomial_distribution<> dis(infected, pInf);
+                       
+                       if (dis(gen) > 0){
+                           next.set(x, y, I);
+                       } else {
+                           next.set(x, y, S);
+                       }
+                   }
+                   if (population_[coordinate] == I) {
+                       ++sit.i;
+                       int iDays = ++next.stay_[coordinate];
+                
+                       std::random_device rd;
+                       std::mt19937 gen(rd());
+                       std::uniform_real_distribution<> dis(0., 1.0);
+                       double pGua = cumulative(iDays, tMean);
+                       
+                       if (dis(gen)<=pGua) {
+                           next.set(x, y, R);
+                       } else {
+                           next.set(x, y, I);
+                       }
+                   }
+                   if (population_[coordinate] == R) {
+                       ++sit.r;
+                       next.set(x, y, R);
+                   }
+               }
+           }
+           sit.t = ++evolution_.back().t;
+           next.evolution_.push_back({sit});
+           
+           return next;
+       }
