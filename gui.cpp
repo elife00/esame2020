@@ -1,205 +1,111 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+#include "epidemic.hpp"
+
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "SFML/Window.hpp"
 #include <thread>
-#include </home/elisabetta-ferri/projects/myproject/esame2020/epidemic.hpp>
 
+// g++ gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
 
-//g++ gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
+int main() {
 
-class TileMap : public sf::Drawable, public sf::Transformable // classe figlia
-{
-private:
+  sf::RenderWindow epidemicWindow(sf::VideoMode(800, 600), "My epidemic");
+  sf::RenderWindow graphWindow(sf::VideoMode(600, 600), "My graph");
+  epidemicWindow.setVerticalSyncEnabled(true);
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-    {
-        // apply the transform
-        states.transform *= getTransform();
+  // change the position of the window (relatively to the desktop)
+  epidemicWindow.setPosition(sf::Vector2i(10, 50));
+  graphWindow.setPosition(sf::Vector2i(850, 50));
 
-        // apply the tileset texture
-        states.texture = &m_texture;
+  // immagine su finestra graphWindow
+  sf::Texture texture;
+  if (!texture.loadFromFile("tileset.png")) {
+    return EXIT_FAILURE;
+  }
+  texture.setSmooth(true);
+  sf::Sprite graphic(texture);
 
-        // draw the vertex array
-        target.draw(m_vertices, states);
-    }
+  // set position of graphic in the window graph
+  graphic.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+  graphic.setPosition(
+      sf::Vector2f(graphWindow.getSize().x / 2,
+                   graphWindow.getSize().y / 2)); // absolute position
 
-    sf::VertexArray m_vertices;
-    sf::Texture m_texture;
-
-public:
-
-    bool load(const std::string& texture, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height)
-    {                                   // dimensione della piastrella                              diensione della griglia
-        // load the tileset texture
-        if (!m_texture.loadFromFile(texture))
-            return false;
-
-        // resize the vertex array to fit the level size
-        m_vertices.setPrimitiveType(sf::Quads); // riorganizza i vertici in quadrati
-        m_vertices.resize(width * height * 4);
-
-        // populate the vertex array, with one quad per tile
-        for (unsigned int i = 0; i < width; ++i)
-            for (unsigned int j = 0; j < height; ++j)
-            {
-                // get the current tile number
-                int tileNumber = tiles[i + j * width];  // questo diventerebbe stato // 1
-
-                // find its position in the tileset texture
-                int tu = tileNumber % (m_texture.getSize().x / tileSize.x); // 5
-                int tv = tileNumber / (m_texture.getSize().x / tileSize.x); // 3/5
-
-                // get a pointer to the current tile's quad
-                sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
-
-                // define its 4 corners
-                quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
-                quad[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
-                quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
-                quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
-                // define its 4 texture coordinates
-                quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-                quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-                quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-                quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-            }
-
-        return true;
-    }
-
-
-};
-
-
-int main()
-{
-    sf::RenderWindow epidemic(sf::VideoMode(800, 600), "My epidemic");
-    sf::RenderWindow graph(sf::VideoMode(600, 600), "My graph");
-    graph.setVerticalSyncEnabled(true); // call it once, after creating the window
-
-
-    // change the position of the window (relatively to the desktop)
-    epidemic.setPosition(sf::Vector2i(10, 50));
-    graph.setPosition(sf::Vector2i(850, 50));
-
-        // immagine su finestra graph
-        sf::Texture texture;
-        sf::Image image;
-        if (!texture.loadFromFile("image.png"))
-        {
-            return EXIT_FAILURE;;
-        }
-        texture.setSmooth(true);
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        auto n = texture.getSize();
-        auto graphSize = graph.getSize();
-        float x = (graphSize.x-n.x) / 2;
-        float y = (graphSize.y-n.y) / 2;
-        sprite.setPosition(sf::Vector2f(x, y)); // absolute position
-
-        std::vector<int> level =
-    {
-        0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
-        1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-        0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-        0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-        0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-        2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
-        0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
-    };
-
-        TileMap map;
-
-        sf::Text text = L"😀";
-    // run the program as long as the window is open
-    while (epidemic.isOpen() || graph.isOpen())
-    {
-        // check all the window's events that were triggered since the last iteration of the loop
-        sf::Event event;
-        while (epidemic.pollEvent(event))
-        {
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed) {
-                epidemic.close();
-                graph.close();
-            }
-        }
-        while (graph.pollEvent(event))
-        {
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed) {
-                graph.close();
-            }
-        }
-
-        // clear the window with black color
-        graph.clear(sf::Color::Black);
-
-        // draw everything here...
-        graph.draw(sprite);
-        graph.draw(text);
-
-        // end the current frame
-        graph.display();
-        /*Calling display is also mandatory,
-        it takes what was drawn since the last
-        call to display and displays it on 
-        the window. Indeed, things are not drawn
-        directly to the window, but to a hidden buffer.
-        This buffer is then copied to the window when
-        you call display*/
-
-
-        if (!map.load("tileset.png", sf::Vector2u(32, 32), level, 16, 8))
-            return -1;
-
-        // draw the map
-        epidemic.clear();
-        epidemic.draw(map);
-        epidemic.display();
-        for (int i =0; i != level.size(); ++i) {
-            ++level[i];
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-
-    }
-
-    return 0;
-
-    /*  int dim = 10;
+  int dim = 50;
   double pInf = 0.15;
-  double pGua = 0.1;  // 1 giorno = 100 milliseconds
+  double pGua = 0.1;
   double ratInf = 0.2;
+  int quadSize = 10;
 
   Population population(dim);
-  std::cout << "How an epidemic begin:\n";
-
   population.infection(ratInf);
-  population.draw();
-  population.count();
 
-  std::cout << '\n' << "Epidemic has began\n";
+  sf::Clock clock;
 
-  std::this_thread::sleep_for(std::chrono::seconds(5));
-
-  int days = 0;
-  while (true) {
-    ++days;
-    std::cout << "\033c";
-    population = population.epidemic(pInf, pGua);
-    population.draw();
-
-    if (population.count()) {
-      break;
+  // run the program as long as the window is open
+  while (epidemicWindow.isOpen() || graphWindow.isOpen()) {
+    // check all the window's events that were triggered since the last
+    // iteration of the loop
+    sf::Event event;
+    while (epidemicWindow.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        epidemicWindow.close();
+        graphWindow.close();
+      }
     }
-    std::cout << "giorni dall'inizio dell'epidemia: " << days << '\n';
+    while (graphWindow.pollEvent(event)) {
+      if (event.type == sf::Event::EventType::Closed) {
+        graphWindow.close();
+      }
+    }
+
+    graphWindow.clear(sf::Color::Black);
+    graphWindow.draw(graphic);
+    graphWindow.display();
+
+    auto rappresentation = population.Draw(quadSize);
+    rappresentation.setPosition(epidemicWindow.getSize().x/2, epidemicWindow.getSize().y/2);
+
+    epidemicWindow.clear(sf::Color::Black);
+    epidemicWindow.draw(rappresentation);
+    epidemicWindow.display();
+
+    
+    population = population.epidemic(pInf, pGua);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    
   }
-  population.trend();
-  std::cout << '\n' << '\n';
-  population.parameters();*/
+
+  return 0;
+
+  /*  int dim = 10;
+double pInf = 0.15;
+double pGua = 0.1;  // 1 giorno = 100 milliseconds
+double ratInf = 0.2;
+
+std::cout << "How an epidemic begin:\n";
+
+population.draw();
+population.count();
+
+std::cout << '\n' << "Epidemic has began\n";
+
+std::this_thread::sleep_for(std::chrono::seconds(5));
+
+int days = 0;
+while (true) {
+  ++days;
+  std::cout << "\033c";
+  population.draw();
+
+  if (population.count()) {
+    break;
+  }
+  std::cout << "giorni dall'inizio dell'epidemia: " << days << '\n';
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+population.trend();
+std::cout << '\n' << '\n';
+population.parameters();*/
 }
