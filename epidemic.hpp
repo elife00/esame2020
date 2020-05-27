@@ -6,6 +6,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <fstream>
 
 enum class State : char { Susceptible, Infected, Recovered };
 constexpr State S = State::Susceptible;
@@ -197,26 +198,26 @@ class Population
 
   bool count() const
   {
-    int I = 0;
-    int S = 0;
-    int R = 0;
+    int i = 0;
+    int s = 0;
+    int r = 0;
     for (auto const& v : population_) {
       if (v == S) {
-        ++S;
+        ++s;
       } else if (v == I) {
-        ++I;
+        ++i;
       } else if (v == R) {
-        ++R;
+        ++r;
       }
     }
-    if (I == 0) {
+    if (i == 0) {
       return true;
     }
 
-    std::cout << "S = " << S << '\n';
-    std::cout << "I = " << I << '\n';
-    std::cout << "R = " << R << '\n';
-    std::cout << "N = " << S + R + I << '\n';
+    std::cout << "S = " << s << '\n';
+    std::cout << "I = " << i << '\n';
+    std::cout << "R = " << r << '\n';
+    std::cout << "N = " << s + i + r << '\n';
 
     return false;
   }
