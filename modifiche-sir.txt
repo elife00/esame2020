@@ -1,8 +1,10 @@
-long int factorial(int n){
-    long int factorial=1;
+unsigned long long factorial(int n){
+    if (n==0) {return 1;}
+    unsigned long long factorial=1;
     for (int i=1; i<=n; ++i){
-        factorial*=i;
+        factorial *= i;
     }
+    assert(factorial >0);
     return factorial;
 }
 
