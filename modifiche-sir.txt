@@ -1,5 +1,5 @@
-int factorial(int n){
-    int factorial=1;
+long int factorial(int n){
+    long int factorial=1;
     for (int i=1; i<=n; ++i){
         factorial*=i;
     }
