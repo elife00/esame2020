@@ -1,3 +1,4 @@
+
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
 
@@ -12,7 +13,6 @@
 #include <fstream>
 
 #include "SFML/Graphics.hpp"
-
 
 enum class State : char { Susceptible, Infected, Recovered };
 constexpr State S = State::Susceptible;
@@ -147,7 +147,7 @@ class Population
     next.evolution_.push_back({sit});
     return next;
   }
-  
+
   class rappresentPopulation
     : public sf::Drawable,     // per disegnarlo
       public sf::Transformable // per traslazioni, rotazioni, ...
@@ -354,5 +354,6 @@ int main()
   std::cout << '\n' << '\n';
   population.parameters();
 }*/
+
 
 #endif
