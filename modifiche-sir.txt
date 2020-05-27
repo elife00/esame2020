@@ -1,6 +1,6 @@
-unsigned long long factorial(int n){
+long double factorial(int n){
     if (n==0) {return 1;}
-    unsigned long long factorial=1;
+    long double factorial=1;
     for (int i=1; i<=n; ++i){
         factorial *= i;
     }
@@ -8,11 +8,11 @@ unsigned long long factorial(int n){
     return factorial;
 }
 
-double cumulative (int k, int mu) {
+ long double cumulative (int k, int mu) {
     assert (k>0);
-    double p=0;
+    long double p=0;
     for (int i=0; i<=k; ++i){
-        p+=(pow(mu,i)*exp(-mu)/factorial(i));
+        p+= (pow(mu,i)*exp(-mu)/factorial(i));
     }
     return p;
 }
