@@ -1,4 +1,3 @@
-
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
 
@@ -14,139 +13,157 @@
 
 #include "SFML/Graphics.hpp"
 
-enum class State : char { Susceptible, Infected, Recovered };
+enum class State : char {Susceptible, Infectious, Recovered };
 constexpr State S = State::Susceptible;
-constexpr State I = State::Infected;
+constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
 
-struct Situation
-{
-  int t = 0;
-  int s = 0;
-  int i = 0;
-  int r = 0;
+struct Situation {
+    int t=0;
+    int s=0;
+    int i=0;
+    int r=0;
 };
 
-class Population
-{
-  int n_;
-  std::vector<State> population_;
-  std::vector<unsigned int> stay_;
-  std::vector<Situation> evolution_;
-
- public:
-  Population(int const& n)
-      : n_{n}
-      , population_(n * n, S)
-      , stay_(n_ * n_, 0)
-      , evolution_{{0, n * n, 0, 0}}
-  {
-  }
-
-  std::vector<State>& vector()
-  {
-    return population_;
-  }
-
-  State& set(int& x, int& y, State s)
-  {
-    assert(x > 0 && x <= n_ && y > 0 && y <= n_);
-    population_[(x - 1) + (y - 1) * n_] = s;
-  }
-
-  State get(int const& x, int const& y) const
-  {
-    return (x < 0 || x >= n_ || y < 0 || y >= n_)
-               ? S
-               : population_[(x - 1) + (y - 1) * n_];
-  }
-
-  auto infection(double const& ratInf)
-  {
-    for (int i = 0; i != n_ * n_ * ratInf; ++i) {
-      population_[i] = I;
+long double factorial(int n){
+    if (n==0) {return 1;}
+    long double factorial=1;
+    for (int i=1; i<=n; ++i){
+        factorial *= i;
     }
-    std::random_device sed;
-    std::mt19937 gen(sed());
-    std::shuffle(population_.begin(), population_.end(), gen);
-  }
+    assert(factorial >0);
+    return factorial;
+}
 
-  int contact(int const& x, int const& y) const
-  {
-    assert(x > 0 && x <= n_ && y > 0 && y <= n_);
+ long double cumulative (int k, int mu) {
+    assert (k>0);
+    long double p=0;
+    for (int i=0; i<=k; ++i){
+        p+= (pow(mu,i)*exp(-mu)/factorial(i));
+    }
+    return p;
+}
 
-    int infected = 0;
-
-    for (int i = x - 1; i != x + 2; ++i) {
-      for (int j = y - 1; j != y + 2; ++j) {
-        if (i < 0 || i >= n_ || j < 0 || j >= n_) {
-        } else if (population_[(i - 1) + (j - 1) * n_] == I) {
-          ++infected;
+class Population {
+private:
+    int n_;
+    std::vector<State> population_;
+    std::vector<int> stay_;
+    std::vector<Situation> evolution_;
+    
+public:
+    Population(int n) : n_{n}, population_(n*n, S), stay_(n*n), evolution_{{0,n*n,0,0}} {}
+    
+    State get (int x, int y) const {
+        return (x<1 || x>n_ || y<1 || y>n_)
+        ? S
+        : population_[(y-1)*n_+(x-1)];
+    }
+    
+    void infection(double ratInf)
+    {
+        int infected = (int)(ratInf * n_ * n_);
+        for (int i = 0; i != infected; ++i) {
+            population_[i] = I;
         }
-      }
+        std::random_device seed;
+        std::mt19937 g(seed());
+        std::shuffle(population_.begin(), population_.end(), g);
     }
-    assert(infected < 9 && infected > -1);
-    return infected;
-  }
+    
+    int contact (int x, int y) const {
+        assert (x>0 && x<=n_ && y>0 && y<=n_);
+         int count=0;
+        if(get(x+1, y) == I){ ++count; }
+        if(get(x-1, y) == I){ ++count; }
+        if(get(x, y+1) == I){ ++count; }
+        if(get(x, y-1) == I){ ++count; }
+        if(get(x-1, y-1) == I){ ++count; }
+        if(get(x-1, y+1) == I){ ++count; }
+        if(get(x+1, y-1) == I){ ++count; }
+        if(get(x+1, y+1) == I){ ++count; }
+        return count;
+    }
+    
+    void set (int& x, int& y, State s) {
+        assert (x>0 && x<=n_ && y>0 && y<=n_);
+        population_[(y-1)*n_+(x-1)] = s;
+    }
+    
+    Population epidemic (double pInf, int tMean)
+       {
+           assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40);
+           Population next(n_);
+           next.evolution_ = evolution_;
+           next.stay_ = stay_;
+           Situation sit = {0,0,0,0};
 
-  Population epidemic(double const& pInf, double const& pGua) const
-  {
-    assert(pInf > 0 && pInf < 1 && pGua > 0 && pGua < 1);
-    Population next(n_);
-    next.evolution_ = evolution_;
-    next.stay_ = stay_;
-    Situation sit = {0, 0, 0, 0};
+           std::random_device rd;
+           std::mt19937 gen(rd());
+           
+           for (int x = 1; x != n_ + 1; ++x) {
+               for (int y = 1; y != n_ + 1; ++y) {
+                   
+                   int coordinate = (y - 1) * n_ + (x - 1);
+                   if (population_[coordinate] == S) {
+                       ++sit.s;
+                       int infected = contact(x, y);
+                
+                       
+                       std::binomial_distribution<> dis(infected, pInf);
+                       
+                       if (dis(gen) > 0){
+                           next.set(x, y, I);
+                       } else {
+                           next.set(x, y, S);
+                       }
+                   }
+                   if (population_[coordinate] == I) {
+                       ++sit.i;
+                       int iDays = ++next.stay_[coordinate];
 
-    for (int x = 1; x != n_ + 1; ++x) {
-      for (int y = 1; y != n_ + 1; ++y) {
-        int coordinate = (x - 1) + (y - 1) * n_;
-        if (population_[coordinate] == S) {
-          ++sit.s;
-          int infected = contact(x, y);
-          int infections = 0;
-          for (int i = 0; i != infected; ++i) {
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_real_distribution<> dis(0.0, 1.0);
+                       std::uniform_real_distribution<> dis(0., 1.0);
 
-            double probability = dis(gen);
-            if (probability <= pInf) {
-              ++infections;
+                       double pGua = cumulative(iDays, tMean);
+                       
+                       if (dis(gen)<=pGua) {
+                           next.set(x, y, R);
+                       } else {
+                           next.set(x, y, I);
+                       }
+                   }
+                   if (population_[coordinate] == R) {
+                       ++sit.r;
+                       next.set(x, y, R);
+                   }
+               }
+           }
+           sit.t = ++evolution_.back().t;
+           next.evolution_.push_back({sit});
+           
+           return next;
+       }
+    
+    void draw() const {
+        for (int y=n_; y>0; --y)
+        {
+            for (int x=1; x<=n_; ++x)
+            {
+                State i = population_[(y-1)*n_+(x-1)];
+                if (i == S)
+                {
+                    std::cout << '|' << " " ;
+                } else if (i == I)
+                {
+                    std::cout << '+' << " ";
+                } else if (i == R)
+                {
+                    std::cout << ' ' << " ";
+                }
             }
-          }
-          if (infections > 0) {
-            next.set(x, y, I);
-          } else {
-            next.set(x, y, S);
-          }
+            std::cout << '\n';
         }
-
-        if (population_[coordinate] == I) {
-          ++sit.i;
-          ++next.stay_[coordinate];
-
-          std::random_device rd;
-          std::mt19937 gen(rd());
-          std::uniform_real_distribution<> dis(0., 1.0);
-          if (dis(gen) <= pGua) {
-            next.set(x, y, R);
-
-          } else {
-            next.set(x, y, I);
-          }
-        }
-
-        if (population_[coordinate] == R) {
-          ++sit.r;
-          next.set(x, y, R);
-        }
-      }
     }
-
-    sit.t = evolution_.back().t + 1;
-    next.evolution_.push_back({sit});
-    return next;
-  }
 
   class rappresentPopulation
     : public sf::Drawable,     // per disegnarlo
@@ -218,7 +235,7 @@ public:
     return rappresentation;
   }
 
-  void draw() const
+  void draw2() const
   {
     std::string result;
     int i = 0;

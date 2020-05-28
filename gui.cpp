@@ -5,7 +5,7 @@
 #include "SFML/Window.hpp"
 #include <thread>
 
-// g++ gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
+// g++ -std=c++17 gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
 
 int main() {
 
@@ -35,6 +35,7 @@ int main() {
   double pInf = 0.15;
   double pGua = 0.1;
   double ratInf = 0.2;
+  int tMean = 10;
   int quadSize = 10;
 
   Population population(dim);
@@ -71,11 +72,13 @@ int main() {
     epidemicWindow.display();
 
     
-    population = population.epidemic(pInf, pGua);
+    population = population.epidemic(pInf, tMean);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     
   }
+  population.trend();
+  system("root");
 
   return 0;
 }
