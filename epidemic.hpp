@@ -304,12 +304,12 @@ public:
     if (i == 0) {
       return true;
     }
-
+/*
     std::cout << "S = " << s << '\n';
     std::cout << "I = " << i << '\n';
     std::cout << "R = " << r << '\n';
     std::cout << "N = " << s + i + r << '\n';
-
+*/
     return false;
   }
 
