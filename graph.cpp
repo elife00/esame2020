@@ -12,6 +12,7 @@
     graph_s->SetLineWidth(2);
     graph_s->GetXaxis()->SetTitleOffset(1);
     graph_s->GetYaxis()->SetTitleOffset(1.3);
+    graph_s->SetMinimum(0.);
     
     graph_i->SetLineColor(46);
     graph_i->SetLineWidth(2);
