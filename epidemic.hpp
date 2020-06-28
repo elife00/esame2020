@@ -13,10 +13,12 @@
 
 #include "SFML/Graphics.hpp"
 
-enum class State : char {Susceptible, Infectious, Recovered };
+enum class State : char {Susceptible, Infectious, Recovered, Empty };
 constexpr State S = State::Susceptible;
 constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
+constexpr State E = State::Empty;
+
 
 struct Situation {
     int t=0;
@@ -52,7 +54,16 @@ private:
     std::vector<Situation> evolution_;
     
 public:
-    Population(int n) : n_{n}, population_(n*n, S), stay_(n*n), evolution_{{0,n*n,0,0}} {}
+    Population(int n, double ratPopulation) : n_{n}, population_(n*n, E), stay_(n*n), evolution_{{0,n*n*ratPopulation,0,0}} {
+      assert (ratPopulation > 0 && ratPopulation < 1);
+      for (int i = 0; i < n*n*ratPopulation; ++i) {
+        population_[i] = S;
+      }
+      std::random_device seed;
+      std::mt19937 g(seed());
+      std::shuffle(population_.begin(), population_.end(), g);
+      }
+    }
     
     State get (int x, int y) const {
         return (x<1 || x>n_ || y<1 || y>n_)
