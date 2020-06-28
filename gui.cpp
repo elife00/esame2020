@@ -18,10 +18,10 @@ int main() {
   int i = 1;
   
   int dim = 200;
-  double pInf = 0.15;
+  double pInf = 0.01;
   double pGua = 0.1;
   double ratInf = 0.2;
-  int tMean = 30;
+  int tMean = 20;
   int quadSize = 10;
 
   Population population(dim);

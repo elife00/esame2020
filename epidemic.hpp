@@ -333,13 +333,23 @@ public:
     }
   }
 
+  double tMean () const {
+    double i=0.;
+    int a = std::accumulate(stay_.begin(), stay_.end(), 0);
+    for (auto v: stay_)
+    {
+      if (v!=0) {++i;}
+    }
+    return a/i;
+  }
+
  void trend() const {
 
         std::ofstream fout;
         fout.open("trend.txt");
         for (auto&v : evolution_)
         {
-            fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' ' << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << '\n';
+            fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' ' << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << ' ' << std::setw(4) << tMean() <<'\n';
         }
 
         fout.close();
