@@ -20,10 +20,16 @@ int main() {
 
   int i = 1;
 
+<<<<<<< HEAD
   
   int dim = 200;
   double pInf = 0.15;
   double pGua = 0.1;
+=======
+  int dim = 200;
+  double pInf = 0.05;
+  double pGua = 0.09;
+>>>>>>> 9d8cf1195b0bd2335171b3036755dee0417a17b6
   double ratInf = 0.2;
   int tMean = 30;
   int quadSize = 10;
@@ -73,8 +79,14 @@ int main() {
     
     
   }
+<<<<<<< HEAD
   /*population.trend();
   system("root");*/
+=======
+    
+  population.trend();
+  system("root");
+>>>>>>> 9d8cf1195b0bd2335171b3036755dee0417a17b6
 
   return 0;
 }
