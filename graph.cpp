@@ -1,9 +1,9 @@
 {
     TGraph * graph_s = new TGraph ("trend.txt","%lg %lg %*lg %*lg");
     graph_s->SetTitle (
-                       "epidemic's trend;"
+                       "Epidemic's trend;"
                        "t (days);"
-                       "population");
+                       "Population");
     TGraph * graph_i = new TGraph ("trend.txt","%lg %*lg %lg %*lg");
     TGraph * graph_r = new TGraph ("trend.txt","%lg %*lg %*lg %lg");
 
@@ -40,7 +40,7 @@
     graph_i->Draw("CPSAME");
     graph_r->Draw("CPSAME");
     
-    TLegend *leg=new TLegend(.2,.7,.4,.9,"Legend");
+    TLegend *leg=new TLegend(.7,.7,.9,.9,"Legend");
     
     leg->SetFillColor(0);
     leg->AddEntry(graph_s,"Susceptible");

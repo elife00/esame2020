@@ -31,9 +31,9 @@ int main() {
       sf::Vector2f(graphWindow.getSize().x / 2,
                    graphWindow.getSize().y / 2)); // absolute position
 
-  int dim = 50;
-  double pInf = 0.15;
-  double pGua = 0.1;
+  int dim = 200;
+  double pInf = 0.05;
+  double pGua = 0.09;
   double ratInf = 0.2;
   int tMean = 10;
   int quadSize = 10;
@@ -77,6 +77,7 @@ int main() {
 
     
   }
+    
   population.trend();
   system("root");
 
