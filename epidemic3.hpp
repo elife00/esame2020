@@ -68,7 +68,7 @@ class Board
       , evolution_{{0, (int)(n * n * d), 0, 0}}
   {
     assert(density_ > 0 && density_ < 1);
-    int people = (int)n * n * density_;
+    int people = (int)(n * n * density_);
     for (int i = 0; i < people; ++i) {
       board_[i] = S;
     }
@@ -82,11 +82,11 @@ class Board
 
     
     State get (int x, int y) const
-{
-  return (x < 1 || x > n_ || y < 1 || y > n_) 
-  ? E
-  : board_[(y - 1) * n_ + (x - 1)];
-}
+    {
+      return (x < 1 || x > n_ || y < 1 || y > n_) 
+      ? E
+      : board_[(y - 1) * n_ + (x - 1)];
+    }
 
 void infection(double ratInf)
 {
@@ -152,14 +152,11 @@ void swap(int x, int y)
   int j = dis(gen);
   int x2 = x + i;
   int y2 = y + j;
-
-  if (x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_) {
-    if (get(x2, y2) == E) {
+  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ && get(x2, y2) == E) {
       set(x2, y2, get(x, y));
       set(x, y, E);
       stay_[(y2 - 1) * n_ + (x2 - 1)] = stay_[(y - 1) * n_ + (x - 1)];
       stay_[(y - 1) * n_ + (x - 1)] = 0;
-    }
   }
 }
 
@@ -208,33 +205,25 @@ Board epidemic(double pInf, int tMean)
         ++sit.r;
         next.set(x, y, R);
       }
+      if (board_[coordinate] == E) {
+        next.set(x, y, E);
+      }
+    }
+  }
+  for (int x = 1; x != n_ + 1; ++x) {
+    for (int y = 1; y != n_ + 1; ++y) {
+      int coordinate = (y - 1) * n_ + (x - 1);
       if (board_[coordinate] != E) 
       {
         next.swap(x, y);
       }
     }
   }
+
   sit.t = ++evolution_.back().t;
   next.evolution_.push_back({sit});
 
   return next;
-}
-
-void draw() const
-{
-  for (int y = n_; y > 0; --y) {
-    for (int x = 1; x <= n_; ++x) {
-      State i = board_[(y - 1) * n_ + (x - 1)];
-      if (i == S) {
-        std::cout << '|' << " ";
-      } else if (i == I) {
-        std::cout << '+' << " ";
-      } else if (i == R) {
-        std::cout << ' ' << " ";
-      }
-    }
-    std::cout << '\n';
-  }
 }
 
 class representBoard

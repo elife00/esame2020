@@ -18,12 +18,12 @@ int main() {
   int i = 1;
   
   int dim = 100;
-  double pInf = 0.05;
+  double pInf = 0.5;
   double pGua = 0.1;
   double ratInf = 0.2;
   int tMean = 10;
   int quadSize = 10;
-  double density = 0.05;
+  double density = 0.5;
 
   Board population(dim, density);
   population.infection(ratInf);
@@ -60,7 +60,7 @@ int main() {
     }
     
        
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
     
     
   }
