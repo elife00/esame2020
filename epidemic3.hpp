@@ -83,8 +83,9 @@ class Board
     
     State get (int x, int y) const
 {
-  return (x < 1 || x > n_ || y < 1 || y > n_) ? E
-                                              : board_[(y - 1) * n_ + (x - 1)];
+  return (x < 1 || x > n_ || y < 1 || y > n_) 
+  ? E
+  : board_[(y - 1) * n_ + (x - 1)];
 }
 
 void infection(double ratInf)
@@ -176,6 +177,7 @@ Board epidemic(double pInf, int tMean)
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
       int coordinate = (y - 1) * n_ + (x - 1);
+      
       if (board_[coordinate] == S) {
         ++sit.s;
         int infected = contact(x, y);
@@ -206,8 +208,10 @@ Board epidemic(double pInf, int tMean)
         ++sit.r;
         next.set(x, y, R);
       }
-
-      next.swap(x, y);
+      if (board_[coordinate] != E) 
+      {
+        next.swap(x, y);
+      }
     }
   }
   sit.t = ++evolution_.back().t;
@@ -336,7 +340,7 @@ void trend() const
   for (auto& v : evolution_) {
     fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' '
          << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << ' '
-         << std::setw(4) << tMean() << '\n';
+         << std::setw(4) << tMean() <<   std::setw(4) << ' ' << v.i+v.r+v.s << '\n';
   }
 
   fout.close();

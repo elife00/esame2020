@@ -23,8 +23,9 @@ int main() {
   double ratInf = 0.2;
   int tMean = 10;
   int quadSize = 10;
+  double density = 0.05;
 
-  Board population(dim, 0.15);
+  Board population(dim, density);
   population.infection(ratInf);
 
   
@@ -47,7 +48,7 @@ int main() {
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
     
-    /*
+    
     if (population.count()) {
       if (i) {
         population.trend();
@@ -57,9 +58,9 @@ int main() {
     } else {
       population = population.epidemic(pInf, tMean);
     }
-    */
+    
        
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     
     
   }
