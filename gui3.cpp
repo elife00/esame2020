@@ -9,14 +9,20 @@
 
 int main() {
 
-  sf::RenderWindow epidemicWindow(sf::VideoMode(800, 600), "My epidemic");
+  sf::RenderWindow epidemicWindow(
+      sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
+                    sf::VideoMode::getDesktopMode().height * 2 / 3),
+      "My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
   // change the position of the window (relatively to the desktop)
-  epidemicWindow.setPosition(sf::Vector2i(10, 50));
+  epidemicWindow.requestFocus();
+  epidemicWindow.setPosition(
+      sf::Vector2i((sf::VideoMode::getDesktopMode().width - epidemicWindow.getSize().x) / 2,
+                   (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) / 2));
 
   int i = 1;
-  
+
   int dim = 100;
   double pInf = 0.25;
   double pGua = 0.15;
@@ -28,8 +34,6 @@ int main() {
   Board population(dim, density);
   population.infection(ratInf);
 
-  
-
   // run the program as long as the window is open
   while (epidemicWindow.isOpen()) {
     // check all the window's events that were triggered since the last
@@ -38,17 +42,17 @@ int main() {
     while (epidemicWindow.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         epidemicWindow.close();
-       }
+      }
     }
-    
+
     auto rappresentation = population.Draw(quadSize);
-    rappresentation.setPosition(epidemicWindow.getSize().x/2, epidemicWindow.getSize().y/2);
-    
+    rappresentation.setPosition(epidemicWindow.getSize().x / 2,
+                                epidemicWindow.getSize().y / 2);
+
     epidemicWindow.clear(sf::Color::Black);
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
-    
-    
+
     if (population.count()) {
       if (i) {
         population.trend();
@@ -56,13 +60,11 @@ int main() {
         --i;
       }
     } else {
-      population = population.epidemic2(pInf, pGua);
+      population = population.epidemic2(pInf, 1. / tMean);
+      // population = population.epidemic(pInf,tMean);
     }
-    
-       
+
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    
-    
   }
   return 0;
 }
