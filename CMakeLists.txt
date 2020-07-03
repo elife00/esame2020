@@ -14,7 +14,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #this is to discover the configuration of SFML on this platform
 list(APPEND CMAKE_MODULE_PATH /usr/share/SFML/cmake/Modules) 
 include_directories(/usr/local/include/SFML)
-find_package(SFML 2.5.1 COMPONENTS graphics window system REQUIRED)
+find_package(SFML COMPONENTS graphics window system REQUIRED)
 
 #uncomment the following to enable the execution of clang - tidy, if installed
 #set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*,-readability-else-after-return)
