@@ -71,8 +71,8 @@ int main()
       //--i;
     }
     //} else {
-    population = population.epidemic2(pInf, 1. / tMean);
-    // population = population.epidemic(pInf,tMean);
+    //population = population.epidemic2(pInf, 1. / tMean);
+    population = population.epidemic(pInf,tMean);
     //}
 
     std::this_thread::sleep_for(std::chrono::milliseconds(500));

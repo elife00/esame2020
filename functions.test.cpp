@@ -13,7 +13,7 @@ TEST_CASE("testing factorial")
 
 TEST_CASE("testing cumulative")
 {
-  CHECK(cumulative(6, 10) == doctest::Approx(0.0130).epsilon(0.001));
+  CHECK(cumulative(6, 10) == doctest::Approx(0.130).epsilon(0.001));
   CHECK(cumulative(10, 10) == doctest::Approx(0.583).epsilon(0.001));
   CHECK(cumulative(15, 10) == doctest::Approx(0.951).epsilon(0.001));
   CHECK(cumulative(20, 10) == doctest::Approx(0.998).epsilon(0.001));
