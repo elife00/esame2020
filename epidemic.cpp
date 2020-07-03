@@ -241,7 +241,7 @@ void Board::trend() const
   for (auto& v : evolution_) {
     fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' '
          << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << ' '
-         << std::setw(4) << tMean() << std::setw(4) << ' ' << v.i + v.r + v.s
+         << std::setw(4) << tMean() << ' ' << std::setw(4) << v.i + v.r + v.s
          << '\n';
   }
 

@@ -63,7 +63,7 @@ int main()
 
     if (population.count()) {
       // if (i) {
-      std::this_thread::sleep_for(std::chrono::seconds(1));
+      std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       population.trend();
 
@@ -75,7 +75,7 @@ int main()
     population = population.epidemic(pInf,tMean);
     //}
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
   return 0;
 }
