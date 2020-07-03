@@ -7,6 +7,12 @@
 
 // g++ -std=c++17 gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
 // g++ -std=c++17 functions.test.cpp -o gui
+// mkdir build
+//cd build
+//cmake -DCMAKE_BUILD_TYPE=Debug ..
+//make
+//./epidemic-sfml
+// dopo la prima volta bastano gli ultimi due
 
 int main()
 {
