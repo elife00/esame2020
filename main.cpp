@@ -1,38 +1,75 @@
-#include </home/elisabetta-ferri/projects/myproject/esame2020/epidemic.hpp>
+#include "epidemic.hpp"
 
+#include <thread>
+#include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "SFML/Window.hpp"
+
+// g++ -std=c++17 gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
+// g++ -std=c++17 functions.test.cpp -o gui
 
 int main()
 {
-  int dim = 10;
-  double pInf = 0.15;
-  double pGua = 0.1;  // 1 giorno = 100 milliseconds
-  double ratInf = 0.2;
+  sf::RenderWindow epidemicWindow(
+      sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
+                    sf::VideoMode::getDesktopMode().height * 2 / 3),
+      "My epidemic");
+  epidemicWindow.setVerticalSyncEnabled(true);
 
-  Population population(dim);
-  std::cout << "How an epidemic begin:\n";
+  // change the position of the window (relatively to the desktop)
+  epidemicWindow.requestFocus();
+  epidemicWindow.setPosition(sf::Vector2i(
+      (sf::VideoMode::getDesktopMode().width - epidemicWindow.getSize().x) / 2,
+      (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) /
+          2));
 
+  int i = 1;
+
+  int dim = 100;
+  double pInf = 0.25;
+  double pGua = 0.15;
+  double ratInf = 0.1;
+  int tMean = 10;
+  int quadSize = 5;
+  double density = 0.20;
+
+  Board population(dim, density);
   population.infection(ratInf);
-  population.draw();
-  population.count();
 
-  std::cout << '\n' << "Epidemic has began\n";
+  // run the program as long as the window is open
+  while (epidemicWindow.isOpen()) {
+    // check all the window's events that were triggered since the last
+    // iteration of the loop
+    sf::Event event;
+    while (epidemicWindow.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        epidemicWindow.close();
+      }
+    }
 
-  std::this_thread::sleep_for(std::chrono::seconds(5));
+    auto rappresentation = population.Draw(quadSize);
+    rappresentation.setPosition(epidemicWindow.getSize().x / 2,
+                                epidemicWindow.getSize().y / 2);
 
-  int days = 0;
-  while (true) {
-    ++days;
-    std::cout << "\033c";
-    population = population.epidemic(pInf, pGua);
-    population.draw();
+    epidemicWindow.clear(sf::Color::Black);
+    epidemicWindow.draw(rappresentation);
+    epidemicWindow.display();
 
     if (population.count()) {
-      break;
+      // if (i) {
+      std::this_thread::sleep_for(std::chrono::seconds(1));
+      epidemicWindow.close();
+      population.trend();
+
+      system("root");
+      //--i;
     }
-    std::cout << "giorni dall'inizio dell'epidemia: " << days << '\n';
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //} else {
+    population = population.epidemic2(pInf, 1. / tMean);
+    // population = population.epidemic(pInf,tMean);
+    //}
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
-  population.trend();
-  std::cout << '\n' << '\n';
-  population.parameters();
+  return 0;
 }
