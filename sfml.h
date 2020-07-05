@@ -33,7 +33,7 @@ class representBoard
       : quadSize_{quadSize}
       , gridSize_{static_cast<int>(std::sqrt(vector.size()))}
   {
-    vertices_.setPrimitiveType(sf::Triangles);  // reorganise vertices into quads
+    vertices_.setPrimitiveType(sf::Quads);  // reorganise vertices into quads
     vertices_.resize(gridSize_ * gridSize_ * 4);  // create enough vertices for the grid
 
     // populate the vertex array, with one quad per state
