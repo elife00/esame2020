@@ -76,6 +76,8 @@ class representBoard
         }
       }
   }
+
+  sf::VertexArray vertices() { return vertices_; }
 };
 
 #endif
