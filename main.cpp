@@ -24,18 +24,18 @@ int main()
     int quadSize = 5;
     double density = 0.20;
       
-      std::cout << "Insert the population density (between 0 and 1): " ;
+      std::cout << "Insert the population density (between 0.0 and 1.0): " ;
       std::cin >> density ;
-      while (density <0 || density >1) {std::cout << "The density value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> density;}
-      std::cout << "Insert the initial percentage of infected (between 0 and 1): " ;
+      while (density <=0 || density >1) {std::cout << "The density value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> density;}
+      std::cout << "Insert the initial percentage of infected (between 0.0 and 1.0): " ;
       std::cin >> percInf ;
-      while (percInf <0 || percInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> percInf;}
-      std::cout << "Insert the probability of infection due to a direct contact (between 0 and 1): " ;
+      while (percInf <=0 || percInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> percInf;}
+      std::cout << "Insert the probability of infection due to a direct contact (between 0.0 and 1.0: " ;
       std::cin >> pInf ;
-      while (pInf <0 || pInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> pInf;}
+      while (pInf <=0 || pInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> pInf;}
       std::cout << "Insert the average time of recovery (between 0 and 40 days): " ;
       std::cin >> tMean ;
-     while (tMean <0 || tMean >40) {std::cout << "Insert a plausible value of healing time: " ; std::cin >> tMean; }
+     while (tMean <=0 || tMean >40) {std::cout << "Insert a plausible value of healing time: " ; std::cin >> tMean; }
     
   sf::RenderWindow epidemicWindow(
       sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
