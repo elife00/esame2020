@@ -11,8 +11,8 @@ constexpr State R = State::Recovered;
 constexpr State E = State::Empty;
 
 class representBoard
-    : public sf::Drawable,      // per disegnarlo
-      public sf::Transformable  // per traslazioni, rotazioni, ...
+    : public sf::Drawable,      // to draw
+      public sf::Transformable  // to transform, to rotate, ...
 {
  private:
   virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -33,18 +33,17 @@ class representBoard
       : quadSize_{quadSize}
       , gridSize_{static_cast<int>(std::sqrt(vector.size()))}
   {
-    vertices_.setPrimitiveType(sf::Quads);  // riorganizza i vertici in quadrati
-    vertices_.resize(gridSize_ * gridSize_ *
-                     4);  // crea abbastanza vertici per la griglia
+    vertices_.setPrimitiveType(sf::Triangles);  // reorganise vertices into quads
+    vertices_.resize(gridSize_ * gridSize_ * 4);  // create enough vertices for the grid
 
-    // populate the vertex array, with one quad per tile
+    // populate the vertex array, with one quad per state
     for (int i = 0; i < gridSize_; ++i)
       for (int j = 0; j < gridSize_; ++j) {
-        // get the current tile number
 
-        // get a pointer to the current tile's quad
+        // get a pointer to the current state's quad
         sf::Vertex* quad = &vertices_[(i + j * gridSize_) * 4];
 
+        // set the origin to the center of the grid
         sf::Transformable::setOrigin(gridSize_ * quadSize_ / 2,
                                      gridSize_ * quadSize_ / 2);
 
