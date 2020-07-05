@@ -244,7 +244,6 @@ void Board::trend() const
          << std::setw(4) << tMean() << ' ' << std::setw(4) << v.i + v.r + v.s
          << '\n';
   }
-
   fout.close();
 }
 

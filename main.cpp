@@ -16,6 +16,27 @@
 
 int main()
 {
+    int dim = 100;
+    double pInf = 0.25;
+    double pGua = 0.15;
+    double percInf = 0.1;
+    int tMean = 10;
+    int quadSize = 5;
+    double density = 0.20;
+      
+      std::cout << "Insert the population density (between 0 and 1): " ;
+      std::cin >> density ;
+      while (density <0 || density >1) {std::cout << "The density value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> density;}
+      std::cout << "Insert the initial percentage of infected (between 0 and 1): " ;
+      std::cin >> percInf ;
+      while (percInf <0 || percInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> percInf;}
+      std::cout << "Insert the probability of infection due to a direct contact (between 0 and 1): " ;
+      std::cin >> pInf ;
+      while (pInf <0 || pInf >1) {std::cout << "The percentage value must be between 0.0 and 1.0. Insert it again: " ; std::cin >> pInf;}
+      std::cout << "Insert the average time of recovery (between 0 and 40 days): " ;
+      std::cin >> tMean ;
+     while (tMean <0 || tMean >40) {std::cout << "Insert a plausible value of healing time: " ; std::cin >> tMean; }
+    
   sf::RenderWindow epidemicWindow(
       sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
                     sf::VideoMode::getDesktopMode().height * 2 / 3),
@@ -29,18 +50,8 @@ int main()
       (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) /
           2));
 
-  int i = 1;
-
-  int dim = 100;
-  double pInf = 0.25;
-  double pGua = 0.15;
-  double ratInf = 0.1;
-  int tMean = 10;
-  int quadSize = 5;
-  double density = 0.20;
-
   Board population(dim, density);
-  population.infection(ratInf);
+  population.infection(percInf);
 
   // run the program as long as the window is open
   while (epidemicWindow.isOpen()) {
@@ -61,21 +72,18 @@ int main()
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
 
-    if (population.current_situation().i == 0) {
-      // if (i) {
+    if (population.current_situation().i == 0)
+    {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       population.trend();
 
       system("root");
-      //--i;
     }
-    //} else {
-    //population = population.epidemic2(pInf, 1. / tMean);
-    population = population.epidemic(pInf,tMean);
-    //}
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    population = population.epidemic(pInf,tMean);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
   }
   return 0;
 }
