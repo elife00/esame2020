@@ -25,12 +25,13 @@ target_compile_options(epidemic-sfml PRIVATE -Wall -Wextra)
 target_include_directories(epidemic-sfml PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 target_link_libraries(epidemic-sfml sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
+
+#the following is to build tests and declare them as such
+add_executable(run_functions_tests functions.test.cpp)
+add_test(NAME functions_tests COMMAND run_functions_tests)
+
 add_executable(epidemic_tests epidemic.test.cpp epidemic.cpp)
 target_compile_options(epidemic_tests PRIVATE -Wall -Wextra)
 target_include_directories(epidemic_tests PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 target_link_libraries(epidemic_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 add_test(NAME epidemic_tests COMMAND run_epidemic_tests)
-
-#the following is to build tests and declare them as such
-add_executable(run_functions_tests functions.test.cpp)
-add_test(NAME functions_tests COMMAND run_functions_tests)
