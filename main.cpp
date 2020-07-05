@@ -61,7 +61,7 @@ int main()
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
 
-    if (population.count()) {
+    if (population.current_situation().i == 0) {
       // if (i) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();

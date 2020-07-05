@@ -248,15 +248,22 @@ void Board::trend() const
   fout.close();
 }
 
-bool Board::count() const
-{
-  int i = 0;
-  for (auto const& v : board_) {
-    if (v == I) {
-      ++i;
+Situation Board::current_situation() {
+    int i = 0;
+    int s = 0;
+    int r = 0;
+    int t = evolution_.back().t;
+    for (auto const& v : board_)
+    {
+      if (v == I) {
+        ++i;
+      } else if (v == S) {
+          ++s;
+      } else if (v == R){
+          ++r;
+      }
     }
-  }
-  return !i;  // piÃ¹ easy, non serve piÃ¹ il resto
+    return {t,s,i,r};
 }
 
 void Board::parameters()

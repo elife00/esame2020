@@ -21,6 +21,10 @@ struct Situation
   int r = 0;
 };
 
+inline bool operator ==( Situation const& s1, Situation const& s2){
+    return (s1.t == s2.t && s1.s == s2.s && s1.i == s2.i && s1.r == s2.r);
+}
+
 class Board
 {
  private:
@@ -56,6 +60,8 @@ class Board
   void infection(double ratInf);
 
   int contact(int x, int y) const;
+           
+  Situation current_situation() ;
 
   void set(int& x, int& y, State s);
 
@@ -70,8 +76,6 @@ class Board
   double tMean() const;
 
   void trend() const;
-
-  bool count() const;
 
   void parameters();
 };
