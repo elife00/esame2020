@@ -17,32 +17,15 @@ int Board::contact(int x, int y) const
 {
   assert(x > 0 && x <= n_ && y > 0 && y <= n_);
   int count = 0;
-  if (get(x + 1, y) == I) {
-    ++count;
+      for (int i= -1; i!=2 ; ++i)
+      {
+          for (int j= -1; j!=2 ; ++j)
+          {
+              if (get(x+i,y+j) == I) {++count;}
+          }
+      }
+      return count;
   }
-  if (get(x - 1, y) == I) {
-    ++count;
-  }
-  if (get(x, y + 1) == I) {
-    ++count;
-  }
-  if (get(x, y - 1) == I) {
-    ++count;
-  }
-  if (get(x - 1, y - 1) == I) {
-    ++count;
-  }
-  if (get(x - 1, y + 1) == I) {
-    ++count;
-  }
-  if (get(x + 1, y - 1) == I) {
-    ++count;
-  }
-  if (get(x + 1, y + 1) == I) {
-    ++count;
-  }
-  return count;
-}
 
 int Board::contact_range (int x, int y, int r) const {
     assert(x > 0 && x <= n_ && y > 0 && y <= n_ && r>0 && r<=n_);
@@ -51,7 +34,7 @@ int Board::contact_range (int x, int y, int r) const {
     {
         for (int j= (-r); j<=r ; ++j)
         {
-            if (get(x+i,y+j) ==I) {++count;}
+            if (get(x+i,y+j) == I) {++count;}
         }
     }
     return count;
