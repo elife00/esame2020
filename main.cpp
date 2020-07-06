@@ -79,7 +79,6 @@ int main()
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       population.trend();
-      population.parameters();
 
       system("root");
     }

@@ -340,7 +340,7 @@ Situation Board::current_situation() {
     return {t,s,i,r};
 }
 
-void Board::parameters()
+/*void Board::parameters()
 {
   std::vector<double> beta;
   std::vector<double> gamma;
@@ -364,4 +364,4 @@ void Board::parameters()
        fout << beta[i] << ' ' << gamma[i] << ' ' << beta[i]/gamma[i] << '\n';
   }
     fout.close();
-}
+}*/
