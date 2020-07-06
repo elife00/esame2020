@@ -60,3 +60,16 @@ TEST_CASE("testing epidemic_range")
         }
     }
 
+TEST_CASE("testing contact_range")
+{
+    Board population(5, 1);
+    population.set(5,5,I);
+    population.set(1,1,I);
+    population.set(1,5,I);
+    population.set(5,1,I);
+    population.set(3,4,I);
+    population.set(4,3,I);
+    
+    CHECK (population.contact_range(3,3,1) == 2);
+    CHECK (population.contact_range(3,3,2) == 6);
+}
