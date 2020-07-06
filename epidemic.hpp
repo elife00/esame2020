@@ -60,6 +60,8 @@ class Board
   void infection(double ratInf);
 
   int contact(int x, int y) const;
+    
+  int contact_range (int x, int y, int r) const;
            
   Situation current_situation() ;
 
@@ -68,12 +70,14 @@ class Board
   void swap(int x, int y);
 
   Board epidemic(double pInf, int tMean);
+    
+  Board epidemic_range(double pInf, int tMean, int range);
 
-  Board epidemic2(double pInf, double pGua);
+  //Board epidemic2(double pInf, double pGua);
 
   representBoard Draw(int const& quadSize);
 
-  double tMean() const;
+  double avg_time() const;
 
   void trend() const;
 

@@ -17,12 +17,12 @@
 int main()
 {
     int dim = 100;
-    double pInf = 0.25;
-    double pGua = 0.15;
-    double percInf = 0.1;
-    int tMean = 10;
     int quadSize = 5;
-    double density = 0.20;
+    double pInf;
+    double percInf;
+    int tMean;
+    double density;
+    int range;
       
       std::cout << "Insert the population density (between 0.0 and 1.0): " ;
       std::cin >> density ;
@@ -36,6 +36,8 @@ int main()
       std::cout << "Insert the average time of recovery (between 1 and 40 days): " ;
       std::cin >> tMean ;
      while (tMean <1 || tMean >40) {std::cout << "Insert a plausible value of healing time: " ; std::cin >> tMean; }
+     std::cout << "Insert the range of infection (1 is direct contact. A plausible value could be between 1 and 5): " ;
+     std::cin >> range ;
     
   sf::RenderWindow epidemicWindow(
       sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
@@ -77,12 +79,13 @@ int main()
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       population.trend();
-      //population.parameters();
+      population.parameters();
 
       system("root");
     }
 
-    population = population.epidemic(pInf,tMean);
+    population = population.epidemic_range(pInf,tMean,range);
+    // population = population.epidemic2(pInf,1./tMean);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
   }
