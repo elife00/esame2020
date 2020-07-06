@@ -12,10 +12,15 @@
 
 TEST_CASE("testing epidemic")
 {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> real_dis(0., 1.0);
+    std::uniform_int_distribution<> int_dis(1, 40);
+    
     int dim = 100;
-    double ratInf = 0.1;
-    int tMean = 10;
-    double density = 0.20;
+    double density = real_dis(gen);
+    double ratInf = real_dis(gen);
+    int tMean = int_dis(gen);
     int S = (int) dim * dim * density;
     int I = (int) S * ratInf;
 
@@ -27,7 +32,7 @@ TEST_CASE("testing epidemic")
     
     population.infection(ratInf);
     
-    Situation Suno = {0, S-I , I, 0};
+    Situation Suno = {0, S-I , I, 0}; //t is increased by epidemic functions...is still 0
     
     CHECK( population.current_situation() == Suno );
     

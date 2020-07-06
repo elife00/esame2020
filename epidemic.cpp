@@ -153,6 +153,9 @@ Board Board::epidemic2(double pInf, double pGua)
   next.evolution_ = evolution_;
   next.stay_ = stay_;
   Situation sit = {0, 0, 0, 0};
+    
+ std::random_device rd;
+ std::mt19937 gen(rd());
 
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
@@ -164,8 +167,6 @@ Board Board::epidemic2(double pInf, double pGua)
         int infections = 0;
 
         for (int i = 0; i != infected; ++i) {
-          std::random_device rd;
-          std::mt19937 gen(rd());
           std::uniform_real_distribution<> dis(0.0, 1.0);
           double probability = dis(gen);
           if (probability <= pInf) {
@@ -182,8 +183,6 @@ Board Board::epidemic2(double pInf, double pGua)
         ++sit.i;
         ++next.stay_[coordinate];
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
         std::uniform_real_distribution<> dis(0., 1.0);
 
         if (dis(gen) <= pGua) {
@@ -269,20 +268,28 @@ void Board::parameters()
 {
   std::vector<double> beta;
   std::vector<double> gamma;
-  for (unsigned int i = 0; i != evolution_.size() - 1;
-       ++i) {  // le formule sono con le percentuali
+    int Nb=0;
+    int Ng=0;
+  for (unsigned int i = 0; i != evolution_.size() - 1; ++i) {  // le formule sono con le percentuali
     double Savg = 0.5 * (evolution_[i + 1].s + evolution_[i].s) / n_ * n_;
     double Iavg = 0.5 * (evolution_[i + 1].i + evolution_[i].i) / n_ * n_;
-    double Ravg = 0.5 * (evolution_[i + 1].r + evolution_[i].r) / n_ * n_;
-    double dS = (evolution_[i + 1].s - evolution_[i].s) / n_ * n_;
+    //double Ravg = 0.5 * (evolution_[i + 1].r + evolution_[i].r) / n_ * n_;
+    //double dS = (evolution_[i + 1].s - evolution_[i].s) / n_ * n_;
     double dI = (evolution_[i + 1].i - evolution_[i].i) / n_ * n_;
     double dR = (evolution_[i + 1].r - evolution_[i].r) / n_ * n_;
-    double b = (dR + dI) / (Savg * Iavg);
-    double g = dR / Iavg;
-    beta.push_back(b);
-    gamma.push_back(g);
+    long double b = (dR + dI) / (Savg * Iavg);
+    long double g = dR / Iavg;
+      if (b!=0){ beta.push_back(b); ++Nb; }
+      if(g!=0){ gamma.push_back(g); ++Ng; }
   }
+    std::ofstream fout;
+    fout.open("parameters.txt");
   for (unsigned int i = 0; i != beta.size(); ++i) {
-    std::cout << beta[i] << ' ' << gamma[i] << '\n';
+      if (beta[i]!=0 && gamma[i]!=0)
+      {
+          fout << "Epidemic's parameters: beta, gamma and R(t) (respectively)" << '\n'
+          << beta[i] << ' ' << gamma[i] << ' ' << beta[i]/gamma[i] << '\n';
+      }
   }
+    fout.close();
 }
