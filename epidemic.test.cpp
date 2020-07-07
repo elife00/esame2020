@@ -62,13 +62,17 @@ TEST_CASE("testing epidemic_range")
 
 TEST_CASE("testing contact_range")
 {
+    int a = 5;
+    int b = 1;
+    int c = 3;
+    int d = 4;
     Board population(5, 1);
-    population.set(5,5,I);
-    population.set(1,1,I);
-    population.set(1,5,I);
-    population.set(5,1,I);
-    population.set(3,4,I);
-    population.set(4,3,I);
+    population.set(a,a,I);
+    population.set(b,b,I);
+    population.set(b,a,I);
+    population.set(a,b,I);
+    population.set(c,d,I);
+    population.set(d,c,I);
     
     CHECK (population.contact_range(3,3,1) == 2);
     CHECK (population.contact_range(3,3,2) == 6);
