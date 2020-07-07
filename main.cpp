@@ -1,4 +1,4 @@
-#include "./checkComma.cpp"
+#include "checkComma.hpp"
 #include "epidemic.hpp"
 
 #include "SFML/Graphics.hpp"

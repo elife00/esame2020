@@ -298,10 +298,9 @@ void Board::trend() const
   fout.open("trend.txt");
   for (auto& v : evolution_) {
     fout << std::setw(4) << v.t << ' ' << std::setw(4) << v.s << ' '
-         << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << ' '
-         << std::setw(4) << avg_time() << ' ' << std::setw(4) << v.i + v.r + v.s
-         << '\n';
+         << std::setw(4) << v.i << ' ' << std::setw(4) << v.r << ' ' << std::setw(4) << v.i + v.r + v.s << '\n';
   }
+    fout << "The average time of recovery is : " << std::setw(4) << avg_time()
   fout.close();
 }
 
