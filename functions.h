@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <string>
 
 long double factorial(int n)
 {
@@ -26,6 +27,16 @@ long double cumulative(int k, int mu)
     p += (pow(mu, i) * exp(-mu) / factorial(i));
   }
   return p;
+}
+
+
+inline bool checkComma (std::string string) 
+{
+    for (auto v : string)
+    {
+        if (v == ',') { return true; }
+    }
+    return false;
 }
 
 #endif /* functions_h */

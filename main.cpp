@@ -4,7 +4,6 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
-#include <string>
 #include <thread>
 
 // g++ -std=c++17 gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
@@ -29,7 +28,7 @@ int main() {
   std::string den;
   std::cin >> den;
   std::size_t* sz;
-  density = stod(den, );
+  density = stod(den, sz);
   while (checkComma(den) || density <= 0 || density > 1) {
     if (checkComma(den)) {
       std::cout << "Use '.' instead of ','. Insert it again: ";
