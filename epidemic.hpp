@@ -42,7 +42,7 @@ class Board
       , stay_(n * n)
       , evolution_{{0, (int)(n * n * d), 0, 0}}
   {
-    assert(density_ > 0 && density_ < 1);
+    assert(density_ > 0 && density_ <= 1.);
     int people = (int)(n * n * density_);
     for (int i = 0; i < people; ++i) {
       board_[i] = S;
