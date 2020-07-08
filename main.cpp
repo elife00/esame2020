@@ -1,4 +1,4 @@
-#include "checkComma.hpp"
+#include "functions.h"
 #include "epidemic.hpp"
 
 #include "SFML/Graphics.hpp"
@@ -40,13 +40,8 @@ int main() {
     density = std::stod(string, &sz);
   }
   
-  std::cout << "Insert the initial percentage of infected (between 0.0 and 1.0): ";
-  std::cin >> percInf;
-  while (percInf <= 0 || percInf > 1) {
-    std::cout << "The percentage value must be between 0.0 and 1.0. Insert it "
-                 "again: ";
-    std::cin >> percInf;
-  }
+  percInf = setPercInf();
+
   std::cout << "Insert the probability of infection due to a direct contact "
                "(between 0.0 and 1.0: ";
   std::cin >> pInf;
