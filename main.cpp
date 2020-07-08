@@ -16,7 +16,7 @@
 // dopo la prima volta bastano gli ultimi due
 
 int main() {
-  int dim = 100;
+  int dim = 120;
   int quadSize = 5;
   double pInf;
   double percInf;
@@ -24,20 +24,20 @@ int main() {
   double density;
   int range;
 
+  std::string string;
+  std::string::size_type sz;
   std::cout << "Insert the population density (between 0.0 and 1.0): ";
-  std::string den;
-  std::cin >> den;
-  std::size_t* sz;
-  density = stod(den, sz);
-  while (checkComma(den) || density <= 0 || density > 1) {
-    if (checkComma(den)) {
-      std::cout << "Use '.' instead of ','. Insert it again: ";
-      std::cin >> den;
-    } else if (density <= 0 || density > 1) {
-      std::cout << "The density value must be between 0.0 and 1.0. Insert it again: ";
-      std::cin >> den;
+  std::cin >> string;
+  density = std::stod(string, &sz);
+  while (1) {
+    if (checkComma(string)) {
+      density = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
     }
-    density = stod(den, sz);
+    if (density <= 0 || density > 1) {
+      std::cout << "The density value must be between 0.0 and 1.0. Insert it again: ";
+      std::cin >> string;
+    } else { break;}
+    density = std::stod(string, &sz);
   }
   
   std::cout << "Insert the initial percentage of infected (between 0.0 and 1.0): ";
@@ -65,18 +65,18 @@ int main() {
                "plausible value could be between 1 and 5): ";
   std::cin >> range;
 
-  sf::RenderWindow epidemicWindow(
+  /*sf::RenderWindow epidemicWindow(
       sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
                     sf::VideoMode::getDesktopMode().height * 2 / 3),
-      "My epidemic");
+      "My epidemic");*/
+    sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
   // change the position of the window (relatively to the desktop)
   epidemicWindow.requestFocus();
   epidemicWindow.setPosition(sf::Vector2i(
       (sf::VideoMode::getDesktopMode().width - epidemicWindow.getSize().x) / 2,
-      (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) /
-          2));
+      (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) / 2));
 
   Board population(dim, density);
   population.infection(percInf);
