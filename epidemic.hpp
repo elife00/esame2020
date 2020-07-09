@@ -40,10 +40,10 @@ class Board
       , density_{d}
       , board_(n * n)
       , stay_(n * n)
-      , evolution_{{0, (int)(n * n * d), 0, 0}}
+      , evolution_{{0, static_cast<int>(n * n * d), 0, 0}}
   {
     assert(density_ > 0 && density_ <= 1.);
-    int people = (int)(n * n * density_);
+    int people = static_cast<int>(n * n * density_);
     for (int i = 0; i < people; ++i) {
       board_[i] = S;
     }
