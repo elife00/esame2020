@@ -13,20 +13,6 @@ void Board::set(int& x, int& y, State s)
   board_[(y - 1) * n_ + (x - 1)] = s;
 }
 
-int Board::contact(int x, int y) const
-{
-  assert(x > 0 && x <= n_ && y > 0 && y <= n_);
-  int count = 0;
-      for (int i= -1; i!=2 ; ++i)
-      {
-          for (int j= -1; j!=2 ; ++j)
-          {
-              if (get(x+i,y+j) == I) {++count;}
-          }
-      }
-      return count;
-  }
-
 int Board::contact_range (int x, int y, int r) const {
     assert(x > 0 && x <= n_ && y > 0 && y <= n_ && r>0 && r<=n_);
     int count = 0;
@@ -47,7 +33,7 @@ void Board::infection(double ratInf)
   for (int i = 0; i != infected; ++j) {
     if (board_[j] == E) {
       ++j;
-    } else {
+    } else {  //transforming the susceptible to infected
       board_[j] = I;
       ++i;
     }
