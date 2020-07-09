@@ -1,0 +1,16 @@
+Relazione progetto “Modello SIR”
+
+INTRODUZIONE
+Il progetto simula la diffusione di un’epidemia all’interno di una popolazione, basata sul Modello SIR. 
+
+Il programma si basa sulla creazione di una griglia bidimensionale, all’interno della quale un’insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente.
+
+Le celle che formano la griglia possono assumere cinque “stati”. “Susceptible”, “Infected” e “Recovered” rappresentano i tre stati previsti dal modello Sir che una persona può assumere (il modello prevede che una persona guarita non possa più essere infetta). Lo stato “Empty” rappresenta le celle vuote, tra le quali la popolazione è libera di muoversi. Infine si è scelto di aggiungere uno stato aggiuntivo, Quarantine, che rappresenta la popolazione in “quarantena”, che dunque è infetta ma non può interagire né muoversi all’interno della griglia. La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
+
+Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infezione di una “cella” suscettibile quando interagisce con una infetta (“pInf”) e il raggio d’azione (“range”), che definisce la distanza di interazione tra le “celle”.
+
+La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori casuali (all’interno di range opportuni).
+
+Si è utilizzata la libreria grafica SMFL per la visualizzazione della griglia nel corso dell’epidemia e ROOT per la creazione del grafico, che rappresenta l’andamento dei tre parametri del modello (S,I,R)
+
+
