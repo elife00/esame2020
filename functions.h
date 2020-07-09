@@ -51,6 +51,7 @@ inline std::array<double, 5> input_parameters() {
       } else {
         parameters[i] = std::stod(string, &sz);
       }
+       //checking that the input values are in the ranges
       if (i <= 2 && (parameters[i] <= 0 || parameters[i] > 1)) {
         std::cout << "Insert a value in the range 0-1 (percentage value): ";
         std::cin >> string;

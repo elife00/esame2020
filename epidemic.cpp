@@ -47,7 +47,7 @@ void Board::swap(int x, int y) {
   int j = dis(gen);
   int x2 = x + i;
   int y2 = y + j;
-  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ &&
+  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ && //if i and j are 0 doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
