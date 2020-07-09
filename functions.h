@@ -92,25 +92,31 @@ inline std::array<double, 5> input_parameters() {
 }
 
 inline std::array<double, 5> random_parameters() {
-  std::array<double, 5> parameters;
-
-  std::random_device rd;
-  std::mt19937 gen(rd());
-
-  std::uniform_real_distribution<> perc(0, 1.0);
-  std::uniform_int_distribution<> t(1, 40);
-  std::uniform_int_distribution<> r(1, 3);
-
-  for (int i = 0; i != 3; ++i) {
-    double p = perc(gen);
-    while (p == 0 || p == 1) // check if the generated value is 0
-    {                        //(despite the very low probability)
-      p = perc(gen);
+    std::array<double, 5> parameters;
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    std::uniform_real_distribution<> d(0, 0.5);
+    std::uniform_real_distribution<> perc(0, 0.2);
+    std::uniform_int_distribution<> t(5, 30);
+    std::uniform_int_distribution<> r(1, 3);
+    
+    //Despite its very low probability, adding control if the genereted value is 0
+    parameters[0] = d(gen);
+    if (parameters[0] == 0) {
+        parameters[0] = d(gen);
     }
-    parameters[i] = p;
-  }
-  parameters[3] = t(gen);
-  parameters[4] = r(gen);
+    parameters[1] = perc(gen);
+    if (parameters[1] == 0) {
+           parameters[1] = d(gen);
+       }
+    parameters[2] = perc(gen);
+    if (parameters[2] == 0) {
+        parameters[2] = d(gen);
+    }
+    parameters[3] = t(gen);
+    parameters[4] = r(gen);
 
   std::cout << "Epidemic's parameters: " << '\n'
             << "population's density:  " << parameters[0] << '\n'
