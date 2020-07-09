@@ -248,29 +248,3 @@ Situation Board::current_situation() {
   return {t, s, i, r};
 }
 
-/*void Board::parameters()
-{
-  std::vector<double> beta;
-  std::vector<double> gamma;
-  for (unsigned int i = 0; i != evolution_.size() - 1; ++i) {  // le formule
-sono con le percentuali double Savg = 0.5 * (evolution_[i + 1].s +
-evolution_[i].s) / n_ * n_; double Iavg = 0.5 * (evolution_[i + 1].i +
-evolution_[i].i) / n_ * n_;
-    //double Ravg = 0.5 * (evolution_[i + 1].r + evolution_[i].r) / n_ * n_;
-    //double dS = (evolution_[i + 1].s - evolution_[i].s) / n_ * n_;
-    double dI = (evolution_[i + 1].i - evolution_[i].i) / n_ * n_;
-    double dR = (evolution_[i + 1].r - evolution_[i].r) / n_ * n_;
-    long double b = (dR + dI) / (Savg * Iavg);
-    long double g = dR / Iavg;
-      if (b!=0){ beta.push_back(b); }
-      if(g!=0){ gamma.push_back(g); }
-  }
-    std::ofstream fout;
-    fout.open("parameters.txt");
-    fout << "Epidemic's parameters: beta, gamma and R(t) (respectively)" <<
-'\n'; for (unsigned int i = 0; i != beta.size(); ++i)
-  {
-       fout << beta[i] << ' ' << gamma[i] << ' ' << beta[i]/gamma[i] << '\n';
-  }
-    fout.close();
-}*/
