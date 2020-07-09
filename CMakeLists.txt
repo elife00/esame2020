@@ -22,8 +22,8 @@ find_package(SFML COMPONENTS graphics window system REQUIRED)
 #add instructions to build a program
 add_executable(epidemic-sfml main.cpp epidemic.cpp)
 target_compile_options(epidemic-sfml PRIVATE -Wall -Wextra -fsanitize=address)
-target_include_directories(epidemic-sfml PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
-target_link_libraries(epidemic-sfml sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_include_directories(epidemic-sfml PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(epidemic-sfml sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 
 
 #the following is to build tests and declare them as such
