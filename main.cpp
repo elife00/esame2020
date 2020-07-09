@@ -44,26 +44,10 @@ int main() {
     density = parameters[0];
     pInf = parameters[1];
     percInf = parameters[2];
-    tMean = (int)parameters[3];
-    range = (int)parameters[4];
+    tMean = static_cast<int>(parameters[3]);
+    range = static_cast<int>(parameters[4]);
     
-    char ans2;
-    bool quarantine = true;
-    std::cout << "Quarantine option? (Y/N): ";
-    std::cin >> ans2;
-    while (ans2 != 'Y' && ans2 != 'y' && ans2 != 'N' && ans2 != 'n')
-    {
-        std::cout << "Invalid answer. Enter Y or N : ";
-        std::cin >> ans2;
-    }
-    if (ans2 == 'y' || ans2 == 'Y')
-    {
-        quarantine = true;
-    }
-    if (ans2 == 'n' || ans2 == 'N')
-    {
-        quarantine = false;
-    }
+    bool quarantine = input_quarantine();
     
     sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);

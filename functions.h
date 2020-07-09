@@ -32,7 +32,6 @@ inline long double cumulative(int k, int mu)
   return p;
 }
 
-
 inline bool checkComma (std::string string) 
 {
     for (auto v : string)
@@ -41,7 +40,6 @@ inline bool checkComma (std::string string)
     }
     return false;
 }
-
 
 //the order is density, percInf, pInf, tMean, range
 
@@ -114,6 +112,27 @@ inline std::array<double,5> random_parameters ()
     std::cout << "Epidemic's parameters: " << '\n' << "population's density:  " << parameters[0] << '\n' << "initial percentage of infected among the population:  " << parameters[1] << '\n' << "probability of infection due to a contact:  " << parameters[2] << '\n' << "average time of recovery:  " << parameters[3] << '\n' << "range of infection:  " << parameters[4] << '\n';
     
     return parameters;
+}
+
+inline bool input_quarantine () {
+    char ans2;
+    bool quarantine = true;
+    std::cout << "Quarantine option? (Y/N): ";
+    std::cin >> ans2;
+    while (ans2 != 'Y' && ans2 != 'y' && ans2 != 'N' && ans2 != 'n')
+    {
+        std::cout << "Invalid answer. Enter Y or N : ";
+        std::cin >> ans2;
+    }
+    if (ans2 == 'y' || ans2 == 'Y')
+    {
+        quarantine = true;
+    }
+    if (ans2 == 'n' || ans2 == 'N')
+    {
+        quarantine = false;
+    }
+    return quarantine;
 }
         
 
