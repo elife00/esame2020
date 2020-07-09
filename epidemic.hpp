@@ -64,7 +64,7 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   Board epidemic(double pInf, int tMean, int range, bool quarantine);
 
-  representBoard Draw(/*int const& quadSize*/);
+  representBoard draw();
 
   double avg_time() const;
 

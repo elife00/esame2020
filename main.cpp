@@ -75,7 +75,7 @@ int main() {
       }
     }
 
-    auto rappresentation = population.Draw(/*quadSize*/);
+    auto rappresentation = population.draw();
     rappresentation.setPosition(epidemicWindow.getSize().x / 2,
                                 epidemicWindow.getSize().y / 2);
 
