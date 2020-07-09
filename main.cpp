@@ -52,6 +52,7 @@ int main() {
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50;
   sf::RenderWindow epidemicWindow(sf::VideoMode(windowSize, windowSize),
                                   "My epidemic");
+  sf::RenderWindow legendWindow(sf::VideoMode(200, 400), "My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
   // change the position of the window (relatively to the desktop)
@@ -60,6 +61,11 @@ int main() {
       (sf::VideoMode::getDesktopMode().width - epidemicWindow.getSize().x) / 2,
       (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) /
           2));
+  legendWindow.requestFocus();
+  legendWindow.setPosition(
+      sf::Vector2i((sf::VideoMode::getDesktopMode().width + windowSize)/2.,
+      (sf::VideoMode::getDesktopMode().height - legendWindow.getSize().y) / 2));
+
 
   Board population(dim, density);
   population.infection(percInf);
@@ -72,6 +78,13 @@ int main() {
     while (epidemicWindow.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         epidemicWindow.close();
+        legendWindow.close();
+      }
+    }
+
+    while (legendWindow.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        legendWindow.close();
       }
     }
 
@@ -83,9 +96,14 @@ int main() {
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
 
+    legendWindow.clear(sf::Color::Black);
+    //legendWindow.draw();
+    legendWindow.display();
+
     if (population.current_situation().i == 0) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
+      legendWindow.close();
       population.trend();
 
       system("root");
