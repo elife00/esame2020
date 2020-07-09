@@ -1,5 +1,6 @@
 #include "epidemic.hpp"
 #include "functions.h"
+#include "sfml.h"
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
@@ -25,6 +26,7 @@ int main() {
   int range;
   std::array<double, 5> parameters;
   int iterationTime = 250;
+  std::array<sf::Text, 5> legend_ = legend();
 
   std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
                "will be produced a random epidemic). (Y/N): "
@@ -98,7 +100,9 @@ int main() {
     epidemicWindow.display();
 
     legendWindow.clear(sf::Color::Black);
-    //legendWindow.draw();
+    for (int i = 0; i != 5; ++i) {
+      legendWindow.draw(legend_[i]);
+    }
     legendWindow.display();
 
     if (population.current_situation().i == 0) {

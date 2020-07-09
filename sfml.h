@@ -3,6 +3,8 @@
 
 #include "SFML/Graphics.hpp"
 #include <cmath>
+#include <array>
+#include <string>
 
 enum class State : char {
   Empty,
@@ -96,5 +98,24 @@ public:
 
   sf::VertexArray vertices() { return vertices_; }
 };
+
+inline std::array<sf::Text, 5> legend() {
+  std::array<sf::Text, 5> legend_;
+  sf::Font font;
+  font.loadFromFile("aBlackLives.ttf");
+  std::array<std::string, 5> string = {"Susceptible", "Infectious", "Recovered",
+                                  "Quarantine", "Empty"};
+  std::array<sf::Color, 5> color = {
+      sf::Color(129, 156, 255, 255), sf::Color(240, 0, 0, 255),
+      sf::Color(91, 212, 20, 255), sf::Color::White, sf::Color::Black};
+  for (int i = 0; i != 5; ++i) {
+    legend_[i].setFont(font);
+    legend_[i].setString(string[i]);
+    legend_[i].setCharacterSize(24);
+    legend_[i].setFillColor(color[i]);
+    legend_[i].setPosition(0, i * 24);
+  }
+  return legend_;
+}
 
 #endif
