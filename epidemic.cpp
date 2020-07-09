@@ -134,81 +134,13 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine) {
 
   return next;
 }
-/*Board Board::epidemic2(double pInf, double pGua)
-{
-  assert(pInf > 0 && pInf < 1 && pGua > 0 && pGua < 1);
-  Board next(n_, density_);
-  next.evolution_ = evolution_;
-  next.stay_ = stay_;
-  Situation sit = {0, 0, 0, 0};
 
- std::random_device rd;
- std::mt19937 gen(rd());
-
-  for (int x = 1; x != n_ + 1; ++x) {
-    for (int y = 1; y != n_ + 1; ++y) {
-      int coordinate = (y - 1) * n_ + (x - 1);
-
-      if (board_[coordinate] == S) {
-        ++sit.s;
-        int infected = contact(x, y);
-        int infections = 0;
-
-        for (int i = 0; i != infected; ++i) {
-          std::uniform_real_distribution<> dis(0.0, 1.0);
-          double probability = dis(gen);
-          if (probability <= pInf) {
-            ++infections;
-          }
-        }
-        if (infections > 0) {
-          next.set(x, y, I);
-        } else {
-          next.set(x, y, S);
-        }
-      }
-      if (board_[coordinate] == I) {
-        ++sit.i;
-        ++next.stay_[coordinate];
-
-        std::uniform_real_distribution<> dis(0., 1.0);
-
-        if (dis(gen) <= pGua) {
-          next.set(x, y, R);
-        } else {
-          next.set(x, y, I);
-        }
-      }
-      if (board_[coordinate] == R) {
-        ++sit.r;
-        next.set(x, y, R);
-      }
-      if (board_[coordinate] == E) {
-        next.set(x, y, E);
-      }
-    }
-  }
-
-  for (int x = 1; x != n_ + 1; ++x) {
-    for (int y = 1; y != n_ + 1; ++y) {
-      int coordinate = (y - 1) * n_ + (x - 1);
-      if (board_[coordinate] != E) {
-        next.swap(x, y);
-      }
-    }
-  }
-  sit.t = ++evolution_.back().t;
-  next.evolution_.push_back({sit});
-
-  return next;
-}*/
-
-representBoard Board::Draw(/*int const& quadSize*/) {
-  representBoard rappresentation(/*quadSize,*/ board_);
+representBoard Board::draw() {
+  representBoard rappresentation(board_);
   return rappresentation;
 }
 
-double Board::avg_time() const {
+double Board::avg_time(){
   double i = 0.;
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
   for (auto v : stay_) {
@@ -219,7 +151,7 @@ double Board::avg_time() const {
   return a / i;
 }
 
-void Board::trend() const {
+void Board::trend(){
   std::ofstream fout;
   fout.open("trend.txt");
   for (auto &v : evolution_) {

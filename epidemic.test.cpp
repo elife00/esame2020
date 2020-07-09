@@ -10,8 +10,8 @@
 #include "doctest.h"
 #include "epidemic.hpp"
 
-TEST_CASE("testing epidemic") {
-  int dim = 100;
+/*TEST_CASE("testing epidemic") {
+  int dim = 120;
   double density[5] = {0.15, 0.25, 0.5, 0.75, 0.95};
   double ratInf[5] = {0.001, 0.05, 0.01, 0.2, 0.0003};
   int tMean[5] = {8, 10, 15, 20, 32};
@@ -20,12 +20,17 @@ TEST_CASE("testing epidemic") {
     double d = density[i];
     double r = ratInf[i];
     int t = tMean[i];
-    int S = (int)dim * dim * d;
+    int S = static_cast<int> (dim * dim * d);
+    int I = static_cast<int> (S * r);
+      
+      Situation So = {0, S, 0, 0};
+      Situation Suno = {0, S-I, I, 0};
 
     Board population(dim, d);
-    Situation So = {0, S, 0, 0};
+    
     CHECK(population.current_situation() == So);
     population.infection(r);
+    CHECK(population.current_situation() == Suno);
     while (population.current_situation().i != 0) {
       population = population.epidemic(r, t, range[i], false);
       CHECK((population.current_situation().i +
@@ -33,7 +38,47 @@ TEST_CASE("testing epidemic") {
              population.current_situation().r) == S);
     }
   }
-}
+}*/
+
+TEST_CASE("testing random_epidemic") {
+  int dim = 120;
+    
+    double density;
+    double ratInf;
+    double pInf;
+    int tAvg;
+    int range;
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    std::uniform_real_distribution<> p(0, 1);
+    std::uniform_int_distribution<> t(1, 40);
+    std::uniform_int_distribution<> r(1, 5);
+    
+    density = p(gen);
+    ratInf = p(gen);
+    pInf = p(gen);
+    tAvg = t(gen);
+    range = r(gen);
+    
+    int S = static_cast<int> (dim * dim * density);
+    int I = static_cast<int> (S * ratInf);
+      Situation So = {0, S, 0, 0};
+      Situation Suno = {0, S-I, I, 0}; //is 0 because the increase begins from the
+    Board population(dim, density); //following iteration
+    CHECK(population.current_situation() == So);
+    
+    population.infection(ratInf);
+    CHECK(population.current_situation() == Suno);
+    
+    while (population.current_situation().i != 0) {
+      population = population.epidemic(pInf, tAvg, range, false);
+      CHECK((population.current_situation().i +
+             population.current_situation().s +
+             population.current_situation().r) == S);
+    }
+  }
 
 TEST_CASE("testing contact_range") {
   // creating a board with infected people in the 4 corners

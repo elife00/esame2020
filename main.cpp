@@ -36,7 +36,7 @@ int main() {
     std::cin >> ans;
   }
   if (ans == 'y' || ans == 'Y') {
-    parameters = input_parameters();
+    parameters = input_parameters(); 
   } else if (ans == 'n' || ans == 'N') {
     parameters = random_parameters();
   }
@@ -47,8 +47,8 @@ int main() {
       parameters[3]); // nel caso di input si ha un vettore di double
   range = static_cast<int>(
       parameters[4]); // quindi è consigliata la forzatura ad intero
-
   bool quarantine = input_quarantine();
+    
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50;
   sf::RenderWindow epidemicWindow(sf::VideoMode(windowSize, windowSize),
                                   "My epidemic");
@@ -88,7 +88,8 @@ int main() {
       }
     }
 
-    auto rappresentation = population.Draw();
+
+    auto rappresentation = population.draw();
     rappresentation.setPosition(epidemicWindow.getSize().x / 2,
                                 epidemicWindow.getSize().y / 2);
 
