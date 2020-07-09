@@ -46,7 +46,25 @@ int main() {
     percInf = parameters[2];
     tMean = (int)parameters[3];
     range = (int)parameters[4];
-        
+    
+    char ans2;
+    bool quarantine = true;
+    std::cout << "Quarantine option? (Y/N): ";
+    std::cin >> ans2;
+    while (ans2 != 'Y' && ans2 != 'y' && ans2 != 'N' && ans2 != 'n')
+    {
+        std::cout << "Invalid answer. Enter Y or N : ";
+        std::cin >> ans2;
+    }
+    if (ans2 == 'y' || ans2 == 'Y')
+    {
+        quarantine = true;
+    }
+    if (ans2 == 'n' || ans2 == 'N')
+    {
+        quarantine = false;
+    }
+    
     sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
@@ -86,7 +104,7 @@ int main() {
       system("root");
     }
 
-    population = population.epidemic(pInf, tMean, range, true);
+    population = population.epidemic(pInf, tMean, range, quarantine);
     // population = population.epidemic2(pInf,1./tMean);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(250));

@@ -97,16 +97,16 @@ inline std::array<double,5> random_parameters ()
     
     std::uniform_real_distribution<> perc(0.0, 1.0);
     std::uniform_int_distribution<> t(1,40);
-    std::uniform_int_distribution<> r(1,5);
+    std::uniform_int_distribution<> r(1,3);
     
     for (int i=0; i!=3 ; ++i)
     {
         double p = perc(gen);
-        parameters[i] = p;
         while (p == 0) //check if the generated value is 0(despite the very low probability)
         {
-            parameters[i] = perc(gen);
+            p = perc(gen);
         }
+        parameters[i] = p;
     }
     parameters[3] = t(gen);
     parameters[4] = r(gen);
