@@ -30,7 +30,7 @@ TEST_CASE("testing epidemic")
         population.infection(r);
         while (population.current_situation().i != 0)
         {
-            population = population.epidemic(r, t, range[i]);
+            population = population.epidemic(r, t, range[i], false);
             CHECK ( (population.current_situation().i + population.current_situation().s + population.current_situation().r) == S);
         }
         }

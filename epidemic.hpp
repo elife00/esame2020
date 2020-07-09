@@ -67,7 +67,7 @@ class Board
 
   void swap(int x, int y);
     
-  Board epidemic(double pInf, int tMean, int range);
+  Board epidemic(double pInf, int tMean, int range, bool quarantine);
 
   //Board epidemic2(double pInf, double pGua);
 

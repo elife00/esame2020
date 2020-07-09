@@ -86,7 +86,7 @@ int main() {
       system("root");
     }
 
-    population = population.epidemic(pInf, tMean, range);
+    population = population.epidemic(pInf, tMean, range, true);
     // population = population.epidemic2(pInf,1./tMean);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
