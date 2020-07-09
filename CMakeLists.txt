@@ -31,9 +31,9 @@ add_executable(run_functions_tests functions.test.cpp)
 add_test(NAME functions_tests COMMAND run_functions_tests)
 
 add_executable(run_epidemic_tests epidemic.test.cpp epidemic.cpp)
-target_compile_options(run_epidemic_tests PRIVATE -Wall -Wextra)
+target_compile_options(run_epidemic_tests PRIVATE -Wall -Wextra -fsanitize=address)
 target_include_directories(run_epidemic_tests PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-target_link_libraries(run_epidemic_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(run_epidemic_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 add_test(NAME epidemic_tests COMMAND run_epidemic_tests)
 
 add_executable(run_sfml_tests sfml.test.cpp)

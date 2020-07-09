@@ -95,7 +95,7 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine)
             
             std::uniform_real_distribution<> dis(0., 1.0);
 
-            int iDays = ++next.stay_[coordinate];
+            int iDays = next.stay_[coordinate];
             
 
             if (dis(gen) <= 1./tMean) {
@@ -112,7 +112,9 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine)
       }
       if (board_[coordinate] == Q && quarantine) {
         ++sit.i;
-        int iDays = ++next.stay_[coordinate];
+        ++next.stay_[coordinate];
+
+        int iDays = next.stay_[coordinate];
 
         std::uniform_real_distribution<> dis(0., 1.0);
 
