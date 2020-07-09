@@ -104,7 +104,6 @@ int main() {
     }
 
     population = population.epidemic(pInf, tMean, range, quarantine);
-    // population = population.epidemic2(pInf,1./tMean);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(iterationTime));
   }
