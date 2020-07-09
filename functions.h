@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <array>
+#include <random>
 
 inline long double factorial(int n)
 {
@@ -86,6 +87,34 @@ inline std::array<double,5> input_parameters () {
     }
     return parameters;
     }
+
+inline std::array<double,5> random_parameters ()
+{
+    std::array<double,5> parameters;
+    
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    std::uniform_real_distribution<> perc(0.0, 1.0);
+    std::uniform_int_distribution<> t(1,40);
+    std::uniform_int_distribution<> r(1,5);
+    
+    for (int i=0; i!=3 ; ++i)
+    {
+        double p = perc(gen);
+        parameters[i] = p;
+        while (p == 0) //check if the generated value is 0(despite the very low probability)
+        {
+            parameters[i] = perc(gen);
+        }
+    }
+    parameters[3] = t(gen);
+    parameters[4] = r(gen);
+    
+    std::cout << "Epidemic's parameters: " << '\n' << "population's density:  " << parameters[0] << '\n' << "initial percentage of infected among the population:  " << parameters[1] << '\n' << "probability of infection due to a contact:  " << parameters[2] << '\n' << "average time of recovery:  " << parameters[3] << '\n' << "range of infection:  " << parameters[4] << '\n';
+    
+    return parameters;
+}
         
 
 

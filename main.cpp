@@ -19,13 +19,34 @@ constexpr int quadSize = 5;
 
 int main() {
     
-    std::array<double,5> parameters = input_parameters ();
-    double density = parameters[0];
-    double pInf = parameters[1];
-    double percInf = parameters[2];
-    int tMean = (int)parameters[3];
-    int range = (int)parameters[4];
-
+    double density;
+    double pInf;
+    double percInf;
+    int tMean;
+    int range;
+    std::array<double,5> parameters;
+    
+    std::cout << "Do you want to enter the epidemic's parameters? (Otherwise will be produced a random epidemic). (Y/N): " << '\n';
+    char ans;
+    std::cin >> ans;
+    while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
+        std::cout << "Invalid answer. Enter Y or N : ";
+        std::cin >> ans;
+    }
+    if (ans == 'y' || ans == 'Y')
+    {
+     parameters = input_parameters ();
+    }
+    else if (ans == 'n' || ans == 'N')
+    {
+     parameters = random_parameters ();
+    }
+    density = parameters[0];
+    pInf = parameters[1];
+    percInf = parameters[2];
+    tMean = (int)parameters[3];
+    range = (int)parameters[4];
+        
     sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
