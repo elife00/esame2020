@@ -140,7 +140,7 @@ representBoard Board::draw() {
   return rappresentation;
 }
 
-double Board::avg_time() const {
+double Board::avg_time(){
   double i = 0.;
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
   for (auto v : stay_) {
@@ -151,7 +151,7 @@ double Board::avg_time() const {
   return a / i;
 }
 
-void Board::trend() const {
+void Board::trend(){
   std::ofstream fout;
   fout.open("trend.txt");
   for (auto &v : evolution_) {

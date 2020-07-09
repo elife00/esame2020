@@ -56,7 +56,7 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   int contact_range(int x, int y, int r) const;
 
-  Situation current_situation();
+  Situation current_situation(); //useful to stop the epidemic and for the tests
 
   void set(int &x, int &y, State s);
 
@@ -66,9 +66,9 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   representBoard draw();
 
-  double avg_time() const;
+  double avg_time();
 
-  void trend() const;
+  void trend();
 
 };
 

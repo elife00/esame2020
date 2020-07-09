@@ -3,32 +3,10 @@
 
 #include <array>
 #include <cassert>
-#include <cmath>
 #include <iostream>
 #include <random>
 #include <string>
 
-inline long double factorial(int n) {
-  if (n == 0) {
-    return 1;
-  }
-  long double factorial = 1;
-  for (int i = 1; i <= n; ++i) {
-    factorial *= i;
-  }
-  assert(factorial > 0);
-  return factorial;
-}
-
-inline long double cumulative(int k, int mu) {
-  assert(k > 0); // forse Ã¨ meglio lanciare un messaggio in output se Ã¨ un
-                 // double o 0
-  long double p = 0;
-  for (int i = 0; i <= k; ++i) {
-    p += (pow(mu, i) * exp(-mu) / factorial(i));
-  }
-  return p;
-}
 
 inline bool checkComma(std::string string) {
   for (auto v : string) {
@@ -97,7 +75,7 @@ inline std::array<double, 5> random_parameters() {
     std::random_device rd;
     std::mt19937 gen(rd());
     
-    std::uniform_real_distribution<> d(0, 0.6);
+    std::uniform_real_distribution<> d(0.1, 0.6);
     std::uniform_real_distribution<> perc(0, 0.2);
     std::uniform_int_distribution<> t(5, 30);
     std::uniform_int_distribution<> r(1, 3);
