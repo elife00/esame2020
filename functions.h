@@ -97,7 +97,7 @@ inline std::array<double, 5> random_parameters() {
     std::random_device rd;
     std::mt19937 gen(rd());
     
-    std::uniform_real_distribution<> d(0, 0.5);
+    std::uniform_real_distribution<> d(0, 0.6);
     std::uniform_real_distribution<> perc(0, 0.2);
     std::uniform_int_distribution<> t(5, 30);
     std::uniform_int_distribution<> r(1, 3);
@@ -117,15 +117,18 @@ inline std::array<double, 5> random_parameters() {
     }
     parameters[3] = t(gen);
     parameters[4] = r(gen);
-
-  std::cout << "Epidemic's parameters: " << '\n'
+    
+    std::cout << std::string(40, '*') << '\n' << '\n';
+    std::cout << "Epidemic's parameters: " << '\n'
             << "population's density:  " << parameters[0] << '\n'
             << "initial percentage of infected among the population:  "
             << parameters[1] << '\n'
             << "probability of infection due to a contact:  " << parameters[2]
             << '\n'
             << "average time of recovery:  " << parameters[3] << '\n'
-            << "range of infection:  " << parameters[4] << '\n';
+            << "range of infection:  " << parameters[4] <<'\n'<<'\n';
+    std::cout << std::string(40, '*') << '\n';
+
 
   return parameters;
 }
