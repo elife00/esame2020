@@ -66,10 +66,8 @@ class Board
   void set(int& x, int& y, State s);
 
   void swap(int x, int y);
-
-  Board epidemic(double pInf, int tMean);
     
-  Board epidemic_range(double pInf, int tMean, int range);
+  Board epidemic(double pInf, int tMean, int range);
 
   //Board epidemic2(double pInf, double pGua);
 
