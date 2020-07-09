@@ -15,7 +15,6 @@
 //./epidemic-sfml
 // dopo la prima volta bastano gli ultimi due
 constexpr int dim = 120;
-// constexpr int quadSize = 5;
 
 int main() {
 
@@ -25,6 +24,7 @@ int main() {
   int tMean;
   int range;
   std::array<double, 5> parameters;
+  int iterationTime = 250;
 
   std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
                "will be produced a random epidemic). (Y/N): "
@@ -75,7 +75,7 @@ int main() {
       }
     }
 
-    auto rappresentation = population.Draw(/*quadSize*/);
+    auto rappresentation = population.Draw();
     rappresentation.setPosition(epidemicWindow.getSize().x / 2,
                                 epidemicWindow.getSize().y / 2);
 
@@ -91,10 +91,22 @@ int main() {
       system("root");
     }
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+      // left key is pressed: faster
+      iterationTime -= 50;
+      std::cout << iterationTime << '\n';
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+      // left key is pressed: slower 
+      iterationTime += 50;
+      std::cout << iterationTime << '\n';
+
+    }
+
     population = population.epidemic(pInf, tMean, range, quarantine);
     // population = population.epidemic2(pInf,1./tMean);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    std::this_thread::sleep_for(std::chrono::milliseconds(iterationTime));
   }
   return 0;
 }
