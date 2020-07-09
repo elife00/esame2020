@@ -21,8 +21,8 @@ find_package(SFML COMPONENTS graphics window system REQUIRED)
 
 #add instructions to build a program
 add_executable(epidemic-sfml main.cpp epidemic.cpp)
-target_compile_options(epidemic-sfml PRIVATE -Wall -Wextra)
-target_include_directories(epidemic-sfml PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_compile_options(epidemic-sfml PRIVATE -Wall -Wextra -fsanitize=address)
+target_include_directories(epidemic-sfml PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 target_link_libraries(epidemic-sfml sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
 
@@ -37,7 +37,7 @@ target_link_libraries(run_epidemic_tests sfml-system sfml-window sfml-graphics s
 add_test(NAME epidemic_tests COMMAND run_epidemic_tests)
 
 add_executable(run_sfml_tests sfml.test.cpp)
-target_compile_options(run_sfml_tests PRIVATE -Wall -Wextra)
+target_compile_options(run_sfml_tests PRIVATE -Wall -Wextra -fsanitize=address)
 target_include_directories(run_sfml_tests PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-target_link_libraries(run_sfml_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(run_sfml_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 add_test(NAME sfml_tests COMMAND run_sfml_tests)
