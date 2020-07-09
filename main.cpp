@@ -14,56 +14,39 @@
 // make
 //./epidemic-sfml
 // dopo la prima volta bastano gli ultimi due
+constexpr int dim = 120;
+constexpr int quadSize = 5;
 
 int main() {
-  int dim = 120;
-  int quadSize = 5;
-  double pInf;
-  double percInf;
-  int tMean;
-  double density;
-  int range;
-
-  std::string string;
-  std::string::size_type sz;
-  std::cout << "Insert the population density (between 0.0 and 1.0): ";
-  std::cin >> string;
-  density = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      density = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
+    
+    double density;
+    double pInf;
+    double percInf;
+    int tMean;
+    int range;
+    std::array<double,5> parameters;
+    
+    std::cout << "Do you want to enter the epidemic's parameters? (Otherwise will be produced a random epidemic). (Y/N): " << '\n';
+    char ans;
+    std::cin >> ans;
+    while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
+        std::cout << "Invalid answer. Enter Y or N : ";
+        std::cin >> ans;
     }
-    if (density <= 0 || density > 1) {
-      std::cout << "The density value must be between 0.0 and 1.0. Insert it again: ";
-      std::cin >> string;
-    } else { break;}
-    density = std::stod(string, &sz);
-  }
-  
-  percInf = setPercInf();
-
-  std::cout << "Insert the probability of infection due to a direct contact "
-               "(between 0.0 and 1.0: ";
-  std::cin >> pInf;
-  while (pInf <= 0 || pInf > 1) {
-    std::cout << "The percentage value must be between 0.0 and 1.0. Insert it "
-                 "again: ";
-    std::cin >> pInf;
-  }
-  std::cout << "Insert the average time of recovery (between 1 and 40 days): ";
-  std::cin >> tMean;
-  while (tMean < 1 || tMean > 40) {
-    std::cout << "Insert a plausible value of healing time: ";
-    std::cin >> tMean;
-  }
-  std::cout << "Insert the range of infection (1 is direct contact. A "
-               "plausible value could be between 1 and 5): ";
-  std::cin >> range;
-
-  /*sf::RenderWindow epidemicWindow(
-      sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
-                    sf::VideoMode::getDesktopMode().height * 2 / 3),
-      "My epidemic");*/
+    if (ans == 'y' || ans == 'Y')
+    {
+     parameters = input_parameters ();
+    }
+    else if (ans == 'n' || ans == 'N')
+    {
+     parameters = random_parameters ();
+    }
+    density = parameters[0];
+    pInf = parameters[1];
+    percInf = parameters[2];
+    tMean = (int)parameters[3];
+    range = (int)parameters[4];
+        
     sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 

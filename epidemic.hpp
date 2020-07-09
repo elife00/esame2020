@@ -58,8 +58,6 @@ class Board
   State get(int x, int y) const;
 
   void infection(double ratInf);
-
-  int contact(int x, int y) const;
     
   int contact_range (int x, int y, int r) const;
            
