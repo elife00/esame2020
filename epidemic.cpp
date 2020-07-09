@@ -144,7 +144,7 @@ Board Board::epidemic(double pInf, int tMean, bool quarantine)
   return next;
 }
 
-Board Board::epidemic_range(double pInf, int tMean, int range, bool quarantine)
+Board Board::epidemic(double pInf, int tMean, int range, bool quarantine)
 {
   assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40 && range >0);
   Board next(n_, density_);
