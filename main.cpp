@@ -14,11 +14,11 @@
 // make
 //./epidemic-sfml
 // dopo la prima volta bastano gli ultimi due
+constexpr int dim = 120;
+constexpr int quadSize = 5;
 
 int main() {
-  int dim = 120;
-  int quadSize = 5;
-  
+    
     std::array<double,5> parameters = input_parameters ();
     double density = parameters[0];
     double pInf = parameters[1];
