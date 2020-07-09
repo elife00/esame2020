@@ -63,29 +63,28 @@ public:
         quad[3].position = sf::Vector2f(i * quadSize_, (j + 1) * quadSize_);
 
         if (vector[i + j * gridSize_] == S) {
-          sf::Color Suscetible(129, 156, 211, 255);
-          quad[0].color = (Suscetible);
-          quad[1].color = (Suscetible);
-          quad[2].color = (Suscetible);
-          quad[3].color = (Suscetible);
+          sf::Color Blu(129, 156, 255, 255);
+          quad[0].color = (Blu);
+          quad[1].color = (Blu);
+          quad[2].color = (Blu);
+          quad[3].color = (Blu);
         } else if (vector[i + j * gridSize_] == I) {
-          sf::Color Infected(211, 104, 107, 255);
-          quad[0].color = (Infected);
-          quad[1].color = (Infected);
-          quad[2].color = (Infected);
-          quad[3].color = (Infected);
+          sf::Color Red(240, 0, 0, 255);
+          quad[0].color = (Red);
+          quad[1].color = (Red);
+          quad[2].color = (Red);
+          quad[3].color = (Red);
         } else if (vector[i + j * gridSize_] == R) {
-          sf::Color Recovered(91, 212, 86, 255);
-          quad[0].color = (Recovered);
-          quad[1].color = (Recovered);
-          quad[2].color = (Recovered);
-          quad[3].color = (Recovered);
+          sf::Color Green(91, 212, 20, 255);
+          quad[0].color = (Green);
+          quad[1].color = (Green);
+          quad[2].color = (Green);
+          quad[3].color = (Green);
         } else if (vector[i + j * gridSize_] == Q) {
-          sf::Color Quarantine(221, 121, 39, 255);
-          quad[0].color = (Quarantine);
-          quad[1].color = (Quarantine);
-          quad[2].color = (Quarantine);
-          quad[3].color = (Quarantine);
+          quad[0].color = (sf::Color::White);
+          quad[1].color = (sf::Color::White);
+          quad[2].color = (sf::Color::White);
+          quad[3].color = (sf::Color::White);
         } else if (vector[i + j * gridSize_] == E) {
           quad[0].color = (sf::Color::Black);
           quad[1].color = (sf::Color::Black);
