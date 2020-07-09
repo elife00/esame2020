@@ -44,8 +44,8 @@ int main() {
     density = parameters[0];
     pInf = parameters[1];
     percInf = parameters[2];
-    tMean = (int)parameters[3];
-    range = (int)parameters[4];
+    tMean = static_cast<int>(parameters[3]);
+    range = static_cast<int>(parameters[4]);
     
     char ans2;
     bool quarantine = true;
