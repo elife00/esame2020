@@ -28,20 +28,20 @@ int Board::contact_range (int x, int y, int r) const {
 
 void Board::infection(double ratInf)
 {
-  int infected = (int)(ratInf * density_ * n_ * n_);
-  int j = 0;
-  for (int i = 0; i != infected; ++j) {
-    if (board_[j] == E) {
-      ++j;
-    } else {  //transforming the susceptible to infected
-      board_[j] = I;
-      ++i;
+    assert (ratInf>0 && ratInf <1);
+    int infected = static_cast<int>(ratInf * density_ * n_ * n_);
+    for (int i = 0, j=0; i != infected; ++j) {
+        if (board_[j] == S)
+        {
+            board_[j] = I;
+            ++i;
+        }
     }
-  }
-  std::random_device seed;
-  std::mt19937 g(seed());
-  std::shuffle(board_.begin(), board_.end(), g);
+    std::random_device seed;
+    std::mt19937 g(seed());
+    std::shuffle(board_.begin(), board_.end(), g);
 }
+
 
 void Board::swap(int x, int y)
 {

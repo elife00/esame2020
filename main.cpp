@@ -44,8 +44,8 @@ int main() {
     density = parameters[0];
     pInf = parameters[1];
     percInf = parameters[2];
-    tMean = static_cast<int>(parameters[3]);
-    range = static_cast<int>(parameters[4]);
+    tMean = static_cast<int>(parameters[3]); //nel caso di input si ha un vettore di double
+    range = static_cast<int>(parameters[4]); //quindi è consigliata la forzatura ad intero
     
     bool quarantine = input_quarantine();
     

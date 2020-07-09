@@ -93,15 +93,15 @@ inline std::array<double,5> random_parameters ()
     std::random_device rd;
     std::mt19937 gen(rd());
     
-    std::uniform_real_distribution<> perc(0.0, 1.0);
+    std::uniform_real_distribution<> perc(0, 1.0);
     std::uniform_int_distribution<> t(1,40);
     std::uniform_int_distribution<> r(1,3);
     
     for (int i=0; i!=3 ; ++i)
     {
         double p = perc(gen);
-        while (p == 0) //check if the generated value is 0(despite the very low probability)
-        {
+        while (p == 0 || p == 1) //check if the generated value is 0
+        {                        //(despite the very low probability)
             p = perc(gen);
         }
         parameters[i] = p;

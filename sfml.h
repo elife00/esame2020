@@ -4,7 +4,7 @@
 #include <cmath>
 #include "SFML/Graphics.hpp"
 
-enum class State : char { Susceptible, Infectious, Recovered, Quarantine, Empty };
+enum class State : char {Empty, Susceptible, Infectious, Recovered, Quarantine};
 constexpr State S = State::Susceptible;
 constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
