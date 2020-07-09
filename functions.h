@@ -5,6 +5,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <array>
 
 inline long double factorial(int n)
 {
@@ -40,128 +41,52 @@ inline bool checkComma (std::string string)
     return false;
 }
 
-double setDensity() 
-{
-  double density;
 
-  std::string string;
-  std::string::size_type sz;
+//the order is density, percInf, pInf, tMean, range
 
-  std::cout << "Insert the population density (between 0.0 and 1.0): ";
-  std::cin >> string;
-  density = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      density = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
+inline std::array<double,5> input_parameters () {
+    
+    std::array<double,5> parameters;
+    
+    std::string out_density = "Insert the population density (between 0.0 and 1.0): ";
+    std::string out_percInf = "Insert the initial percentage of infected among the population (between 0.0 and 1.0): ";
+    std::string out_pInf = "Insert the probability of infection due to a contact (between 0.0 and 1.0): ";
+    std::string out_tMean = "Insert the average time of recovery (between 1 and 40 days): ";
+    std::string out_range = "Insert the range of infection (1 is direct contact. Plausible values could be between 1 and 5): ";
+    
+    std::array<std::string,5> output = {out_density, out_percInf, out_pInf, out_tMean, out_range};
+    
+    for (int i=0; i!=5; ++i){
+        std::string string;
+        std::string::size_type sz;
+        std::cout << output[i] << '\n';
+        std::cin >> string;
+        
+        parameters[i] = std::stod(string, &sz);
+        while (1)
+        {
+            if (checkComma(string))
+            {
+                parameters[i] = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
+            } else {
+                parameters[i] = std::stod(string, &sz);
+            }
+            if (i<=2 && (parameters[i] <=0 || parameters[i] > 1))
+            {
+                std::cout << "Insert a value in the range 0-1 (percentage value): ";
+                std::cin >> string;
+            } else if (i==3 && (parameters[i] < 1 || parameters[i] > 40)) {
+                std::cout << "Insert a value in the range 1-40 (days): ";
+                std::cin >> string;
+            } else if (i == 4 && (parameters[i] < 1 || parameters[i] > 10)){
+                std::cout << "Insert a plausible value for the range of infection (could be between 1 and 5): ";
+                std::cin >> string;
+            } else { break; }
+        }
     }
-    if (density <= 0 || density > 1) {
-      std::cout << "The density value must be between 0.0 and 1.0. Insert it again: ";
-      std::cin >> string;
-    } else { break;}
-    density = std::stod(string, &sz);
-  }
-  return density;
-}
-
-inline double setPercInf ()
-{
-
-  double percInf;
-  
-  std::string string;
-  std::string::size_type sz;
-
-  std::cout << "Insert the initial percentage of infected (between 0.0 and 1.0): ";
-  std::cin >> string;
-  percInf = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      percInf = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
+    return parameters;
     }
-    if (percInf <= 0 || percInf > 1) {
-      std::cout << "The percentage value must be between 0.0 and 1.0. Insert it "
-                   "again: ";
-      std::cin >> string;
-    } else { break; }
-    percInf = std::stod(string, &sz);
-  }
-  return percInf;
-}
-
-double setPInf ()
-{
-
-  double pInf;
-  
-  std::string string;
-  std::string::size_type sz;
-
-  std::cout << "Insert the probability of infection due to a direct contact "
-               "(between 0.0 and 1.0): ";
-  std::cin >> string;
-  pInf = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      pInf = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
-    }
-    if (pInf <= 0 || pInf > 1) {
-      std::cout << "The percentage value must be between 0.0 and 1.0. Insert it "
-                 "again: ";
-      std::cin >> string;
-    } else { break; }
-    pInf = std::stod(string, &sz);
-  }
-  return pInf;
-}
-
-double setTMean ()
-{
-
-  double tMean;
-  
-  std::string string;
-  std::string::size_type sz;
-
-  std::cout << "Insert the average time of recovery (between 1 and 40 days): ";
-  std::cin >> string;
-  tMean = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      tMean = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
-    }
-    if (tMean < 1 || tMean > 40) {
-      std::cout << "Insert a plausible value of healing time: ";
-      std::cin >> string;
-    } else { break; }
-    tMean = std::stod(string, &sz);
-  }
-  return tMean;
-}
-
-double setRange ()
-{
-
-  double range;
-  
-  std::string string;
-  std::string::size_type sz;
-
-  std::cout << "Insert the range of infection (1 is direct contact. A "
-               "plausible value could be between 1 and 5): ";
-  std::cin >> string;
-  range = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      range = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
-    }
-    if (range < 1 || range > 5) {
-      std::cout << "Insert a plausible value of infection's range: ";
-      std::cin >> string;
-    } else { break; }
-    range = std::stod(string, &sz);
-  }
-  return range;
-}
+        
 
 
 #endif /* functions_h */

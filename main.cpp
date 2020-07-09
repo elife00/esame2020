@@ -18,52 +18,14 @@
 int main() {
   int dim = 120;
   int quadSize = 5;
-  double pInf;
-  double percInf;
-  int tMean;
-  double density;
-  int range;
-
-  std::string string;
-  std::string::size_type sz;
-  std::cout << "Insert the population density (between 0.0 and 1.0): ";
-  std::cin >> string;
-  density = std::stod(string, &sz);
-  while (1) {
-    if (checkComma(string)) {
-      density = std::stod(string, &sz) + 0.1 * std::stod(string.substr(1+sz));
-    }
-    if (density <= 0 || density > 1) {
-      std::cout << "The density value must be between 0.0 and 1.0. Insert it again: ";
-      std::cin >> string;
-    } else { break;}
-    density = std::stod(string, &sz);
-  }
   
-  percInf = setPercInf();
+    std::array<double,5> parameters = input_parameters ();
+    double density = parameters[0];
+    double pInf = parameters[1];
+    double percInf = parameters[2];
+    int tMean = (int)parameters[3];
+    int range = (int)parameters[4];
 
-  std::cout << "Insert the probability of infection due to a direct contact "
-               "(between 0.0 and 1.0: ";
-  std::cin >> pInf;
-  while (pInf <= 0 || pInf > 1) {
-    std::cout << "The percentage value must be between 0.0 and 1.0. Insert it "
-                 "again: ";
-    std::cin >> pInf;
-  }
-  std::cout << "Insert the average time of recovery (between 1 and 40 days): ";
-  std::cin >> tMean;
-  while (tMean < 1 || tMean > 40) {
-    std::cout << "Insert a plausible value of healing time: ";
-    std::cin >> tMean;
-  }
-  std::cout << "Insert the range of infection (1 is direct contact. A "
-               "plausible value could be between 1 and 5): ";
-  std::cin >> range;
-
-  /*sf::RenderWindow epidemicWindow(
-      sf::VideoMode(sf::VideoMode::getDesktopMode().height * 2 / 3,
-                    sf::VideoMode::getDesktopMode().height * 2 / 3),
-      "My epidemic");*/
     sf::RenderWindow epidemicWindow(sf::VideoMode(dim * quadSize + 100, dim * quadSize + 100),"My epidemic");
   epidemicWindow.setVerticalSyncEnabled(true);
 
