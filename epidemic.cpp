@@ -76,7 +76,7 @@ void Board::swap(int x, int y)
   }
 }
 
-Board Board::epidemic(double pInf, int tMean)
+Board Board::epidemic(double pInf, int tMean, bool quarantine)
 {
   assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40);
   Board next(n_, density_);
@@ -113,6 +113,8 @@ Board Board::epidemic(double pInf, int tMean)
 
         if (dis(gen) <= pGua) {
           next.set(x, y, R);
+        } else if (iDays >= 0.5 * tMean && quarantine) {
+          next.set(x, y, Q);
         } else {
           next.set(x, y, I);
         }
@@ -120,6 +122,20 @@ Board Board::epidemic(double pInf, int tMean)
       if (board_[coordinate] == R) {
         ++sit.r;
         next.set(x, y, R);
+      }
+      if (board_[coordinate] == Q && quarantine) {
+        ++sit.i;
+        int iDays = ++next.stay_[coordinate];
+
+        std::uniform_real_distribution<> dis(0., 1.0);
+
+        double pGua = cumulative(iDays, tMean);
+
+        if (dis(gen) <= pGua) {
+          next.set(x, y, R);
+        } else {
+          next.set(x, y, Q);
+        }
       }
       if (board_[coordinate] == E) {
         next.set(x, y, E);
@@ -130,7 +146,7 @@ Board Board::epidemic(double pInf, int tMean)
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
       int coordinate = (y - 1) * n_ + (x - 1);
-      if (board_[coordinate] != E) {
+      if (board_[coordinate] != E || board_[coordinate] != Q) {
         next.swap(x, y);
       }
     }
@@ -142,7 +158,7 @@ Board Board::epidemic(double pInf, int tMean)
   return next;
 }
 
-Board Board::epidemic_range(double pInf, int tMean, int range)
+Board Board::epidemic_range(double pInf, int tMean, int range, bool quarantine)
 {
   assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40 && range >0);
   Board next(n_, density_);
@@ -174,9 +190,14 @@ Board Board::epidemic_range(double pInf, int tMean, int range)
             ++next.stay_[coordinate];
             
             std::uniform_real_distribution<> dis(0., 1.0);
+
+            int iDays = ++next.stay_[coordinate];
             
+
             if (dis(gen) <= 1./tMean) {
                 next.set(x, y, R);
+            } else if (iDays >= 0.5 * tMean && quarantine) {
+                next.set(x, y, Q);
             } else {
                 next.set(x, y, I);
             }
@@ -184,6 +205,20 @@ Board Board::epidemic_range(double pInf, int tMean, int range)
       if (board_[coordinate] == R) {
         ++sit.r;
         next.set(x, y, R);
+      }
+      if (board_[coordinate] == Q && quarantine) {
+        ++sit.i;
+        int iDays = ++next.stay_[coordinate];
+
+        std::uniform_real_distribution<> dis(0., 1.0);
+
+        double pGua = cumulative(iDays, tMean);
+
+        if (dis(gen) <= pGua) {
+          next.set(x, y, R);
+        } else {
+          next.set(x, y, Q);
+        }
       }
       if (board_[coordinate] == E) {
         next.set(x, y, E);
@@ -194,7 +229,7 @@ Board Board::epidemic_range(double pInf, int tMean, int range)
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
       int coordinate = (y - 1) * n_ + (x - 1);
-      if (board_[coordinate] != E) {
+      if (board_[coordinate] != E && board_[coordinate] != Q) {
         next.swap(x, y);
       }
     }
@@ -311,7 +346,7 @@ Situation Board::current_situation() {
     int t = evolution_.back().t;
     for (auto const& v : board_)
     {
-      if (v == I) {
+      if (v == I || v == Q) {
         ++i;
       } else if (v == S) {
           ++s;

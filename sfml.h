@@ -4,10 +4,11 @@
 #include <cmath>
 #include "SFML/Graphics.hpp"
 
-enum class State : char { Susceptible, Infectious, Recovered, Empty };
+enum class State : char { Susceptible, Infectious, Recovered, Quarantine, Empty };
 constexpr State S = State::Susceptible;
 constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
+constexpr State Q = State::Quarantine;
 constexpr State E = State::Empty;
 
 class representBoard
@@ -68,6 +69,12 @@ class representBoard
           quad[1].color = (sf::Color::Green);
           quad[2].color = (sf::Color::Green);
           quad[3].color = (sf::Color::Green);
+        } else if (vector[i + j * gridSize_] == Q) {
+          sf::Color Orange(221,121,39, 255);
+          quad[0].color = (Orange);
+          quad[1].color = (Orange);
+          quad[2].color = (Orange);
+          quad[3].color = (Orange);
         } else if (vector[i + j * gridSize_] == E) {
           quad[0].color = (sf::Color::Black);
           quad[1].color = (sf::Color::Black);
