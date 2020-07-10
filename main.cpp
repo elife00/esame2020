@@ -7,14 +7,6 @@
 #include "SFML/Window.hpp"
 #include <thread>
 
-// g++ -std=c++17 gui.cpp -o gui -lsfml-graphics -lsfml-window -lsfml-system
-// g++ -std=c++17 functions.test.cpp -o gui
-// mkdir build
-// cd build
-// cmake -DCMAKE_BUILD_TYPE=Debug ..
-// make
-//./epidemic-sfml
-// dopo la prima volta bastano gli ultimi due
 constexpr int dim = 120;
 
 int main() {
@@ -30,7 +22,7 @@ int main() {
   std::array<sf::Text, 7> legend;
   
   sf::Font font;
-    if (!font.loadFromFile("./aBlackLives.ttf")) {
+    if (!font.loadFromFile("../aBlackLives.ttf")) {
       throw std::runtime_error{"file not loaded"};
     };
     std::array<std::string, 7> string = {"Susceptible", "Infectious",
