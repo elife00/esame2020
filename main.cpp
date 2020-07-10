@@ -1,6 +1,6 @@
 #include "epidemic.hpp"
 #include "functions.h"
-#include "sfml.h"
+#include "sfml.hpp"
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"

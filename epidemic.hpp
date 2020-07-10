@@ -1,7 +1,7 @@
 #ifndef epidemic_hpp
 #define epidemic_hpp
 
-#include "sfml.h"
+#include "sfml.hpp"
 
 #include <algorithm>
 #include <cassert>

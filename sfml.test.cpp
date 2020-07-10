@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "doctest.h"
-#include "sfml.h"
+#include "sfml.hpp"
 #include <random>
 
 TEST_CASE("testing sfml") {
