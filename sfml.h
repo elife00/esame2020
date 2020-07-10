@@ -19,6 +19,11 @@ constexpr State R = State::Recovered;
 constexpr State Q = State::Quarantine;
 constexpr State E = State::Empty;
 
+
+inline sf::Color Blue(0, 0, 255, 255);
+inline sf::Color Red(255, 0, 0, 255);
+inline sf::Color Green(0, 255, 0, 255);
+
 class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
 {
@@ -36,10 +41,8 @@ private:
   sf::VertexArray vertices_;
 
 public:
-  representBoard(/*int const& quadSize,*/ std::vector<State> &vector)
-      : /*quadSize_{quadSize}
-      ,*/
-        gridSize_{static_cast<int>(std::sqrt(vector.size()))} {
+  representBoard(std::vector<State> &vector)
+      : gridSize_{static_cast<int>(std::sqrt(vector.size()))} {
     vertices_.setPrimitiveType(sf::Quads); // reorganise vertices into quads
     vertices_.resize(gridSize_ * gridSize_ *
                      4); // create enough vertices for the grid
@@ -65,19 +68,16 @@ public:
         quad[3].position = sf::Vector2f(i * quadSize_, (j + 1) * quadSize_);
 
         if (vector[i + j * gridSize_] == S) {
-          sf::Color Blu(129, 156, 255, 255);
-          quad[0].color = (Blu);
-          quad[1].color = (Blu);
-          quad[2].color = (Blu);
-          quad[3].color = (Blu);
+          quad[0].color = (Blue);
+          quad[1].color = (Blue);
+          quad[2].color = (Blue);
+          quad[3].color = (Blue);
         } else if (vector[i + j * gridSize_] == I) {
-          sf::Color Red(240, 0, 0, 255);
           quad[0].color = (Red);
           quad[1].color = (Red);
           quad[2].color = (Red);
           quad[3].color = (Red);
         } else if (vector[i + j * gridSize_] == R) {
-          sf::Color Green(91, 212, 20, 255);
           quad[0].color = (Green);
           quad[1].color = (Green);
           quad[2].color = (Green);
@@ -98,24 +98,4 @@ public:
 
   sf::VertexArray vertices() { return vertices_; }
 };
-
-inline std::array<sf::Text, 5> legend() {
-  std::array<sf::Text, 5> legend_;
-  sf::Font font;
-  font.loadFromFile("aBlackLives.ttf");
-  std::array<std::string, 5> string = {"Susceptible", "Infectious", "Recovered",
-                                  "Quarantine", "Empty"};
-  std::array<sf::Color, 5> color = {
-      sf::Color(129, 156, 255, 255), sf::Color(240, 0, 0, 255),
-      sf::Color(91, 212, 20, 255), sf::Color::White, sf::Color::Black};
-  for (int i = 0; i != 5; ++i) {
-    legend_[i].setFont(font);
-    legend_[i].setString(string[i]);
-    legend_[i].setCharacterSize(24);
-    legend_[i].setFillColor(color[i]);
-    legend_[i].setPosition(0, i * 24);
-  }
-  return legend_;
-}
-
 #endif
