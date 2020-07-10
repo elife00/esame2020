@@ -47,7 +47,8 @@ void Board::swap(int x, int y) {
   int j = dis(gen);
   int x2 = x + i;
   int y2 = y + j;
-  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ && //if i=j=0 the cell doesn't move
+  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 &&
+      y2 <= n_ && // if i=j=0 the cell doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
@@ -140,7 +141,7 @@ representBoard Board::draw() {
   return rappresentation;
 }
 
-double Board::avg_time(){
+double Board::avg_time() {
   double i = 0.;
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
   for (auto v : stay_) {
@@ -151,7 +152,7 @@ double Board::avg_time(){
   return a / i;
 }
 
-void Board::trend(){
+void Board::trend() {
   std::ofstream fout;
   fout.open("trend.txt");
   for (auto &v : evolution_) {
@@ -163,20 +164,14 @@ void Board::trend(){
   fout.close();
 }
 
-Situation Board::current_situation() {
+Situation Board::situation() { return evolution_.back(); }
+
+int Board::end() {
   int i = 0;
-  int s = 0;
-  int r = 0;
-  int t = evolution_.back().t;
   for (auto const &v : board_) {
     if (v == I || v == Q) {
       ++i;
-    } else if (v == S) {
-      ++s;
-    } else if (v == R) {
-      ++r;
     }
   }
-  return {t, s, i, r};
+  return i;
 }
-

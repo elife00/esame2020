@@ -1,0 +1,6 @@
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/rebuild_cache.dir
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/edit_cache.dir
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/run_sfml_tests.dir
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/test.dir
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/run_epidemic_tests.dir
+/Users/michelemattei/git/esame_3/esame2020/build/CMakeFiles/epidemic-sfml.dir

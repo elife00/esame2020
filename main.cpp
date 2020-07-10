@@ -18,34 +18,37 @@ int main() {
   int range;
   std::array<double, 5> parameters;
   int iterationTime = 250;
-  
-  std::array<sf::Text, 7> legend;
-  
-  sf::Font font;
-    if (!font.loadFromFile("../aBlackLives.ttf")) {
-      throw std::runtime_error{"file not loaded"};
-    };
-    std::array<std::string, 7> string = {"Susceptible", "Infectious",
-                                         "Recovered", "Quarantine", "Empty", "<-        ->", "slower  faster"};
-    std::array<sf::Color, 5> color = {
-        Blue, Red, Green, sf::Color::White, sf::Color::Black};
-    for (int i = 0; i != 5; ++i) {
-      legend[i].setFont(font);
-      legend[i].setString(string[i]);
-      legend[i].setCharacterSize(22);
-      legend[i].setFillColor(color[i]);
-      legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2, (i + 1) * 40);
-    }
-    legend[4].setOutlineColor(sf::Color::White);
-    legend[4].setOutlineThickness(2);
 
-for (int i = 5; i != 7; ++i) {
-      legend[i].setFont(font);
-      legend[i].setString(string[i]);
-      legend[i].setCharacterSize(17);
-      legend[i].setFillColor(color[3]);
-      legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2, (i + 2) * 40 );
-    }
+  std::array<sf::Text, 7> legend;
+
+  sf::Font font;
+  if (!font.loadFromFile("../aBlackLives.ttf")) {
+    throw std::runtime_error{"file not loaded"};
+  };
+  std::array<std::string, 7> string = {
+      "Susceptible", "Infectious",   "Recovered",     "Quarantine",
+      "Empty",       "<-        ->", "slower  faster"};
+  std::array<sf::Color, 5> color = {Blue, Red, Green, sf::Color::White,
+                                    sf::Color::Black};
+  for (int i = 0; i != 5; ++i) {
+    legend[i].setFont(font);
+    legend[i].setString(string[i]);
+    legend[i].setCharacterSize(22);
+    legend[i].setFillColor(color[i]);
+    legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
+                          (i + 1) * 40);
+  }
+  legend[4].setOutlineColor(sf::Color::White);
+  legend[4].setOutlineThickness(2);
+
+  for (int i = 5; i != 7; ++i) {
+    legend[i].setFont(font);
+    legend[i].setString(string[i]);
+    legend[i].setCharacterSize(17);
+    legend[i].setFillColor(color[3]);
+    legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
+                          (i + 2) * 40);
+  }
 
   std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
                "will be produced a random epidemic). (Y/N): "
@@ -117,13 +120,13 @@ for (int i = 5; i != 7; ++i) {
     epidemicWindow.display();
 
     legendWindow.clear(sf::Color::Black);
-    
+
     for (int i = 0; i != 7; ++i)
       legendWindow.draw(legend[i]);
-  
+
     legendWindow.display();
 
-    if (population.current_situation().i == 0) {
+    if (population.end() == 0) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       legendWindow.close();

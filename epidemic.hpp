@@ -20,8 +20,8 @@ struct Situation {
   int r = 0; // n recovered people
 };
 
-//necessary for the tests
-inline bool operator == (Situation const &s1, Situation const &s2) {
+// necessary for the tests
+inline bool operator==(Situation const &s1, Situation const &s2) {
   return (s1.t == s2.t && s1.s == s2.s && s1.i == s2.i && s1.r == s2.r);
 }
 
@@ -30,13 +30,16 @@ private:
   int n_;
   double density_;
   std::vector<State> board_;
-  std::vector<int> stay_; //index of the number of days that the i-th cell passed in the state Infected
-  std::vector<Situation> evolution_; //saving the situation at every iteration
+  std::vector<int> stay_; // index of the number of days that the i-th cell
+                          // passed in the state Infected
+  std::vector<Situation> evolution_; // saving the situation at every iteration
 
-public: //the constructor sets all alive cells (people) to susceptible and than shuffles
+public: // the constructor sets all alive cells (people) to susceptible and than
+        // shuffles
   Board(int n, double d)
       : n_{n}, density_{d}, board_(n * n),
-        stay_(n * n), evolution_{{0, static_cast<int>(n * n * density_), 0, 0}} {
+        stay_(n * n), evolution_{
+                          {0, static_cast<int>(n * n * density_), 0, 0}} {
     assert(density_ > 0 && density_ <= 1.);
     int people = static_cast<int>(n * n * density_);
     for (int i = 0; i < people; ++i) {
@@ -56,8 +59,6 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   int contact(int x, int y, int r) const;
 
-  Situation current_situation(); //useful to stop the epidemic and for the tests
-
   void set(int &x, int &y, State s);
 
   void swap(int x, int y);
@@ -70,6 +71,9 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   void trend();
 
+  Situation situation();
+
+  int end();
 };
 
 #endif /* epidemic_hpp */
