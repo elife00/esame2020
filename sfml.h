@@ -63,8 +63,7 @@ public:
         // define its 4 corners
         quad[0].position = sf::Vector2f(i * quadSize_, j * quadSize_);
         quad[1].position = sf::Vector2f((i + 1) * quadSize_, j * quadSize_);
-        quad[2].position =
-            sf::Vector2f((i + 1) * quadSize_, (j + 1) * quadSize_);
+        quad[2].position = sf::Vector2f((i + 1) * quadSize_, (j + 1) * quadSize_);
         quad[3].position = sf::Vector2f(i * quadSize_, (j + 1) * quadSize_);
 
         if (vector[i + j * gridSize_] == S) {
@@ -98,4 +97,22 @@ public:
 
   sf::VertexArray vertices() { return vertices_; }
 };
+
+inline auto legend (sf::Font font, std::array<std::string, 5> labels, std::array<sf::Color, 5> labelsColor) {
+  
+  std::array<sf::Text, 5> legend_;
+      
+    for (int i = 0; i != 5; ++i) {
+      legend_[i].setFont(font);
+      legend_[i].setString(labels[i]);
+      legend_[i].setCharacterSize(22);
+      legend_[i].setFillColor(labelsColor[i]);
+      legend_[i].setPosition(100 - legend_[i].getLocalBounds().width / 2, (i + 1) * 40);
+    }
+    legend_[4].setOutlineColor(sf::Color::White);
+    legend_[4].setOutlineThickness(3);
+    
+  return legend_;
+}
+
 #endif
