@@ -16,7 +16,7 @@ inline bool checkComma(std::string string) {
   return false;
 }
 
-// the order is density, percInf, pInf, tMean, range
+// the order is density, percInf, pInf, avgTime, range
 
 inline std::array<double, 5> input_parameters() {
 
@@ -28,13 +28,13 @@ inline std::array<double, 5> input_parameters() {
                             "the population (between 0.0 and 1.0): ";
   std::string out_pInf = "Insert the probability of infection due to a contact "
                          "(between 0.0 and 1.0): ";
-  std::string out_tMean =
+  std::string out_avgTime =
       "Insert the average time of recovery (between 1 and 40 days): ";
   std::string out_range = "Insert the range of infection (1 is direct contact. "
                           "Plausible values could be between 1 and 5): ";
 
   std::array<std::string, 5> output = {out_density, out_percInf, out_pInf,
-                                       out_tMean, out_range};
+                                       out_avgTime, out_range};
 
   for (int i = 0; i != 5; ++i) {
     std::string string;
@@ -80,8 +80,6 @@ inline std::array<double, 5> input_parameters() {
   std::cout << std::string(40, '*') << '\n';
 
   return parameters;
-
-  return parameters;
 }
 
 inline std::array<double, 5> random_parameters() {
@@ -90,25 +88,14 @@ inline std::array<double, 5> random_parameters() {
   std::random_device rd;
   std::mt19937 gen(rd());
 
-  std::uniform_real_distribution<> d(0.1, 0.6);
+  std::uniform_real_distribution<> d(0.1, 0.75);
   std::uniform_real_distribution<> perc(0.01, 0.2);
   std::uniform_int_distribution<> t(5, 30);
   std::uniform_int_distribution<> r(1, 3);
 
-  // Despite its very low probability, adding control if the genereted value is
-  // 0
   parameters[0] = d(gen);
-  if (parameters[0] == 0) {
-    parameters[0] = d(gen);
-  }
   parameters[1] = perc(gen);
-  if (parameters[1] == 0) {
-    parameters[1] = d(gen);
-  }
   parameters[2] = perc(gen);
-  if (parameters[2] == 0) {
-    parameters[2] = d(gen);
-  }
   parameters[3] = t(gen);
   parameters[4] = r(gen);
 
