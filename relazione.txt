@@ -2,30 +2,55 @@ Relazione progetto “Modello SIR”
 
 INTRODUZIONE
 
-Il progetto consiste nella simulazione della diffusione di un’epidemia all’interno di una popolazione, basata sul Modello SIR. 
+Il progetto consiste nella simulazione della diffusione di un’epidemia all’interno di una popolazione, 
+basata sul Modello SIR. 
 
-Il programma si basa sulla creazione di una griglia quadrata bidimensionale, all’interno della quale un insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente.
+Il programma parte dalla creazione di una griglia quadrata bidimensionale, all’interno della quale un 
+insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente.
 
-Le celle che formano la griglia possono assumere cinque “stati”. “Susceptible”, “Infected” e “Recovered” rappresentano i tre stati previsti dal modello Sir che una persona può assumere (il modello prevede che una persona guarita non possa più essere infetta). Lo stato “Empty” rappresenta le celle vuote, tra le quali la popolazione è libera di muoversi. Infine si è scelto di aggiungere uno stato aggiuntivo, Quarantine, che rappresenta la popolazione in “quarantena”, che dunque è infetta ma non può interagire né muoversi all’interno della griglia. La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
+Le celle che formano la griglia possono assumere cinque stati. “Susceptible”, “Infected” e “Recovered” 
+rappresentano i tre stati previsti dal modello Sir che una persona può assumere (il modello prevede che una
+persona guarita non possa più infettarsi). Lo stato “Empty” rappresenta le celle vuote, tra le quali la 
+popolazione è libera di muoversi. Infine si è scelto di aggiungere lo stato "Quarantine", che rappresenta 
+la popolazione in quarantena, che dunque è infetta ma non può interagire né muoversi all’interno della griglia. 
+La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
 
-Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infezione di una “cella” suscettibile quando interagisce con una infetta (“pInf”) e il raggio d’azione (“range”), che definisce la distanza di interazione tra le “celle”.
+Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infettarsi di una 
+cella suscettibile quando interagisce con una infetta (“pInf”) e il raggio d’azione (“range”), che definisce 
+la distanza di interazione tra le “celle”.
 
-La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori casuali (all’interno di range opportuni).
+La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori 
+casuali (all’interno di range opportuni).
 
-Si è utilizzata la libreria grafica SMFL per la visualizzazione della griglia nel corso dell’epidemia e ROOT per la creazione del grafico, che rappresenta l’andamento dei tre parametri del modello (S,I,R).
+Si è utilizzata la libreria grafica SFML per la visualizzazione della griglia nel corso dell’epidemia e 
+ROOT per la creazione del grafico, che rappresenta a posteriori l’andamento dei tre parametri del modello 
+(S, I, R).
 
 DESCRIZIONE DEL PROGRAMMA
 
-I cinque stati sono definiti attraverso una enumeration “State” di tipo char (scelto per ragioni di ottimizzazione) *, abbreviati poi nelle sigle (“constexpr”) E,S,I,R,Q, le quali verranno utilizzate all’interno del codice.
+I cinque stati sono definiti attraverso una enumeration “State” di tipo char (scelto per ragioni di 
+ottimizzazione) *, abbreviati poi grazie alle sigle (“constexpr”) E, S, I, R e Q, che verranno utilizzate 
+all’interno del codice.
 
-Si è scelto poi di creare una struct  “Situation” composta di 4 numeri interi: “t” rappresenta l’iterazione di tempo (ogni iterazione può essere pensata come un giorno trascorso), mentre “s”, “i” e “r” sono rispettivamente il numero di celle/persone suscettibili, infette e rimosse.
-E’ stato necessario poi definire l’operatore “== “ al fine di eseguire test sul codice.
+Si è scelto poi di creare una struct “Situation” composta di 4 numeri interi: “t” rappresenta il tempo 
+trascorso (ogni iterazione può essere pensata come un giorno), mentre “s”, “i” e “r” sono 
+rispettivamente il numero di celle/persone suscettibili, infette e guarite.
+E’ stato necessario poi definire l’operatore “==“ al fine di eseguire i test sul codice.
 
-La griglia bidimensionale è rappresentata dalla classe Board che è definita nel (“private”) da cinque variabili: “n_” definisce la lunghezza dei lati della griglia, che sarà dunque composta di n_*n_ celle.
-“density_” rappresenta la densità percentuale della popolazione all’interno della cella, ossia quante celle, tra le n_*n_ esistenti, rappresentano una persona. Il vettore di stati “board_” rappresenta le singole celle che compongono la griglia, che quindi si trovano in uno dei 5 stati sopra citati.
-Il vettore di interi “stay_” rappresenta il numero di iterazioni (giorni) di malattia di ogni cella. Infine il vettore di “situation” “evolution_” rappresenta l’evoluzione dell’epidemia, in quanto tiene conto ad ogni iterazione il numero di suscettibili, infetti e rimossi all’interno della cella.
+La griglia bidimensionale è rappresentata dalla classe "Board" che è definita nel “private” da cinque 
+variabili: “n_” definisce la lunghezza dei lati della griglia, che sarà dunque composta di n_ * n_ celle,
+“density_” rappresenta la densità percentuale della popolazione all’interno della griglia. Il vettore "board_” 
+rappresenta gli stati delle singole celle che compongono la griglia.
+Il vettore “stay_” rappresenta il numero di iterazioni (giorni) di malattia di ogni cella. Infine il vettore 
+“evolution_” rappresenta l’evoluzione dell’epidemia, in quanto tiene conto ad ogni iterazione il numero di 
+suscettibili, infetti e guariti all’interno della griglia, salvandoli come "Situation".
 
-Il costruttore necessita di due sole variabili, ossia la lunghezza dei lati della cella (“n”) e la densità percentuale (“d”). Del vettore board_, inizializzato a n*n elementi, tutte le “n*n*d” celle “vive” vengono inizializzate allo stato S (facendo una forzatura ad intero del numero), le restanti celle vengono settate allo stato E; infine attraverso l’algoritmo “shuffle” vengono mischiate le celle. Nel costruttore viene anche impostato il primo elemento del vettore situation_ alla situazione iniziale, ossia (0, S, 0, 0) dove S è il numero di cui sopra, dunque tutte le celle vive saranno inizialmente suscettibili.
+Il costruttore necessita di due sole variabili, ossia la lunghezza dei lati della griglia (“n”) e la densità 
+percentuale (“d”). Del vettore "board_", inizializzato a n * n elementi, tutte le n * n * d celle “vive” 
+vengono inizializzate allo stato “Susceptible” (facendo una forzatura ad intero del numero), le restanti 
+celle vengono settate allo stato "Empty"; infine utilizzando l’algoritmo “shuffle” vengono rimescolate le 
+celle. Viene anche impostato il primo elemento del vettore "situation_" alla situazione iniziale, ossia 
+(0, S, 0, 0) dove S è n * n * d, dunque tutte le celle "vive" saranno inizialmente suscettibili.
 
 Breve descrizione delle funzioni membro
 
@@ -58,3 +83,12 @@ Essenzialmente funge da controllo che l’evoluzione sia in accordo col parametr
 
 
 
+Per la compilazione dei files di codice si è predisposto il file CMakeLists.txt da passare al programma cmake con le istruzioni di compilazione. Assicurarsi innanzitutto di avere cmake installato sul proprio computer e in seguito creare una cartella build e entrarvi. 
+// mkdir build
+// cd build
+All’interno della cartella chiamare la seguente opzione di cmake:
+// cmake -DCMAKE_BUILD_TYPE=Debug ..
+Dopo aver eseguito questo comando la prima volta non servirà più ripeterlo e basterà chiedere a cmake di compilare i files con il comando 
+// make
+Questo genererà tre eseguibili: run_epidemic_tests e run_sfml_tests sono gli eseguibili dei tests, mentre epidemic-sfml è l’eseguibile del programma da mandare in esecuzione:
+//./epidemic-sfml
