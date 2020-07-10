@@ -21,7 +21,7 @@ constexpr State E = State::Empty;
 
 inline sf::Color Blue(0, 0, 255, 255);
 inline sf::Color Red(255, 0, 0, 255);
-inline sf::Color Green(0, 255, 0, 255);
+inline sf::Color Green(255, 225, 024, 255);
 
 class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
