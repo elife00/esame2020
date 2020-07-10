@@ -1,5 +1,4 @@
 #include "epidemic.hpp"
-#include "functions.h"
 
 State Board::get(int x, int y) const {
   return (x < 1 || x > n_ || y < 1 || y > n_) ? E

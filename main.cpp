@@ -1,5 +1,5 @@
 #include "epidemic.hpp"
-#include "functions.h"
+#include "functions.hpp"
 #include "sfml.hpp"
 
 #include "SFML/Graphics.hpp"
@@ -18,10 +18,10 @@ int main() {
   int range;
   std::array<double, 5> parameters;
   int iterationTime = 250;
-  // cration of a legend of the colors used for differents states 
+  // cration of a legend of the colors used for differents states
   std::array<sf::Text, 7> legend;
   sf::Font font;
-  //load font from file
+  // load font from file
   if (!font.loadFromFile("../aBlackLives.ttf")) {
     throw std::runtime_error{"file not loaded"};
   };
@@ -67,8 +67,9 @@ int main() {
   density = parameters[0];
   pInf = parameters[1];
   percInf = parameters[2];
-  avgTime = static_cast<int>(
-      parameters[3]); // in case of input of parameters it's generated a vector of double
+  avgTime =
+      static_cast<int>(parameters[3]); // in case of input of parameters it's
+                                       // generated a vector of double
   range = static_cast<int>(
       parameters[4]); // it's better to force the convertion to integer
   bool quarantine = input_quarantine();
@@ -124,7 +125,7 @@ int main() {
     for (int i = 0; i != 7; ++i)
       legendWindow.draw(legend[i]);
     legendWindow.display();
- 
+
     // commands for the end of epidemy
     if (population.end() == 0) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
@@ -134,7 +135,7 @@ int main() {
 
       system("root");
     }
-    
+
     // control of interation time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
       // left key is pressed: faster

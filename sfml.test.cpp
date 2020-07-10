@@ -9,7 +9,8 @@ TEST_CASE("testing sfml") {
   representBoard board(vector);
   sf::VertexArray vertices = board.vertices();
   unsigned verticesSize = 4 * vector.size();
-  // check if the number of vertex generatated are enough for the representation of the vector
+  // check if the number of vertex generatated are enough for the representation
+  // of the vector
   CHECK(vertices.getVertexCount() == verticesSize);
   // check black color for empty
   for (unsigned i = 0; i < verticesSize; ++i) {

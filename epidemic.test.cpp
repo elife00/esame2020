@@ -24,7 +24,7 @@ TEST_CASE("testing contact(), get() and set()") {
   CHECK(population.contact(3, 3, 2) == 6);
 }
 
-//every check is done on the previous situation
+// every check is done on the previous situation
 TEST_CASE("testing epidemic, infection(), avg_time()") {
   int dim = 120;
 
