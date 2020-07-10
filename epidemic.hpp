@@ -15,13 +15,13 @@
 
 struct Situation {
   int t = 0; // iteration's index
-  int s = 0; // susceptible people
-  int i = 0; // infected people
-  int r = 0; // recovered people
+  int s = 0; // n susceptible people
+  int i = 0; // n infected people
+  int r = 0; // n recovered people
 };
 
 //necessary for the tests
-inline bool operator==(Situation const &s1, Situation const &s2) {
+inline bool operator == (Situation const &s1, Situation const &s2) {
   return (s1.t == s2.t && s1.s == s2.s && s1.i == s2.i && s1.r == s2.r);
 }
 
@@ -30,7 +30,7 @@ private:
   int n_;
   double density_;
   std::vector<State> board_;
-  std::vector<int> stay_; //index of the recovery's day of the i-th cell
+  std::vector<int> stay_; //index of the number of days that the i-th cell passed in the state Infected
   std::vector<Situation> evolution_; //saving the situation at every iteration
 
 public: //the constructor sets all alive cells (people) to susceptible and than shuffles
@@ -54,7 +54,7 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   void infection(double ratInf);
 
-  int contact_range(int x, int y, int r) const;
+  int contact(int x, int y, int r) const;
 
   Situation current_situation(); //useful to stop the epidemic and for the tests
 
@@ -62,7 +62,7 @@ public: //the constructor sets all alive cells (people) to susceptible and than 
 
   void swap(int x, int y);
 
-  Board epidemic(double pInf, int tMean, int range, bool quarantine);
+  Board epidemic(double pInf, int avgTime, int range, bool quarantine);
 
   representBoard draw();
 

@@ -14,12 +14,12 @@
   int dim = 120;
   double density[5] = {0.15, 0.25, 0.5, 0.75, 0.95};
   double ratInf[5] = {0.001, 0.05, 0.01, 0.2, 0.0003};
-  int tMean[5] = {8, 10, 15, 20, 32};
+  int avgTime[5] = {8, 10, 15, 20, 32};
   int range[5] = {5, 3, 2, 1, 4};
   for (int i = 0; i != 5; ++i) {
     double d = density[i];
     double r = ratInf[i];
-    int t = tMean[i];
+    int t = avgTime[i];
     int S = static_cast<int> (dim * dim * d);
     int I = static_cast<int> (S * r);
 
@@ -46,7 +46,7 @@
   double density;
   double ratInf;
   double pInf;
-  int tAvg;
+  int avgTime;
   int range;
 
   std::random_device rd;
@@ -59,7 +59,7 @@
   density = p(gen);
   ratInf = p(gen);
   pInf = p(gen);
-  tAvg = t(gen);
+  avgTime = t(gen);
   range = r(gen);
 
   int S = static_cast<int>(dim * dim * density);
@@ -80,7 +80,7 @@
   CHECK(population.current_situation() == Suno);
 
   while (population.current_situation().i != 0) {
-    population = population.epidemic(pInf, tAvg, range, false);
+    population = population.epidemic(pInf, avgTime, range, false);
     CHECK((population.current_situation().i + population.current_situation().s +
            population.current_situation().r) == S);
   }
@@ -105,7 +105,7 @@ TEST_CASE("testing contact(), get() and set()") {
   CHECK(population.get(a,a) == I);
   CHECK(population.get(c,c) == S);
 
-  CHECK(population.contact_range(3, 3, 1) == 2);
-  CHECK(population.contact_range(3, 3, 2) == 6);
+  CHECK(population.contact(3, 3, 1) == 2);
+  CHECK(population.contact(3, 3, 2) == 6);
   
 }

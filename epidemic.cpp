@@ -11,7 +11,7 @@ void Board::set(int &x, int &y, State s) {
   board_[(y - 1) * n_ + (x - 1)] = s;
 }
 
-int Board::contact_range(int x, int y, int r) const {
+int Board::contact(int x, int y, int r) const {
   assert(x > 0 && x <= n_ && y > 0 && y <= n_ && r > 0 && r <= n_);
   int count = 0;
   for (int i = (-r); i <= r; ++i) {
@@ -47,7 +47,7 @@ void Board::swap(int x, int y) {
   int j = dis(gen);
   int x2 = x + i;
   int y2 = y + j;
-  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ && //if i and j are 0 doesn't move
+  if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 && y2 <= n_ && //if i=j=0 the cell doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
@@ -56,8 +56,8 @@ void Board::swap(int x, int y) {
   }
 }
 
-Board Board::epidemic(double pInf, int tMean, int range, bool quarantine) {
-  assert(pInf > 0 && pInf < 1 && tMean > 0 && tMean < 40 && range > 0);
+Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
+  assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
   Board next(n_, density_);
   next.evolution_ = evolution_;
   next.stay_ = stay_;
@@ -72,7 +72,7 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine) {
 
       if (board_[coordinate] == S) {
         ++sit.s;
-        int infected = contact_range(x, y, range);
+        int infected = contact(x, y, range);
 
         std::binomial_distribution<> dis(infected, pInf);
 
@@ -90,9 +90,9 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine) {
 
         int iDays = next.stay_[coordinate];
 
-        if (dis(gen) <= 1. / tMean) {
+        if (dis(gen) <= 1. / avgTime) {
           next.set(x, y, R);
-        } else if (iDays >= 0.5 * tMean && quarantine) {
+        } else if (iDays >= 0.5 * avgTime && quarantine) {
           next.set(x, y, Q);
         } else {
           next.set(x, y, I);
@@ -108,7 +108,7 @@ Board Board::epidemic(double pInf, int tMean, int range, bool quarantine) {
 
         std::uniform_real_distribution<> dis(0., 1.0);
 
-        if (dis(gen) <= 1. / tMean) {
+        if (dis(gen) <= 1. / avgTime) {
           next.set(x, y, R);
         } else {
           next.set(x, y, Q);

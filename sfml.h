@@ -2,8 +2,8 @@
 #define sfml_h
 
 #include "SFML/Graphics.hpp"
-#include <cmath>
 #include <array>
+#include <cmath>
 #include <string>
 
 enum class State : char {
@@ -18,7 +18,6 @@ constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
 constexpr State Q = State::Quarantine;
 constexpr State E = State::Empty;
-
 
 inline sf::Color Blue(0, 0, 255, 255);
 inline sf::Color Red(255, 0, 0, 255);
@@ -96,6 +95,8 @@ public:
       }
   }
 
-  sf::VertexArray vertices() { return vertices_; }
+  sf::VertexArray vertices() {
+    return vertices_;
+  }
 };
 #endif
