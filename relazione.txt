@@ -2,59 +2,133 @@ Relazione progetto “Modello SIR”
 
 INTRODUZIONE
 
-Il progetto consiste nella simulazione della diffusione di un’epidemia all’interno di una popolazione, basata sul Modello SIR. 
+Il progetto consiste nella simulazione della diffusione di un’epidemia all’interno di una popolazione, 
+basata sul Modello SIR. 
 
-Il programma si basa sulla creazione di una griglia quadrata bidimensionale, all’interno della quale un insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente.
+Il programma parte dalla creazione di una griglia quadrata bidimensionale, all’interno della quale un 
+insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente.
 
-Le celle che formano la griglia possono assumere cinque “stati”. “Susceptible”, “Infected” e “Recovered” rappresentano i tre stati previsti dal modello Sir che una persona può assumere (il modello prevede che una persona guarita non possa più essere infetta). Lo stato “Empty” rappresenta le celle vuote, tra le quali la popolazione è libera di muoversi. Infine si è scelto di aggiungere uno stato aggiuntivo, Quarantine, che rappresenta la popolazione in “quarantena”, che dunque è infetta ma non può interagire né muoversi all’interno della griglia. La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
+Le celle che formano la griglia possono assumere cinque stati. “Susceptible”, “Infected” e “Recovered” 
+rappresentano i tre stati previsti dal modello Sir che una persona può assumere (il modello prevede che una
+persona guarita non possa più infettarsi). Lo stato “Empty” rappresenta le celle vuote, tra le quali la 
+popolazione è libera di muoversi. Infine si è scelto di aggiungere lo stato "Quarantine", che rappresenta 
+la popolazione in quarantena, che dunque è infetta ma non può interagire né muoversi all’interno della griglia. 
+La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
 
-Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infezione di una “cella” suscettibile quando interagisce con una infetta (“pInf”) e il raggio d’azione (“range”), che definisce la distanza di interazione tra le “celle”.
+Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infettarsi di una 
+cella suscettibile quando interagisce con una infetta (“pInf”) e il raggio d’azione (“range”), che definisce 
+la distanza di interazione tra le “celle”.
 
-La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori casuali (all’interno di range opportuni).
+La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori 
+casuali (all’interno di range opportuni).
 
-Si è utilizzata la libreria grafica SMFL per la visualizzazione della griglia nel corso dell’epidemia e ROOT per la creazione del grafico, che rappresenta l’andamento dei tre parametri del modello (S,I,R).
+Si è utilizzata la libreria grafica SFML per la visualizzazione della griglia nel corso dell’epidemia e 
+ROOT per la creazione del grafico, che rappresenta a posteriori l’andamento dei tre parametri del modello 
+(S, I, R).
 
 DESCRIZIONE DEL PROGRAMMA
 
-I cinque stati sono definiti attraverso una enumeration “State” di tipo char (scelto per ragioni di ottimizzazione) *, abbreviati poi nelle sigle (“constexpr”) E,S,I,R,Q, le quali verranno utilizzate all’interno del codice.
+I cinque stati sono definiti attraverso una enumeration “State” di tipo char (scelto per ragioni di 
+ottimizzazione) *, abbreviati poi grazie alle sigle (“constexpr”) E, S, I, R e Q, che verranno utilizzate 
+all’interno del codice.
 
-Si è scelto poi di creare una struct  “Situation” composta di 4 numeri interi: “t” rappresenta l’iterazione di tempo (ogni iterazione può essere pensata come un giorno trascorso), mentre “s”, “i” e “r” sono rispettivamente il numero di celle/persone suscettibili, infette e rimosse.
-E’ stato necessario poi definire l’operatore “== “ al fine di eseguire test sul codice.
+Si è scelto poi di creare una struct “Situation” composta di 4 numeri interi: “t” rappresenta il tempo 
+trascorso (ogni iterazione può essere pensata come un giorno), mentre “s”, “i” e “r” sono 
+rispettivamente il numero di celle/persone suscettibili, infette e guarite.
+E’ stato necessario poi definire l’operatore “==“ al fine di eseguire i test sul codice.
 
-La griglia bidimensionale è rappresentata dalla classe Board che è definita nel (“private”) da cinque variabili: “n_” definisce la lunghezza dei lati della griglia, che sarà dunque composta di n_*n_ celle.
-“density_” rappresenta la densità percentuale della popolazione all’interno della cella, ossia quante celle, tra le n_*n_ esistenti, rappresentano una persona. Il vettore di stati “board_” rappresenta le singole celle che compongono la griglia, che quindi si trovano in uno dei 5 stati sopra citati.
-Il vettore di interi “stay_” rappresenta il numero di iterazioni (giorni) di malattia di ogni cella. Infine il vettore di “situation” “evolution_” rappresenta l’evoluzione dell’epidemia, in quanto tiene conto ad ogni iterazione il numero di suscettibili, infetti e rimossi all’interno della cella.
+La griglia bidimensionale è rappresentata dalla classe "Board" che è definita nel “private” da cinque 
+variabili: “n_” definisce la lunghezza dei lati della griglia, che sarà dunque composta di n_ * n_ celle,
+“density_” rappresenta la densità percentuale della popolazione all’interno della griglia. Il vettore "board_” 
+rappresenta gli stati delle singole celle che compongono la griglia.
+Il vettore “stay_” rappresenta il numero di iterazioni (giorni) di malattia di ogni cella. Infine il vettore 
+“evolution_” rappresenta l’evoluzione dell’epidemia, in quanto tiene conto ad ogni iterazione il numero di 
+suscettibili, infetti e guariti all’interno della griglia, salvandoli come "Situation".
 
-Il costruttore necessita di due sole variabili, ossia la lunghezza dei lati della cella (“n”) e la densità percentuale (“d”). Del vettore board_, inizializzato a n*n elementi, tutte le “n*n*d” celle “vive” vengono inizializzate allo stato S (facendo una forzatura ad intero del numero), le restanti celle vengono settate allo stato E; infine attraverso l’algoritmo “shuffle” vengono mischiate le celle. Nel costruttore viene anche impostato il primo elemento del vettore situation_ alla situazione iniziale, ossia (0, S, 0, 0) dove S è il numero di cui sopra, dunque tutte le celle vive saranno inizialmente suscettibili.
+Il costruttore necessita di due sole variabili, ossia la lunghezza dei lati della griglia (“n”) e la densità 
+percentuale (“d”). Del vettore "board_", inizializzato a n * n elementi, tutte le n * n * d celle “vive” 
+vengono inizializzate allo stato “Susceptible” (facendo una forzatura ad intero del numero), le restanti 
+celle vengono settate allo stato "Empty"; infine utilizzando l’algoritmo “shuffle” vengono rimescolate le 
+celle. Viene anche impostato il primo elemento del vettore "situation_" alla situazione iniziale, ossia 
+(0, S, 0, 0) dove S è n * n * d, dunque tutte le celle "vive" saranno inizialmente suscettibili.
 
 Breve descrizione delle funzioni membro
 
-Premessa: si è fatta la scelta di utilizzare l’intero [(y - 1) * n_ + (x - 1)] per indicare la i-esima cella, date le coordinate x e y, in modo che le coordinate siano comprese nell’intervallo (1,1)-(n,n), invece che (0,0)-(n-1,n-1).
+Premessa: si è fatta la scelta di utilizzare l’intero [(y - 1) * n_ + (x - 1)] per indicare la i-esima cella,
+ date le coordinate x e y, in modo che le coordinate siano comprese nell’intervallo [(1,1),(n,n)], invece che 
+ [(0,0),(n-1,n-1)].
+
 
 (Col termine cella “viva” si intende una cella che non si trova allo stato Empty.)
 
--	“get” : riceve in input le coordinate (x,y) e restituisce lo stato della cella in esame. Se le coordinate escono dal range (1,1)-(n,n), la funzione ritorna Empty. (giustificare)
+-	“get” : riceve in input le coordinate (x,y) e restituisce lo stato della cella in esame. Se le coordinate 
+escono dal range [(1,1),(n,n)], la funzione ritorna Empty, per escludere che le celle esterne siano considerabili potenziali infetti.
 -	“set” : riceve in input le coordinate (x,y) e uno stato S e setta ad S la cella in esame.
--	“contact-range”: riceve in input le coordinate (x,y) e un intero r, che rappresenta il raggio d’azione del virus, e restituisce il numero di celle “infette” all’interno del range, ossia un quadrato di lato 2r+1.
--	“infection” : dà inizio all’epidemia. Riceve in input un numero decimale “ratInf” che rappresenta la percentuale iniziale di infetti sulla popolazione (celle S). La funzione dunque setta “n*n*d*ratInf” (valore forzato ad intero) celle suscettibili allo stato I. Infine attraverso l’algoritmo shuffle vengono mischiate le celle. 
--	“swap” : permette alle celle vive di muoversi casualmente all’interno della griglia. Riceve in input le coordinate (x,y). Vengono generati due numeri interi casuale nel range -1 – 1 “i” e “j” e si va ad analizzare lo stato della cella nella nuova coordinata casuale x+i,y+j. Ad ogni iterazione dunque una cella può muoversi nella nuova coordinata nel caso lo stato in esame sia Empty. La cella rimane invece ferma nel caso in cui la nuova coordinata esca dalla griglia, nel caso in cui in essa sia gia presente una cella viva, infine se i due numeri generati sono entrambi 0. Quando una cella si sposta viene eseguito uno scambio anche degli interi del vettore stay_, che tendono traccia dei giorni di malattia.
--	“epidemic” : fa evolvere la griglia in base alle caratteristiche dell’epidemia. Riceve in input quattro variabili: “pInf” rappresenta la probabilità che una cella suscettibile sia infettata quando interagisce con una cella infetta, “range” rappresenta la distanza di interazione , o raggio di d’azione del virus, “tMean” è il tempo medio di malattia e infine la variabile booleana “quarantine” determina l’attivazione o meno dell’opzione quarantena. Attraverso un doppio “ciclo for” vengono analizzate le singole celle della griglia in modo da determinare i singoli stati che andranno a costituire la nuova griglia creata “next”, che rappresenta la popolazione alla successiva iterazione.
- La funzione si basa sulla generazione di numeri casuali attraverso la libreria <random> .
+-	“contact”: riceve in input le coordinate (x,y) e un intero r, che rappresenta il raggio d’azione del virus, 
+e restituisce il numero di celle “Infected” all’interno del range, ossia un quadrato di lato 2r+1.
+-	“infection” : dà inizio all’epidemia; riceve in input un numero decimale “ratInf” che rappresenta la 
+percentuale iniziale di infetti sulla popolazione (celle “Susceptible”). La funzione dunque setta n*n*d*ratInf
+ (valore forzato ad intero) celle suscettibili allo stato "infected". Infine attraverso l’algoritmo "shuffle" 
+ vengono mischiate le celle. 
+-	“swap” : permette alle celle vive di muoversi casualmente all’interno della griglia. Riceve in input le 
+coordinate (x,y). Vengono generati due numeri interi casuale nel range [-1,1] “i” e “j” e va ad analizzare 
+lo stato della cella nella nuova coordinata casuale x+i,y+j. Ad ogni iterazione dunque una cella può muoversi 
+nella nuova coordinata solo nel caso lo stato in esame sia "Empty". La cella rimane invece ferma nel caso 
+in cui la nuova coordinata esca dalla griglia, nel caso in cui in essa sia gia presente una cella viva, infine 
+se i due numeri generati sono entrambi 0. Quando una cella si sposta viene eseguito uno scambio anche degli 
+interi del vettore "stay_", che tengono traccia dei giorni di malattia.
+-	“epidemic”: fa evolvere la griglia in base alle caratteristiche dell’epidemia. Riceve in input quattro 
+variabili: “pInf” rappresenta la probabilità che una cella suscettibile sia infettata quando interagisce 
+con una cella infetta, “range” rappresenta la distanza massima di interazione, “avgTime” è il tempo medio 
+di malattia e infine la variabile booleana “quarantine” determina l’attivazione o meno dell’opzione quarantena. 
+Attraverso un doppio "ciclo for” vengono analizzate le singole celle della griglia in modo da determinare gli 
+stati che andranno a costituire la nuova griglia “next”, che rappresenta la popolazione alla successiva 
+iterazione. La funzione si basa sulla generazione di numeri casuali attraverso la libreria <random>.
 Caso 1 – la cella in esame è suscettibile. 
-Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact_range”. Questo numero, “infected” e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un numero intero casuale nel range [0-infected] secondo una distribuzione binomiale, il quale rappresenta quante, tra le interazioni totali, sono andate “a buon fine”, ossia hanno portato all’infezione della cella. Si agisce dunque sulla nuova griglia “next”. Se il numero casuale è maggiore di 0, la cella i-esima viene dunque settata ad I, alternativamente viene settata ad S ,ossia non subisce alcuna modifica.
-Caso 2 – la cella in esame è infetta. In questo caso viene prodotto un probabilità casuale nel range [0.0-1.0] attraverso l’algoritmo “std::uniform_real_distribution”.  Attraverso l’input “t_avg” si disponde indirettamente della probabilità media di guarigione ad ogni iterazione, ossia 1/t_avg.  Se la probabilità casuale è minore o uguale alla probabilità media di guarigione (funzione costante), il valore viene accettato (“Metodo hit or miss”) e dunque la cella i-esima guarisce e viene dunque settata ad R. In caso contrario non viene modificata.
-Se l’opzione “quarantine” è attiva si va ad analizzare i giorni trascorsi di malattia attraverso il vettore stay_  (il quale viene incrementato ad ogni iterazione nel caso la cella sia infetta).
-Se sono trascorsi la metà dei giorni medi di malattia, la cella viene settata allo stato Q e non sarà più in grado né di interagire, né di muoversi sino alla completa guarigione.
-Caso 3 – la cella in esame è rimossa. In questo caso non viene eseguita alcuna modifica.
-Caso 4 – la cella in esame è in quarantena. Identico al caso 2, dunque in caso di mancata guarigione la cella rimane in quarantena.
-Caso 5 – la cella in esame è rimossa. Identico al caso 3.
+Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact”. Questo numero, 
+chiamato “infected”, e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un 
+numero intero casuale nel range [0,infected] secondo una distribuzione binomiale, il quale rappresenta quante 
+tra le interazioni totali hanno portato all’infezione della cella. Si agisce dunque sulla nuova griglia “next”. 
+Se il numero casuale è maggiore di 0, la cella i-esima viene settata ad "infected", alternativamente viene 
+settata a “Susceptible”, ossia non subisce alcuna modifica.
+Caso 2 – la cella in esame è infetta. In questo caso viene prodotta una probabilità casuale attraverso 
+l’algoritmo “std::uniform_real_distribution”.  Attraverso l’input “avgTime” si disponde indirettamente 
+della probabilità media di guarigione ad ogni iterazione, ossia 1/avgTime.  Se la probabilità casuale è 
+minore o uguale alla probabilità media di guarigione (funzione costante), il valore viene accettato (“Metodo 
+hit or miss”) e dunque la cella i-esima guarisce e viene settata a "Recovered". In caso contrario non viene 
+modificata.
+Se l’opzione “quarantine” è attiva si va ad analizzare i giorni trascorsi di malattia attraverso il vettore 
+"stay_"  (il quale viene incrementato ad ogni iterazione nel caso la cella sia infetta).
+Se sono trascorsi la metà dei giorni medi di malattia, la cella viene settata allo stato "Quarantine" e non 
+sarà più in grado né di interagire, né di muoversi sino alla completa guarigione.
+Caso 3 – la cella in esame è guarita. In questo caso non viene eseguita alcuna modifica.
+Caso 4 – la cella in esame è in quarantena. Identico al caso 2, dunque in caso di mancata guarigione la 
+cella rimane in quarantena.
+Caso 5 – la cella in esame è guarita. Identico al caso 3.
 
-Nei casi 1-2-3-4 vengono anche incrementati gli interi “s”, “i”, “r” che costituiscono la “situation” della cella che verrà aggiunta al vettore “next.evolution_” (l’intero “t” viene incrementato alla fine della funzione). E’ importante notare che in questo modo l’ultimo elemento del vettore  rappresenta la situazione della griglia all’iterazione precedente. (Nel caso 4 viene incrementato i, dunque le celle in quarantena contano come infette). A questo punto viene eseguito un secondo ciclo sulla griglia “next” agendo su ogni cella allo stato S, I o R attraverso la funzione “swap”. (E’ necessario un secondo ciclo in quanto si deve già disporre della griglia evoluta).
+Nei casi 1-2-3-4 vengono anche incrementati gli interi “s”, “i”, “r” che costituiscono la “situation” della 
+griglia che verrà aggiunta al vettore “next.evolution_” (l’intero “t” viene incrementato alla fine della 
+funzione). E’ importante notare che in questo modo l’ultimo elemento del vettore  rappresenta la situazione 
+della griglia all’iterazione precedente. (Nel caso 4 viene incrementato i, dunque le celle in quarantena 
+contano come infette). A questo punto viene eseguito un secondo ciclo sulla griglia “next” agendo su ogni 
+cella allo stato "Susceptible", "Infected" o "Recovered attraverso la funzione “swap”. (E’ necessario un 
+secondo ciclo in quanto si deve già disporre della griglia evoluta).
 
--	“avg_time” : calcola la media effettiva dei giorni di malattia dell’epidemia. La media viene fatta utilizzando l’algoritmo “std::accumulate” che agisce sul vettore stay_.
-Essenzialmente funge da controllo che l’evoluzione sia in accordo col parametro avg_time.
--	“trend” : stampa sul file “trend.txt” il vettore “evolution_”, dunque l’andamento dei tre parametri del modello nel tempo, oltre che la media effettiva dei giorni di malattia. 
+-	“avg_time” : calcola la media effettiva dei giorni di malattia dell’epidemia. La media viene fatta 
+utilizzando l’algoritmo “std::accumulate” che agisce sul vettore "stay_". Essenzialmente funge da controllo 
+che l’evoluzione sia in accordo col parametro avg_time.
+-	“trend” : stampa sul file “trend.txt” il vettore “evolution_”, dunque l’andamento dei tre parametri del 
+modello nel tempo, oltre che la media effettiva dei giorni di malattia. 
 -	“current_situation”: accede al vettore privato “situation_” e ne restituisce l’ultimo elemento, ossia la situazione all’iterazione precedente. Viene utilizzata sia per fermare l’evoluzione quando il numero di infetti è 0, sia per eseguire i test sulla funzione “epidemic”
 
 
 
+Per la compilazione dei files di codice si è predisposto il file CMakeLists.txt da passare al programma cmake con le istruzioni di compilazione. Assicurarsi innanzitutto di avere cmake installato sul proprio computer e in seguito creare una cartella build e entrarvi. 
+// mkdir build
+// cd build
+All’interno della cartella chiamare la seguente opzione di cmake:
+// cmake -DCMAKE_BUILD_TYPE=Debug ..
+Dopo aver eseguito questo comando la prima volta non servirà più ripeterlo e basterà chiedere a cmake di compilare i files con il comando 
+// make
+Questo genererà tre eseguibili: run_epidemic_tests e run_sfml_tests sono gli eseguibili dei tests, mentre epidemic-sfml è l’eseguibile del programma da mandare in esecuzione:
+//./epidemic-sfml

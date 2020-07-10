@@ -21,7 +21,7 @@ constexpr State E = State::Empty;
 
 inline sf::Color Blue(0, 0, 255, 255);
 inline sf::Color Red(255, 0, 0, 255);
-inline sf::Color Green(255, 225, 024, 255);
+inline sf::Color Yellow(255, 225, 024, 255);
 
 class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
@@ -77,10 +77,10 @@ public:
           quad[2].color = (Red);
           quad[3].color = (Red);
         } else if (vector[i + j * gridSize_] == R) {
-          quad[0].color = (Green);
-          quad[1].color = (Green);
-          quad[2].color = (Green);
-          quad[3].color = (Green);
+          quad[0].color = (Yellow);
+          quad[1].color = (Yellow);
+          quad[2].color = (Yellow);
+          quad[3].color = (Yellow);
         } else if (vector[i + j * gridSize_] == Q) {
           quad[0].color = (sf::Color::White);
           quad[1].color = (sf::Color::White);
