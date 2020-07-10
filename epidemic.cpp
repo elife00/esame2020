@@ -102,7 +102,7 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
         ++sit.r;
         next.set(x, y, R);
       }
-      if (board_[coordinate] == Q && quarantine) {
+      if (board_[coordinate] == Q) {
         ++sit.i;
         ++next.stay_[coordinate];
 

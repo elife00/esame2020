@@ -62,8 +62,7 @@ public:
         // define its 4 corners
         quad[0].position = sf::Vector2f(i * quadSize_, j * quadSize_);
         quad[1].position = sf::Vector2f((i + 1) * quadSize_, j * quadSize_);
-        quad[2].position =
-            sf::Vector2f((i + 1) * quadSize_, (j + 1) * quadSize_);
+        quad[2].position = sf::Vector2f((i + 1) * quadSize_, (j + 1) * quadSize_);
         quad[3].position = sf::Vector2f(i * quadSize_, (j + 1) * quadSize_);
 
         if (vector[i + j * gridSize_] == S) {
@@ -99,4 +98,5 @@ public:
     return vertices_;
   }
 };
+
 #endif
