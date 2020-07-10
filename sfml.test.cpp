@@ -5,12 +5,13 @@
 #include <random>
 
 TEST_CASE("testing sfml") {
-  // int quadSize = 5;
   std::vector<State> vector(25, E);
-  representBoard board(/*quadSize, */ vector);
+  representBoard board(vector);
   sf::VertexArray vertices = board.vertices();
   unsigned verticesSize = 4 * vector.size();
+  // check if the number of vertex generatated are enough for the representation of the vector
   CHECK(vertices.getVertexCount() == verticesSize);
+  // check black color for empty
   for (unsigned i = 0; i < verticesSize; ++i) {
     CHECK(vertices[i].color == sf::Color::Black);
   }
@@ -20,7 +21,7 @@ TEST_CASE("testing sfml") {
   }
   std::random_device g;
   std::shuffle(vector.begin(), vector.end(), g);
-  board = representBoard(/*quadSize,*/ vector);
+  board = representBoard(vector);
   vertices = board.vertices();
   int infected = 0;
   int empty = 0;

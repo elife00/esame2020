@@ -28,7 +28,7 @@ int main() {
   std::array<std::string, 7> string = {
       "Susceptible", "Infectious",   "Recovered",     "Quarantine",
       "Empty",       "<-        ->", "slower  faster"};
-  std::array<sf::Color, 5> color = {Blue, Red, Green, sf::Color::White,
+  std::array<sf::Color, 5> color = {Blue, Red, Yellow, sf::Color::White,
                                     sf::Color::Black};
   for (int i = 0; i != 5; ++i) {
     legend[i].setFont(font);
@@ -76,7 +76,7 @@ int main() {
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50;
   sf::RenderWindow epidemicWindow(sf::VideoMode(windowSize, windowSize),
                                   "My epidemic");
-  sf::RenderWindow legendWindow(sf::VideoMode(200, 400), "My epidemic");
+  sf::RenderWindow legendWindow(sf::VideoMode(200, 400), "Legend");
   epidemicWindow.setVerticalSyncEnabled(true);
 
   // change the position of the window (relatively to the desktop)

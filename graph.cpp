@@ -8,16 +8,16 @@
 
   // Cosmetics
   graph_s->SetLineColor(38);
-  graph_s->SetLineWidth(2);
+  graph_s->SetLineWidth(3);
   graph_s->GetXaxis()->SetTitleOffset(1);
   graph_s->GetYaxis()->SetTitleOffset(1.3);
   graph_s->SetMinimum(0);
 
   graph_i->SetLineColor(46);
-  graph_i->SetLineWidth(2);
+  graph_i->SetLineWidth(3);
 
-  graph_r->SetLineColor(8);
-  graph_r->SetLineWidth(2);
+  graph_r->SetLineColor(800);
+  graph_r->SetLineWidth(3);
 
   graph_s->SetMarkerStyle(kFullDotLarge);
   graph_s->SetMarkerColor(38);
@@ -26,7 +26,7 @@
   graph_i->SetMarkerColor(46);
   graph_i->SetMarkerSize(0.3);
   graph_r->SetMarkerStyle(kFullDotLarge);
-  graph_r->SetMarkerColor(8);
+  graph_r->SetMarkerColor(800);
   graph_r->SetMarkerSize(0.3);
 
   // The canvas on which we'll draw the graph

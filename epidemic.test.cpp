@@ -24,6 +24,7 @@ TEST_CASE("testing contact(), get() and set()") {
   CHECK(population.contact(3, 3, 2) == 6);
 }
 
+//every check is done on the previous situation
 TEST_CASE("testing epidemic, infection(), avg_time()") {
   int dim = 120;
 
@@ -60,7 +61,6 @@ TEST_CASE("testing epidemic, infection(), avg_time()") {
   if (population.situation().i != I) { // fixes an eventual approximation error
     ++I;
   }
-  std::cout << I << '\n';
 
   Situation Suno = {1, S - I, I, 0};
   CHECK(population.situation() == Suno);
