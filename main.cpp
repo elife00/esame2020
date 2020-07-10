@@ -18,10 +18,10 @@ int main() {
   int range;
   std::array<double, 5> parameters;
   int iterationTime = 250;
-
+  // cration of a legend of the colors used for differents states 
   std::array<sf::Text, 7> legend;
-
   sf::Font font;
+  //load font from file
   if (!font.loadFromFile("../aBlackLives.ttf")) {
     throw std::runtime_error{"file not loaded"};
   };
@@ -68,9 +68,9 @@ int main() {
   pInf = parameters[1];
   percInf = parameters[2];
   avgTime = static_cast<int>(
-      parameters[3]); // nel caso di input si ha un vettore di double
+      parameters[3]); // in case of input of parameters it's generated a vector of double
   range = static_cast<int>(
-      parameters[4]); // quindi è consigliata la forzatura ad intero
+      parameters[4]); // it's better to force the convertion to integer
   bool quarantine = input_quarantine();
 
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50;
@@ -110,22 +110,22 @@ int main() {
         legendWindow.close();
       }
     }
-
-    auto rappresentation = population.draw();
+    // crate the graphic representation of the population
+    representBoard rappresentation = population.draw();
     rappresentation.setPosition(epidemicWindow.getSize().x / 2,
                                 epidemicWindow.getSize().y / 2);
-
+    // draw the board of the population
     epidemicWindow.clear(sf::Color::Black);
     epidemicWindow.draw(rappresentation);
     epidemicWindow.display();
 
+    // draw the legend
     legendWindow.clear(sf::Color::Black);
-
     for (int i = 0; i != 7; ++i)
       legendWindow.draw(legend[i]);
-
     legendWindow.display();
-
+ 
+    // commands for the end of epidemy
     if (population.end() == 0) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
@@ -134,7 +134,8 @@ int main() {
 
       system("root");
     }
-
+    
+    // control of interation time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
       // left key is pressed: faster
       iterationTime -= 50;
@@ -145,7 +146,7 @@ int main() {
       iterationTime += 50;
       std::cout << iterationTime << '\n';
     }
-
+    // evolution of the epidemic
     population = population.epidemic(pInf, avgTime, range, quarantine);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(iterationTime));

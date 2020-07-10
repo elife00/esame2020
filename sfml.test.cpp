@@ -25,6 +25,7 @@ TEST_CASE("testing sfml") {
   vertices = board.vertices();
   int infected = 0;
   int empty = 0;
+  // check the number of rad vertex and black vertex
   for (unsigned i = 0; i < vertices.getVertexCount(); ++i) {
     if (vertices[i].color == sf::Color::Red) {
       ++infected;
