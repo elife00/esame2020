@@ -44,11 +44,11 @@ Premessa: si è scelto di utilizzare l’intero [(y - 1) * n_ + (x - 1)] per ind
 
 Attraverso un doppio "ciclo for” vengono analizzate le singole celle della griglia in modo da determinare gli stati che andranno a costituire la nuova griglia “next”, che rappresenta la popolazione alla successiva iterazione. La funzione si basa sulla generazione di numeri casuali attraverso la libreria <random>.
   
-** Caso 1 – la cella in esame è suscettibile. Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact”. Questo numero, chiamato “infected”, e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un
-numero intero casuale nel range [0,infected] secondo una distribuzione binomiale, il quale rappresenta quante tra le interazioni totali hanno avuto successo, ossia hanno portato all’infezione della cella. 
+Caso 1 – la cella in esame è suscettibile. Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact”. Questo numero, chiamato “infected”, e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un
+numero intero casuale nel range [0,infected] secondo una distribuzione binomiale, il quale rappresenta quante tra le interazioni totali hanno avuto successo, ossia hanno portato all’infezione della cella. \
 Si agisce poi sulla nuova griglia “next”. Se il numero casuale è maggiore di 0, la cella i-esima viene settata ad "infected", alternativamente viene settata a “Susceptible”, ossia non subisce alcuna modifica.
 
-Caso 2 – la cella in esame è infetta. In questo caso viene prodotta una probabilità casuale attraverso l’algoritmo “std::uniform_real_distribution”.  Attraverso l’input “avgTime” si dispone indirettamente della probabilità media di guarigione ad ogni iterazione, ossia 1/avgTime. Se la probabilità casuale è minore o uguale alla probabilità media di guarigione (funzione costante), il valore viene accettato (“Metodo hit or miss”) e dunque la cella i-esima guarisce e viene settata a "Recovered". In caso contrario non viene modificata.
+Caso 2 – la cella in esame è infetta. In questo caso viene prodotta una probabilità casuale attraverso l’algoritmo “std::uniform_real_distribution”.  Attraverso l’input “avgTime” si dispone indirettamente della probabilità media di guarigione ad ogni iterazione, ossia 1/avgTime. Se la probabilità casuale è minore o uguale alla probabilità media di guarigione (funzione costante), il valore viene accettato (“Metodo hit or miss”) e dunque la cella i-esima guarisce e viene settata a "Recovered". In caso contrario non viene modificata. \
 Se l’opzione “quarantine” è attiva si va ad analizzare i giorni trascorsi di malattia attraverso il vettore "stay_"  (il quale viene incrementato ad ogni iterazione nel caso la cella sia infetta). Se sono trascorsi la metà dei giorni medi di malattia, la cella viene settata allo stato "Quarantine" e non sarà più in grado né di interagire, né di muoversi sino alla completa guarigione.
 
 Caso 3 – la cella in esame è guarita. In questo caso non viene eseguita alcuna modifica.
@@ -72,8 +72,7 @@ cella allo stato "Susceptible", "Infected" o "Recovered attraverso la funzione �
 
 * ”end” : scorre le celle della griglia e restituisce il numero di celle infette. Viene utilizzato per terminare l’evoluzione della griglia, ossia quando il valore restituito è 0.
 
-* ”draw” : passa in input la griglia “board_” alla classe “RepresentBoard”, utilizzata per la rappresentazione grafica, attraverso la libreria SFML.
-
+* ”draw” : passa in input la griglia “board_” alla classe “RepresentBoard”, utilizzata per la rappresentazione grafica, attraverso la libreria SFML. \
 Il programma prevede un'interfaccia utente direttamente sul terminale. L’utente può decidere se inserire manualmente i parametri che caratterizzano l’epidemia, oppure farli generare casualmente. In entrambi i casi questi valori vengono stampati su terminale.
 I parametri richiesti sono:
 * “density” - la densità della popolazione all’interno della cella, 
@@ -82,14 +81,12 @@ I parametri richiesti sono:
 * “avgTime” - il tempo medio di malattia,
 * “range” - raggio d’azione del virus.
 
-Caso 1 - parametri inseriti in input
-
+Caso 1 - parametri inseriti in input \
 Questo caso è gestito dalla funzione “input_parameters”. Vengono chiesti in ordine i valori dei parametri all’utente, i quali vanno a riempire il vettore restituito dalla funzione.
-
+\
 I valori di input vengono inizializzati come stringhe, in modo da gestire il caso in cui l’utente abbia inserito “,” al posto di “.” nei valori percentuali. All’interno di un “ciclo while” si utilizza l’algoritmo “stod” della libreria <string> per trasformare la stringa nel valore di tipo “double”, in seguito si controlla che questi valori rientrino in opportuni range, ossia [0,1] per le prime tre percentuali, [1,40] per il tempo medio di malattia e [1,10] per il raggio d’azione. Questi ultimi due range sono del tutto arbitrari. Si è cercato di scegliere valori in modo da garantire che l’epidemia rappresentata sia verosimile. [4]
 
-Caso 2 - parametri generati casualmente
-
+Caso 2 - parametri generati casualmente \
 Questo caso è gestito dalla funzione “output_parameters”. Si è scelto di generare 4 diversi numeri casuali secondo distribuzioni uniformi in diversi range. Anche in questo caso la scelta è finalizzata a garantire uno sviluppo apprezzabile dell’epidemia, escludendo dunque valori che rendano lo sviluppo eccessivamente lungo o eccessivamente breve. Per la densità si è scelto il range [0.1,0.75], mentre per i due valori percentuali pInf e percInf [0.01,0.2]. Si è visto infatti che oltre questi valori, in particolare se combinati ad un’alta densità e un grande raggio d’azione, l’epidemia termina in un tempo estremamente breve, così come, al di sotto di essi, si ha l’effetto contrario.
 
 Infine per il tempo medio di malattia si è scelto l’intervallo [5,30] e [1,3] per il range d’azione del virus. [4]
