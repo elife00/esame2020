@@ -2,14 +2,17 @@
 Angeli Ettore, Ferri Elisabetta, Mattei Davide
 
 ## INTRODUZIONE
+
 Il progetto consiste nella simulazione della diffusione di un’epidemia all’interno di una popolazione, basata sul Modello SIR.[9]
 Il programma parte dalla creazione di una griglia quadrata bidimensionale, all’interno della quale un insieme di celle, che rappresenta la popolazione in esame, può muoversi casualmente. Le celle che formano la griglia possono assumere cinque stati. “Susceptible”,  “Infected” e “Recovered” rappresentano i tre stati previsti dal modello SIR che una persona può assumere (il modello prevede che una persona guarita non possa più infettarsi). Lo stato “Empty” rappresenta le celle vuote, tra le quali la popolazione è libera di muoversi. Infine si è scelto di aggiungere lo stato "Quarantine", che rappresenta
 la popolazione in quarantena, la quale è infetta ma non può interagire né muoversi all’interno della griglia. La scelta di usufruire di quest’ultimo stato è lasciata all’utente.
 Lo sviluppo dell’epidemia è determinato da diversi parametri, tra cui la probabilità di infettarsi di una cella suscettibile quando interagisce con una infetta (“pInf”) o il raggio d’azione (“range”) che definisce la distanza di interazione tra le celle.
 La scelta del valore dei diversi parametri è lasciata all’utente; alternativamente verranno generati valori casuali (all’interno di range opportuni).
-Si è utilizzata la libreria grafica SFML per la visualizzazione della griglia nel corso dell’epidemia e ROOT per la creazione del grafico, che rappresenta a posteriori l’andamento dei tre parametri del modello (S, I, R).
+Si è utilizzata la libreria grafica SFML per la
+visualizzazione della griglia nel corso dell’epidemia e ROOT per la creazione del grafico, che rappresenta a posteriori l’andamento dei tre parametri del modello (S, I, R).
 
-DESCRIZIONE DEL PROGRAMMA
+## DESCRIZIONE DEL PROGRAMMA
+
 I cinque stati sono definiti attraverso una enumeration “State” di tipo char (scelto per ragioni di ottimizzazione), abbreviati poi come variabili globali “constexpr” nelle sigle “E”, “S”,” I”, “R” e “Q”, che verranno utilizzate all’interno del codice [5].
 (Col termine “cella viva” si intende una cella che non si trova allo stato Empty.)
 Si è scelto poi di creare una struct “Situation” composta di 4 numeri interi: “t” rappresenta il tempo trascorso (ogni iterazione può essere pensata come un giorno), mentre “s”, “i” e “r” sono rispettivamente il numero di celle/persone suscettibili, infette e guarite].
@@ -19,6 +22,7 @@ Il costruttore necessita di due sole variabili, ossia la lunghezza dei lati dell
 n * n * d. Dunque tutte le celle vive saranno inizialmente suscettibili.
 
 ### Breve descrizione delle funzioni membro.
+
 Premessa: si è scelto di utilizzare l’intero [(y - 1) * n_ + (x - 1)] per indicare la i-esima cella, dati i valori x e y, in modo che le coordinate siano comprese nell’intervallo [(1,1),(n,n)], invece che [(0,0),(n-1,n-1)].
 
 * “get” : riceve in input le coordinate (x,y) e restituisce lo stato della cella in esame. Se le coordinate escono dal range [(1,1),(n,n)], la funzione ritorna Empty, per escludere che le celle esterne siano considerabili potenzialmente infette.
@@ -75,6 +79,7 @@ Infine per il tempo medio di malattia si è scelto l’intervallo [5,30] e [1,3]
 La scelta di implementare o meno l’opzione quarantena è lasciata sempre all’utente, anche nel caso 2, attraverso la funzione “input_quarantine”. Essa restituisce una variabile booleana che sarà poi inserita nella funzione “epidemic”. [4]
 
 ## ISTRUZIONI PER COMPILAZIONE, ESECUZIONE E TEST
+
 Per la compilazione dei file di codice si è predisposto il file “CMakeLists.txt” da passare al programma “cmake” con le istruzioni di compilazione. È necessario assicurarsi innanzitutto di avere “cmake” e “ROOT” installati sul proprio computer e in seguito creare una cartella denominata “build” per poi entrarvi.
 ```
 mkdir build
@@ -99,26 +104,29 @@ Finita la simulazione la finestra grafica viene chiusa automaticamente, e viene 
 ```
 Anche dopo la chiusura del programma e di “ROOT” sono disponibili nella cartella build il file immagine “ModelloSir.gif”, che rappresenta il grafico appena visualizzato, e il file “trend.txt” dove sono elencati il numero di “Susceptible”,  “Infected” e “Recovered” per ogni iterazione, utilizzato per la generazione del grafico.
 Per l’esecuzione dei test sugli header abbiamo creato due file di codice, uno per testare “sfml.hpp” e uno per “epidemic.hpp”, chiamati rispettivamente “sfml.test.cpp” e “epidemic.test.cpp”, che utilizza il testing framework “doctest.h”.
-Gli eseguibili di questi file vengono generati con l’invio del comando “make” da terminale e se mandati in esecuzione indicano lo stato dei test. In alternativa “cmake” fornisce il comando “ctest”, che esegue automaticamente tutti i file indicati come test in “CMakeLists.txt”.
-DESCRIZIONE DEL FORMATO OUTPUT
-Per rappresentare l'andamento dell'epidemia si e' utilizzata la libreria grafica SFML, che fornisce classi e funzioni, da completare con parametri adeguati, per la creazione di due finestre interattive. La prima, chiamata "My epidemic", rappresenta ad ogni iterazione la situazione della griglia; si e' deciso di rappresentare con i seguenti colori i vari stati delle celle: 
--"Susceptible" = Blue
--"Infected" = Red
--"Recovered" = Yellow
--"Quarantine" = White
--"Empty" = Black
+Gli eseguibili di questi file vengono generati con l’invio del comando “make” da terminale e se mandati in esecuzione indicano lo stato dei test. In alternativa “cmake” fornisce il comando `ctest`, che esegue automaticamente tutti i file indicati come test in “CMakeLists.txt”.
 
+## DESCRIZIONE DEL FORMATO OUTPUT
+
+Per rappresentare l'andamento dell'epidemia si e' utilizzata la libreria grafica SFML, che fornisce classi e funzioni, da completare con parametri adeguati, per la creazione di due finestre interattive. La prima, chiamata "My epidemic", rappresenta ad ogni iterazione la situazione della griglia; si e' deciso di rappresentare con i seguenti colori i vari stati delle celle: 
+* "Susceptible" = Blue
+* "Infected" = Red
+* "Recovered" = Yellow
+* "Quarantine" = White
+* "Empty" = Black
+
+/*image*/
 
 La seconda,"Legend", e' la legenda della finestra grafica. Sono presenti anche due frecce, con a fianco le scritte "Slower" e "Faster", per indicare che e' possibile aumentare o diminuire il tempo di attesa tra ogni iterazione attraverso la tastiera. [5]
 
+/*image*/
 
 Le due finestre sono direttamente collegate di modo che la richiesta di chiusura della finestra principale comporta anche la chiusura della legenda, mentre il contrario non avviene. La finestra principale evolve autonomamente, fermandosi quando non sono piu' presenti celle "Infected" nella griglia, terminando dopo un breve arco di tempo (3 s). [1]
 A questo punto tutti i dati relativi all'epidemia sono trascritti nel file di testo "trend.txt" dalla funzione "trend". Viene quindi aperto il programma "ROOT" e, eseguendo la macro "graph.cpp", viene creato il file "ModelloSir.gif" che rappresenta l'andamento dei parametri "Susceptible", "Infected" e "Recovered" in funzione del tempo. I colori nel grafico creato da "ROOT" seguono quelli della finestra grafica di SFML. [8]
-                                                            
-  
 
+/*image*/
 
-STRATEGIA DI TEST
+## STRATEGIA DI TEST
 
 Per i test viene utilizzato il testing framework “doctest”.
 
@@ -127,57 +135,33 @@ Il secondo test riguarda la funzione “epidemic”, dunque anche “infection�
 I parametri dell’epidemia vengono generati casualmente secondo distribuzioni uniformi, questa volte in range più ampi, in modo da testare i casi limite. Il test sfrutta la funzione “situation”, la quale però, come descritto in precedenza, ritorna la situazione della griglia all’iterazione precedente. Per questo motivo il controllo sulla situazione successiva allo scoppio dell’epidemia (“infection”) viene fatta in seguito alla prima evoluzione (“epidemic”). Ad ogni iterazione viene fatto il controllo che il numero totale di celle vive, ossia S+I+R, sia costante, come previsto dal modello. Infine viene verificato, attraverso la funzione “avg_time”, che il tempo medio effettivo sia comparabile (con un’incertezza di 0.5) col parametro di input “avgTime”, e dunque che il metodo scelto (“Hit or Miss”) funzioni correttamente. [6]
 Il test “testing sfml” della classe representBoard parte dalla creazione di un vettore di stati Empty, poi passato alla classe che ne genera una griglia, testando la funzione costruttore. I primi controlli verificano che vengano generati abbastanza vertici per la rappresentazione del vettore e che questi siano neri, come previsto per lo stato. In seguito, si modifica il vettore aggiungendo stati “Infected” e si controlla che anche la board converta un numero adeguato di vertici al colore rosso.[7]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-INTERPRETAZIONE DEI RISULTATI OTTENUTI
+## INTERPRETAZIONE DEI RISULTATI OTTENUTI
 
 Di seguito si presentano tre esempi di epidemia che dimostrano come il variare del raggio di azione del virus e l’opzione “quarantena” influiscano sull’evoluzione dell’epidemia.
 
 -Caso 1 (raggio = 1, quarantena)
 
-
+/*image*/
+/*image*/
 
 -Caso 2 (raggio = 1, no quarantena)
 
-
-
-
+/*image*/
+/*image*/
 
 Caso 3 (raggio = 3, quarantena)
 
-
+/*image*/
+/*image*/
 
 I primi due casi differiscono solamente per l’opzione quarantena. Si nota che nel caso 1 il numero di suscettibili si stabilizza intorno a 1700, a differenza del caso 2, in cui tende a 0. Dunque l’opzione quarantena garantisce che una parte della popolazione non si infetti, e varia considerevolmente l’andamento dell’epidemia.
 Il caso 3 differisce dal caso 2 solamente per il valore del raggio d’azione, settato a 3. Nonostante sia implementata l’opzione quarantena, l’epidemia evolve molto rapidamente al numero massimo di infetti. Infatti il picco di infezione viene raggiunto entro i primi 5 giorni, a differenza del caso 1, circa 15 giorni, e del caso 2, circa 10 giorni.
-INFORMAZIONI AGGIUNTIVE
+
+## INFORMAZIONI AGGIUNTIVE
+
 L’implementazione corrente, rilasciata con la distribuzione Ubuntu 18.04, delle librerie utilizzate per la grafica di SFML ha una gestione degli oggetti che a seguito dell’ analisi di “-fsanitize=address” presenta dei memory leak (si veda appendice A), che non producono errori al runtime e che non possiamo correggere direttamente. Scegliamo quindi di tollerare questi messaggi del “-fsanitize=address” dopo aver verificato che non si traducono in problemi durante l’esecuzione della nostra applicazione.
 
-
-
-
-REFERENZE
+### REFERENZE
 
 [1] main.cpp
 [2] epidemic.cpp
@@ -188,11 +172,10 @@ REFERENZE
 [7] sfml.tests.cpp
 [8] graph.cpp
 [9] Modello SIR:
-https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118
-http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf
+[https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118](https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118)
+[http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf](http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf)
 
-
-Appendice A (output -fsanitize=address):
+### Appendice A (output -fsanitize=address):
 ==12759==ERROR: LeakSanitizer: detected memory leaks
 
 Direct leak of 400 byte(s) in 5 object(s) allocated from:
