@@ -1,9 +1,9 @@
 {
     TGraph * graph_s = new TGraph ("trend.txt","%lg %lg %*lg %*lg");
     graph_s->SetTitle (
-                       "epidemic's trend;"
+                       "Epidemic's trend;"
                        "t (days);"
-                       "population");
+                       "Population");
     TGraph * graph_i = new TGraph ("trend.txt","%lg %*lg %lg %*lg");
     TGraph * graph_r = new TGraph ("trend.txt","%lg %*lg %*lg %lg");
 
