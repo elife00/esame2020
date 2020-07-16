@@ -82,8 +82,7 @@ I parametri richiesti sono:
 * “range” - raggio d’azione del virus.
 
 Caso 1 - parametri inseriti in input \
-Questo caso è gestito dalla funzione “input_parameters”. Vengono chiesti in ordine i valori dei parametri all’utente, i quali vanno a riempire il vettore restituito dalla funzione.
-\
+Questo caso è gestito dalla funzione “input_parameters”. Vengono chiesti in ordine i valori dei parametri all’utente, i quali vanno a riempire il vettore restituito dalla funzione. \
 I valori di input vengono inizializzati come stringhe, in modo da gestire il caso in cui l’utente abbia inserito “,” al posto di “.” nei valori percentuali. All’interno di un “ciclo while” si utilizza l’algoritmo “stod” della libreria <string> per trasformare la stringa nel valore di tipo “double”, in seguito si controlla che questi valori rientrino in opportuni range, ossia [0,1] per le prime tre percentuali, [1,40] per il tempo medio di malattia e [1,10] per il raggio d’azione. Questi ultimi due range sono del tutto arbitrari. Si è cercato di scegliere valori in modo da garantire che l’epidemia rappresentata sia verosimile. [4]
 
 Caso 2 - parametri generati casualmente \
@@ -133,17 +132,17 @@ Per rappresentare l'andamento dell'epidemia si e' utilizzata la libreria grafica
 * "Quarantine" = White
 * "Empty" = Black
 
-/*image*/
+![SFMLwindow](assets/SFMLwindow.png)
 
 La seconda,"Legend", e' la legenda della finestra grafica. Sono presenti anche due frecce, con a fianco le scritte "Slower" e "Faster", per indicare che e' possibile aumentare o diminuire il tempo di attesa tra ogni iterazione attraverso la tastiera. [5]
 
-/*image*/
+![legend](assets/legend.png)
 
 Le due finestre sono direttamente collegate di modo che la richiesta di chiusura della finestra principale comporta anche la chiusura della legenda, mentre il contrario non avviene. La finestra principale evolve autonomamente, fermandosi quando non sono piu' presenti celle "Infected" nella griglia, terminando dopo un breve arco di tempo (3 s). [1]
 
 A questo punto tutti i dati relativi all'epidemia sono trascritti nel file di testo "trend.txt" dalla funzione "trend". Viene quindi aperto il programma "ROOT" e, eseguendo la macro "graph.cpp", viene creato il file "ModelloSir.gif" che rappresenta l'andamento dei parametri "Susceptible", "Infected" e "Recovered" in funzione del tempo. I colori nel grafico creato da "ROOT" seguono quelli della finestra grafica di SFML. [8]
 
-/*image*/
+![graph](assets/graph.png)
 
 ## STRATEGIA DI TEST
 
@@ -162,18 +161,18 @@ Di seguito si presentano tre esempi di epidemia che dimostrano come il variare d
 
 -Caso 1 (raggio = 1, quarantena)
 
-/*image*/
-/*image*/
+![parametersC1](assets/parametersC1.png)
+![graphC1](assets/graphC1.png)
 
 -Caso 2 (raggio = 1, no quarantena)
 
-/*image*/
-/*image*/
+![parametersC2](assets/parametersC2.png)
+![graphC2](assets/graphC2.png)
 
 Caso 3 (raggio = 3, quarantena)
 
-/*image*/
-/*image*/
+![parametersC2](assets/parametersC3.png)
+![graphC3](assets/graphC3.png)
 
 I primi due casi differiscono solamente per l’opzione quarantena. Si nota che nel caso 1 il numero di suscettibili si stabilizza intorno a 1700, a differenza del caso 2, in cui tende a 0. Dunque l’opzione quarantena garantisce che una parte della popolazione non si infetti, e varia considerevolmente l’andamento dell’epidemia.
 
