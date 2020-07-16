@@ -188,17 +188,12 @@ L’implementazione corrente, rilasciata con la distribuzione Ubuntu 18.04, dell
 
 ### REFERENZE
 
-[1] main.cpp
-
-[2] epidemic.cpp
-
-[3] epidemic.hpp \'n\
-[4] functions.hpp
-
-[5] sfml.hpp
-
-[6] epidemic.tests.cpp
-
+[1] main.cpp \
+[2] epidemic.cpp \
+[3] epidemic.hpp \
+[4] functions.hpp \
+[5] sfml.hpp \
+[6] epidemic.tests.cpp \
 [7] sfml.tests.cpp
 
 [8] graph.cpp
