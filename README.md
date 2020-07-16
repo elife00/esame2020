@@ -44,7 +44,7 @@ Premessa: si è scelto di utilizzare l’intero [(y - 1) * n_ + (x - 1)] per ind
 
 Attraverso un doppio "ciclo for” vengono analizzate le singole celle della griglia in modo da determinare gli stati che andranno a costituire la nuova griglia “next”, che rappresenta la popolazione alla successiva iterazione. La funzione si basa sulla generazione di numeri casuali attraverso la libreria <random>.
   
-Caso 1 – la cella in esame è suscettibile. Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact”. Questo numero, chiamato “infected”, e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un
+** Caso 1 – la cella in esame è suscettibile. Vengono contate le celle infette nel raggio d’azione del virus attraverso la funzione “contact”. Questo numero, chiamato “infected”, e “pInf” costituiscono l’input dell’algoritmo “std::binomial_distribution“, che genera un
 numero intero casuale nel range [0,infected] secondo una distribuzione binomiale, il quale rappresenta quante tra le interazioni totali hanno avuto successo, ossia hanno portato all’infezione della cella. 
 Si agisce poi sulla nuova griglia “next”. Se il numero casuale è maggiore di 0, la cella i-esima viene settata ad "infected", alternativamente viene settata a “Susceptible”, ossia non subisce alcuna modifica.
 
@@ -194,15 +194,11 @@ L’implementazione corrente, rilasciata con la distribuzione Ubuntu 18.04, dell
 [4] functions.hpp \
 [5] sfml.hpp \
 [6] epidemic.tests.cpp \
-[7] sfml.tests.cpp
-
-[8] graph.cpp
-
-[9] Modello SIR:
-
-[https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118](https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118)
-
-[http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf](http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf)
+[7] sfml.tests.cpp \
+[8] graph.cpp \
+[9] Modello SIR: \
+[https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118](https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118) \
+[http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf](http://www.science.unitn.it/~anal1/biomat/note/epidem_omog.pdf) \
 
 ### Appendice A (output -fsanitize=address):
 ```
