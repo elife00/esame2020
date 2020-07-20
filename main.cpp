@@ -7,6 +7,8 @@
 #include "SFML/Window.hpp"
 #include <thread>
 
+//https://www.sfml-dev.org/tutorials/2.5/graphics-vertex-array.php tilemap
+
 constexpr int dim = 120;
 
 int main() {
@@ -17,42 +19,11 @@ int main() {
   int avgTime;
   int range;
   std::array<double, 5> parameters;
-  int iterationTime = 250;
-  // cration of a legend of the colors used for differents states
-  std::array<sf::Text, 7> legend;
-  sf::Font font;
-  // load font from file
-  if (!font.loadFromFile("../aBlackLives.ttf")) {
-    throw std::runtime_error{"file not loaded"};
-  };
-  std::array<std::string, 7> string = {
-      "Susceptible", "Infectious",   "Recovered",     "Quarantine",
-      "Empty",       "<-        ->", "slower  faster"};
-  std::array<sf::Color, 5> color = {Blue, Red, Yellow, sf::Color::White,
-                                    sf::Color::Black};
-  for (int i = 0; i != 5; ++i) {
-    legend[i].setFont(font);
-    legend[i].setString(string[i]);
-    legend[i].setCharacterSize(22);
-    legend[i].setFillColor(color[i]);
-    legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
-                          (i + 1) * 40);
-  }
-  legend[4].setOutlineColor(sf::Color::White);
-  legend[4].setOutlineThickness(2);
-
-  for (int i = 5; i != 7; ++i) {
-    legend[i].setFont(font);
-    legend[i].setString(string[i]);
-    legend[i].setCharacterSize(17);
-    legend[i].setFillColor(color[3]);
-    legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
-                          (i + 2) * 40);
-  }
 
   std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
                "will be produced a random epidemic). (Y/N): "
             << '\n';
+    
   char ans;
   std::cin >> ans;
   while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n') {
@@ -64,6 +35,7 @@ int main() {
   } else if (ans == 'n' || ans == 'N') {
     parameters = random_parameters();
   }
+    
   density = parameters[0];
   pInf = parameters[1];
   percInf = parameters[2];
@@ -74,18 +46,52 @@ int main() {
       parameters[4]); // it's better to force the convertion to integer
   bool quarantine = input_quarantine();
 
-  int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50;
+    
+    int iterationTime = 250;
+    // cration of a legend of the colors used for differents states
+    std::array<sf::Text, 7> legend;
+    sf::Font font;
+    // load font from file
+    if (!font.loadFromFile("../aBlackLives.ttf")) { //upload + controllo obbligatorio sfml
+      throw std::runtime_error{"file not loaded"};
+    };
+    std::array<std::string, 7> string = {
+        "Susceptible", "Infectious",   "Recovered",     "Quarantine",
+        "Empty",       "<-        ->", "slower  faster"};
+    std::array<sf::Color, 5> color = {Blue, Red, Yellow, sf::Color::White,
+                                      sf::Color::Black};
+    for (int i = 0; i != 5; ++i) {
+      legend[i].setFont(font);
+      legend[i].setString(string[i]);
+      legend[i].setCharacterSize(22);
+      legend[i].setFillColor(color[i]);
+      legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
+                            (i + 1) * 40); //per metterlo centrale usiamo getL.. che ci da la misura del Text - origine x, origine y
+    }
+    legend[4].setOutlineColor(sf::Color::White); //serve il bordo bianco
+    legend[4].setOutlineThickness(2);
+
+    for (int i = 5; i != 7; ++i) {
+      legend[i].setFont(font);
+      legend[i].setString(string[i]);
+      legend[i].setCharacterSize(17);
+      legend[i].setFillColor(color[3]);
+      legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
+                            (i + 2) * 40);
+    }
+    
+  int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50; //funzione che restituisce le dimensioni del dekstop - la window e la fa 3/4 + 50 pixel (proporzionata)
   sf::RenderWindow epidemicWindow(sf::VideoMode(windowSize, windowSize),
-                                  "My epidemic");
-  sf::RenderWindow legendWindow(sf::VideoMode(200, 400), "Legend");
+                                  "My epidemic"); //classe che crea le finestre
+  sf::RenderWindow legendWindow(sf::VideoMode(200, 400), "Legend"); //pixel
   epidemicWindow.setVerticalSyncEnabled(true);
 
   // change the position of the window (relatively to the desktop)
-  epidemicWindow.requestFocus();
+  epidemicWindow.requestFocus(); //mette la window in primo piano
   epidemicWindow.setPosition(sf::Vector2i(
       (sf::VideoMode::getDesktopMode().width - epidemicWindow.getSize().x) / 2,
       (sf::VideoMode::getDesktopMode().height - epidemicWindow.getSize().x) /
-          2));
+          2)); //posizione centrata
   legendWindow.requestFocus();
   legendWindow.setPosition(sf::Vector2i(
       (sf::VideoMode::getDesktopMode().width + windowSize) / 2.,
@@ -98,7 +104,7 @@ int main() {
   while (epidemicWindow.isOpen()) {
     // check all the window's events that were triggered since the last
     // iteration of the loop
-    sf::Event event;
+    sf::Event event;//tipo di sfml - rileva gli eventi - interazione che stabilisci tu
     while (epidemicWindow.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         epidemicWindow.close();
@@ -111,23 +117,24 @@ int main() {
         legendWindow.close();
       }
     }
-    // crate the graphic representation of the population
+    // create the graphic representation of the population
     representBoard rappresentation = population.draw();
+    // crea un oggetto rappresentBoard passandogli il population_
     rappresentation.setPosition(epidemicWindow.getSize().x / 2,
                                 epidemicWindow.getSize().y / 2);
     // draw the board of the population
-    epidemicWindow.clear(sf::Color::Black);
-    epidemicWindow.draw(rappresentation);
+    epidemicWindow.clear(sf::Color::Black); //sfondo
+    epidemicWindow.draw(rappresentation); //chiami l'oggetto da rappresentare
     epidemicWindow.display();
 
     // draw the legend
     legendWindow.clear(sf::Color::Black);
     for (int i = 0; i != 7; ++i)
       legendWindow.draw(legend[i]);
-    legendWindow.display();
+      legendWindow.display();
 
     // commands for the end of epidemy
-    if (population.end() == 0) {
+    if (population.end()) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
       legendWindow.close();

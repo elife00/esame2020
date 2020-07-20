@@ -65,6 +65,8 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
 
   std::random_device rd;
   std::mt19937 gen(rd());
+  
+  std::uniform_real_distribution<> u_dis(0., 1.0);
 
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
@@ -73,10 +75,10 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
       if (board_[coordinate] == S) {
         ++sit.s;
         int infected = contact(x, y, range);
+          
+        std::binomial_distribution<> bin_dis(infected, pInf); //cannot be outside
 
-        std::binomial_distribution<> dis(infected, pInf);
-
-        if (dis(gen) > 0) {
+        if (bin_dis(gen) > 0) {
           next.set(x, y, I);
         } else {
           next.set(x, y, S);
@@ -84,13 +86,11 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
       }
       if (board_[coordinate] == I) {
         ++sit.i;
-        ++next.stay_[coordinate];
-
-        std::uniform_real_distribution<> dis(0., 1.0);
+          ++next.stay_[coordinate];
 
         int iDays = next.stay_[coordinate];
 
-        if (dis(gen) <= 1. / avgTime) {
+        if (u_dis(gen) <= 1. / avgTime) {
           next.set(x, y, R);
         } else if (iDays >= 0.5 * avgTime && quarantine) {
           next.set(x, y, Q);
@@ -106,9 +106,7 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
         ++sit.i;
         ++next.stay_[coordinate];
 
-        std::uniform_real_distribution<> dis(0., 1.0);
-
-        if (dis(gen) <= 1. / avgTime) {
+        if (u_dis(gen) <= 1. / avgTime) {
           next.set(x, y, R);
         } else {
           next.set(x, y, Q);
@@ -135,7 +133,7 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   return next;
 }
 
-representBoard Board::draw() {
+representBoard Board::draw() { //we need access to board_
   representBoard rappresentation(board_);
   return rappresentation;
 }
@@ -163,14 +161,15 @@ void Board::trend() {
   fout.close();
 }
 
-Situation Board::situation() { return evolution_.back(); }
+Situation Board::situation() const& { return evolution_.back(); } //ERRORE: deve essere const&
 
-int Board::end() {
-  int i = 0;
+bool Board::end() { // ERRORE: abbiamo usato un int ma è più efficiente un bool
+  bool i = true;
   for (auto const &v : board_) {
-    if (v == I || v == Q) {
-      ++i;
-    }
+      if (v == I || v == Q) {
+          i = false;
+          break;
+      }
   }
   return i;
 }
