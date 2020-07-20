@@ -71,9 +71,9 @@ public: // the constructor sets all alive cells (people) to susceptible and than
 
   void trend();
 
-  Situation situation();
+  Situation situation() const&;
 
-  int end();
+  bool end();
 };
 
 #endif /* epidemic_hpp */

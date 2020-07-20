@@ -22,6 +22,7 @@ TEST_CASE("testing sfml") {
   }
   std::random_device g;
   std::shuffle(vector.begin(), vector.end(), g);
+    //riassegnamo il nuovo vector a represent board
   board = representBoard(vector);
   vertices = board.vertices();
   int infected = 0;
