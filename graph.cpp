@@ -28,7 +28,6 @@
   graph_r->SetMarkerStyle(kFullDotLarge);
   graph_r->SetMarkerColor(800);
   graph_r->SetMarkerSize(0.3);
->>>>>>> divided
 
   // The canvas on which we'll draw the graph
   TCanvas *mycanvas = new TCanvas();

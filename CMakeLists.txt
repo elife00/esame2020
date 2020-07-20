@@ -36,4 +36,3 @@ target_compile_options(run_sfml_tests PRIVATE -Wall -Wextra -fsanitize=address)
 target_include_directories(run_sfml_tests PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 target_link_libraries(run_sfml_tests sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 add_test(NAME sfml_tests COMMAND run_sfml_tests)
->>>>>>> divided

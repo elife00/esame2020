@@ -129,9 +129,10 @@ int main() {
 
     // draw the legend
     legendWindow.clear(sf::Color::Black);
-    for (int i = 0; i != 7; ++i)
+    for(int i = 0; i != 7; ++i)
       legendWindow.draw(legend[i]);
-      legendWindow.display();
+    
+    legendWindow.display();
 
     // commands for the end of epidemy
     if (population.end()) {
