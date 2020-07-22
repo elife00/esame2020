@@ -140,7 +140,7 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   return next;
 }
 
-representBoard Board::draw() { // we need access to board_ (scelta opzionale)
+representBoard Board::draw() const { // we need access to board_ (scelta opzionale)
   representBoard rappresentation(board_);
   return rappresentation;
 }

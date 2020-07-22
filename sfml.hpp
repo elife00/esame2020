@@ -43,7 +43,7 @@ private: // virtual utilizza la funzione più vicina alla mia classe
   sf::VertexArray vertices_; // eredita solo drawable
 
 public:
-  representBoard(std::vector<State> &vector)
+  representBoard(std::vector<State> const& vector)
       : gridSize_{static_cast<int>(std::sqrt(vector.size()))} {
     vertices_.setPrimitiveType(sf::Quads); // reorganise vertices into quads
     vertices_.resize(gridSize_ * gridSize_ *
