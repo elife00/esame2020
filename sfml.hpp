@@ -101,4 +101,34 @@ public:
   sf::VertexArray vertices() { return vertices_; } // for the tests
 };
 
+template <unsigned LL, unsigned AL = 0> // Legend's lines and Added lines
+std::array<sf::Text, LL+AL> representLegend(sf::Font const& font, std::array<std::string, LL+AL> const& string,
+                               std::array<sf::Color, LL> const& color) {
+  std::array<sf::Text, LL + AL> legend;
+  for (int i = 0; i != LL; ++i) {
+    legend[i].setFont(font);
+    legend[i].setString(string[i]);
+    legend[i].setCharacterSize(22);
+    legend[i].setFillColor(color[i]);
+    legend[i].setPosition(
+        100 - legend[i].getLocalBounds().width / 2,
+        (i + 1) * 40); // per metterlo centrale usiamo getL.. che ci da la
+                       // misura del Text - origine x, origine y
+    if (color[i] == sf::Color::Black) {
+      legend[i].setOutlineColor(sf::Color::White); // serve il bordo bianco
+      legend[i].setOutlineThickness(2);
+    }
+  }
+
+  for (int i = LL; i != LL + AL; ++i) {
+    legend[i].setFont(font);
+    legend[i].setString(string[i]);
+    legend[i].setCharacterSize(17);
+    legend[i].setFillColor(sf::Color::White);
+    legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
+                          (i + 2) * 40);
+  }
+  return legend;
+}
+
 #endif

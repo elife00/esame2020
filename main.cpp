@@ -7,8 +7,6 @@
 #include "SFML/Window.hpp"
 #include <thread>
 
-//https://www.sfml-dev.org/tutorials/2.5/graphics-vertex-array.php tilemap
-
 constexpr int dim = 120;
 
 int main() {
@@ -48,8 +46,6 @@ int main() {
 
     
     int iterationTime = 250;
-    // cration of a legend of the colors used for differents states
-    std::array<sf::Text, 7> legend;
     sf::Font font;
     // load font from file
     if (!font.loadFromFile("../aBlackLives.ttf")) { //upload + controllo obbligatorio sfml
@@ -60,6 +56,9 @@ int main() {
         "Empty",       "<-        ->", "slower  faster"};
     std::array<sf::Color, 5> color = {Blue, Red, Yellow, sf::Color::White,
                                       sf::Color::Black};
+    // cration of a legend of the colors used for differents states
+    std::array<sf::Text, 7> legend = representLegend<5, 2>(font, string, color);
+    /*
     for (int i = 0; i != 5; ++i) {
       legend[i].setFont(font);
       legend[i].setString(string[i]);
@@ -79,6 +78,7 @@ int main() {
       legend[i].setPosition(100 - legend[i].getLocalBounds().width / 2,
                             (i + 2) * 40);
     }
+    */
     
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. + 50; //funzione che restituisce le dimensioni del dekstop - la window e la fa 3/4 + 50 pixel (proporzionata)
   sf::RenderWindow epidemicWindow(sf::VideoMode(windowSize, windowSize),
