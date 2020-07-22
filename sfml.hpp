@@ -23,13 +23,14 @@ inline sf::Color Blue(0, 0, 255, 255);
 inline sf::Color Red(255, 0, 0, 255);
 inline sf::Color Yellow(255, 225, 024, 255);
 
-//dovevamo ereditare classi di sfml
+// dovevamo ereditare classi di sfml
 
 class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
 {
-private: //virtual utilizza la funzione più vicina alla mia classe
-  virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const { // protected in Drawable
+private: // virtual utilizza la funzione più vicina alla mia classe
+  virtual void draw(sf::RenderTarget &target,
+                    sf::RenderStates states) const { // protected in Drawable
     // apply the transform
     states.transform *=
         getTransform(); // Transform combining the
@@ -49,9 +50,10 @@ public:
                      4); // create enough vertices for the grid
     quadSize_ = static_cast<int>(sf::VideoMode::getDesktopMode().height * 3. /
                                  4. / gridSize_);
-          
+
     // set the origin to the center of the grid
-    sf::Transformable::setOrigin(gridSize_ * quadSize_ / 2, gridSize_ * quadSize_ / 2);
+    sf::Transformable::setOrigin(gridSize_ * quadSize_ / 2,
+                                 gridSize_ * quadSize_ / 2);
 
     // populate the vertex array, with one quad per state
     for (int i = 0; i < gridSize_; ++i)
@@ -96,7 +98,7 @@ public:
       }
   }
 
-  sf::VertexArray vertices() { return vertices_; } //for the tests
+  sf::VertexArray vertices() { return vertices_; } // for the tests
 };
 
 #endif

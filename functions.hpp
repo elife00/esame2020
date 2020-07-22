@@ -39,20 +39,22 @@ inline std::array<double, 5> input_parameters() {
   for (int i = 0; i != 5; ++i) {
     std::string string;
     std::string::size_type sz;
-      
+
     std::cout << output[i] << '\n';
     std::cin >> string;
 
-    parameters[i] = std::stod(string, &sz);//implementata usando c++ref
+    parameters[i] = std::stod(string, &sz); // implementata usando c++ref
     while (1) {
       if (checkComma(string)) {
         parameters[i] =
-            std::stod(string, &sz) + 0.1 * std::stod(string.substr(1 + sz)); // prende solo la prima
-      } else {                                                               // cifra decimale
-        parameters[i] = std::stod(string, &sz); //sz per forza come indirizzo
+            std::stod(string, &sz) +
+            0.1 * std::stod(string.substr(1 + sz)); // prende solo la prima
+      } else {                                      // cifra decimale
+        parameters[i] = std::stod(string, &sz); // sz per forza come indirizzo
       }
       // checking that the input values are in the ranges
-      if (i <= 2 && (parameters[i] <= 0 || parameters[i] >= 1)) { //ERRORE: assertion <=1 
+      if (i <= 2 &&
+          (parameters[i] <= 0 || parameters[i] >= 1)) { // ERRORE: assertion <=1
         std::cout << "Insert a value in the range 0-1 (percentage value): ";
         std::cin >> string;
       } else if (i == 3 && (parameters[i] < 1 || parameters[i] > 40)) {
