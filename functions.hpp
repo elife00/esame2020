@@ -1,5 +1,5 @@
-#ifndef functions_h
-#define functions_h
+#ifndef functions_hpp // FUNCTION_HPP
+#define functions_hpp // FUNCTION_HPP
 
 #include <array>
 //#include <cassert>
@@ -47,9 +47,9 @@ inline std::array<double, 5> input_parameters() {
     while (1) {
       if (checkComma(string)) {
         parameters[i] =
-            std::stod(string, &sz) + 0.1 * std::stod(string.substr(1 + sz));
-      } else {
-        parameters[i] = std::stod(string, &sz); //sz per forza by reference
+            std::stod(string, &sz) + 0.1 * std::stod(string.substr(1 + sz)); // prende solo la prima
+      } else {                                                               // cifra decimale
+        parameters[i] = std::stod(string, &sz); //sz per forza come indirizzo
       }
       // checking that the input values are in the ranges
       if (i <= 2 && (parameters[i] <= 0 || parameters[i] >= 1)) { //ERRORE: assertion <=1 

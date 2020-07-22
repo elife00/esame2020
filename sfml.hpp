@@ -29,7 +29,7 @@ class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
 {
 private: //virtual utilizza la funzione più vicina alla mia classe
-  virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+  virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const { // protected in Drawable
     // apply the transform
     states.transform *=
         getTransform(); // Transform combining the
@@ -39,7 +39,7 @@ private: //virtual utilizza la funzione più vicina alla mia classe
   }
   int quadSize_;
   int gridSize_;
-  sf::VertexArray vertices_;
+  sf::VertexArray vertices_; // eredita solo drawable
 
 public:
   representBoard(std::vector<State> &vector)

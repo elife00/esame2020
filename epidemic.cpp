@@ -1,11 +1,13 @@
 #include "epidemic.hpp"
 
+std::vector<Situation> Board::evolution_{};
+
 State Board::get(int x, int y) const {
   return (x < 1 || x > n_ || y < 1 || y > n_) ? E
                                               : board_[(y - 1) * n_ + (x - 1)];
 }
 
-void Board::set(int &x, int &y, State s) {
+void Board::set(int x, int y, State s) {
   assert(x > 0 && x <= n_ && y > 0 && y <= n_);
   board_[(y - 1) * n_ + (x - 1)] = s;
 }
@@ -47,7 +49,7 @@ void Board::swap(int x, int y) {
   int x2 = x + i;
   int y2 = y + j;
   if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 &&
-      y2 <= n_ && // if i=j=0 the cell doesn't move
+      y2 <= n_ && // if i = j = 0 the cell doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
@@ -58,15 +60,15 @@ void Board::swap(int x, int y) {
 
 Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
+  /*Situation sit = {0, 0, 0, 0};*/  Situation sit = {sit.t = ++evolution_.back().t + 1, 0, 0, 0};
   Board next(n_, density_);
-  next.evolution_ = evolution_;
+  //next.evolution_ = evolution_;  /*static evolution*/
   next.stay_ = stay_;
-  Situation sit = {0, 0, 0, 0};
 
   std::random_device rd;
   std::mt19937 gen(rd());
   
-  std::uniform_real_distribution<> u_dis(0., 1.0);
+  std::uniform_real_distribution<> u_dis(0., 1.0); // portata fuori
 
   for (int x = 1; x != n_ + 1; ++x) {
     for (int y = 1; y != n_ + 1; ++y) {
@@ -122,31 +124,35 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
     for (int y = 1; y != n_ + 1; ++y) {
       int coordinate = (y - 1) * n_ + (x - 1);
       if (board_[coordinate] != E && board_[coordinate] != Q) {
-        next.swap(x, y);
+        next.swap(x, y); 
       }
     }
   }
 
   sit.t = ++evolution_.back().t;
-  next.evolution_.push_back({sit});
+  //next.evolution_.push_back(sit);
+  Board::evolution_.back() = sit;
 
   return next;
 }
 
-representBoard Board::draw() { //we need access to board_
+representBoard Board::draw() { // we need access to board_
   representBoard rappresentation(board_);
   return rappresentation;
 }
 
 double Board::avg_time() {
-  double i = 0.;
+  int i = 0.;
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
+  //i = std::count_if(stay_.begin(), stay_.end(), [](int i){return i != 0;});
+  
   for (auto v : stay_) {
     if (v != 0) {
       ++i;
     }
   }
-  return a / i;
+  
+  return static_cast<double> (a) / i;
 }
 
 void Board::trend() {
@@ -161,9 +167,9 @@ void Board::trend() {
   fout.close();
 }
 
-Situation Board::situation() const& { return evolution_.back(); } //ERRORE: deve essere const&
+Situation Board::situation() const { return evolution_.back(); } 
 
-bool Board::end() { // ERRORE: abbiamo usato un int ma è più efficiente un bool
+bool Board::end() { // ERRORE: abbiamo usato un int ma doveva essere un bool
   bool i = true;
   for (auto const &v : board_) {
       if (v == I || v == Q) {
