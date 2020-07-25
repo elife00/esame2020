@@ -171,7 +171,7 @@ Situation Board::situation() const {
 bool Board::end()
     const { // ERRORE: abbiamo usato un int ma è più efficiente un bool
   bool i = true;
-  for (auto const &v : board_) {
+  for (auto v : board_) {
     if (v == I || v == Q) {
       i = false;
       break;
