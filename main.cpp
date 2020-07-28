@@ -35,8 +35,8 @@ int main() {
   }
     
   density = parameters[0];
-  pInf = parameters[1];
-  percInf = parameters[2];
+  percInf = parameters[1];
+  pInf = parameters[2];
   avgTime =
       static_cast<int>(parameters[3]); // in case of input of parameters it's
                                        // generated a vector of double
