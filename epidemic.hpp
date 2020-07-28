@@ -35,17 +35,29 @@ private:
   static std::vector<Situation>
       evolution_; // saving the situation at every iteration
 
-public: // the constructor sets all alive cells (people) to susceptible and than
-        // shuffles
+public: // the constructor sets all alive cells (people) 
+        // to susceptible and than shuffles
   Board(int n, double d) : n_{n}, density_{d}, board_(n * n), stay_(n * n) {
     assert(density_ > 0 && density_ <= 1.);
-    int people = static_cast<int>(n * n * density_);
+    int people = static_cast<int>(n * n * d);
+    
     std::fill(board_.begin(), board_.begin() + people, S);
     std::fill(board_.begin() + people, board_.end(), E);
+    
+    /* OLD VERSION
+    for (int i = 0; i < people; ++i) {
+      board_[i] = S;
+    }
+    for (int i = people; i < n_ * n_; ++i) {
+      board_[i] = E;
+    }
+    */
+    
     std::random_device seed;
     std::mt19937 g(seed());
     std::shuffle(board_.begin(), board_.end(), g);
-    evolution_.push_back({0, static_cast<int>(n * n * d), 0, 0});
+    
+    evolution_.push_back({0, people, 0, 0});
   }
 
   State const &get(int x, int y) const;

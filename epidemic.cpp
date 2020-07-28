@@ -1,10 +1,9 @@
 #include "epidemic.hpp"
 
 // static member variables
-
 std::vector<Situation> Board::evolution_;
 
-State const &Board::get(int x, int y) const {
+State const& Board::get(int x, int y) const {
   return (x < 1 || x > n_ || y < 1 || y > n_) ? E
                                               : board_[(y - 1) * n_ + (x - 1)];
 }
@@ -52,7 +51,7 @@ void Board::swap(int x, int y) {
   int x2 = x + i;
   int y2 = y + j;
   if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 &&
-      y2 <= n_ && // if i=j=0 the cell doesn't move
+      y2 <= n_ && // if i = j = 0 the cell doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
@@ -65,8 +64,11 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
   Situation sit = {evolution_.back().t + 1, 0, 0, 0};
   Board next(n_, density_);
-  // next.evolution_ = evolution_;
   next.stay_ = stay_;
+  
+  // OLD VERSION
+  //Situation sit = {};
+  //next.evolution_ = evolution_;
 
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -132,9 +134,9 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
       }
     }
   }
-
-  // sit.t = ++evolution_.back().t;
-  // next.evolution_.push_back(sit);
+  // OLD VERSION
+  //sit.t = ++evolution_.back().t;
+  //next.evolution_.push_back(sit);
   evolution_.back() = sit;
 
   return next;
@@ -146,9 +148,19 @@ representBoard Board::draw() const { // we need access to board_ (scelta opziona
 }
 
 double Board::avg_time() const {
-  int i =
-      std::count_if(stay_.begin(), stay_.end(), [](int i) { return i != 0; });
+  int i = std::count_if(stay_.begin(), stay_.end(), [](int i){return i != 0;});
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
+  
+  /* OLD VERSION
+  double i = 0.;
+  for (auto v : stay_) {
+    if (v != 0) {
+      ++i;
+    }
+  }
+  return a / i;
+  */
+  
   return static_cast<double>(a) / i;
 }
 
@@ -169,7 +181,7 @@ Situation Board::situation() const {
 } // ERRORE: deve essere const
 
 bool Board::end()
-    const { // ERRORE: abbiamo usato un int ma è più efficiente un bool
+    const { // ERRORE: abbiamo usato un int ma è un bool
   bool i = true;
   for (auto const &v : board_) {
     if (v == I || v == Q) {

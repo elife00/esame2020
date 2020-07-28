@@ -2,8 +2,9 @@
 #define sfml_h
 
 #include "SFML/Graphics.hpp"
-#include <array>
 #include <cmath>
+
+#include <array>
 #include <string>
 
 enum class State : char {
@@ -29,8 +30,8 @@ class representBoard : public sf::Drawable,     // to draw
                        public sf::Transformable // to transform, to rotate, ...
 {
 private: // virtual utilizza la funzione più vicina alla mia classe
-  virtual void draw(sf::RenderTarget &target,
-                    sf::RenderStates states) const { // protected in Drawable
+  void draw(sf::RenderTarget &target,
+                    sf::RenderStates states) const override { // protected in Drawable
     // apply the transform
     states.transform *=
         getTransform(); // Transform combining the
@@ -43,7 +44,7 @@ private: // virtual utilizza la funzione più vicina alla mia classe
   sf::VertexArray vertices_; // eredita solo drawable
 
 public:
-  representBoard(std::vector<State> const& vector)
+  representBoard(std::vector<State> const &vector)
       : gridSize_{static_cast<int>(std::sqrt(vector.size()))} {
     vertices_.setPrimitiveType(sf::Quads); // reorganise vertices into quads
     vertices_.resize(gridSize_ * gridSize_ *
@@ -102,8 +103,10 @@ public:
 };
 
 template <unsigned LL, unsigned AL = 0> // Legend's lines and Added lines
-std::array<sf::Text, LL+AL> representLegend(sf::Font const& font, std::array<std::string, LL+AL> const& string,
-                               std::array<sf::Color, LL> const& color) {
+std::array<sf::Text, LL + AL>
+representLegend(sf::Font const &font,
+                std::array<std::string, LL + AL> const &string,
+                std::array<sf::Color, LL> const &color) {
   std::array<sf::Text, LL + AL> legend;
   for (int i = 0; i != LL; ++i) {
     legend[i].setFont(font);
@@ -112,7 +115,7 @@ std::array<sf::Text, LL+AL> representLegend(sf::Font const& font, std::array<std
     legend[i].setFillColor(color[i]);
     legend[i].setPosition(
         100 - legend[i].getLocalBounds().width / 2,
-        (i + 1) * 40); // per metterlo centrale usiamo getL.. che ci da la
+        (i + 1) * 40); // per metterlo centrale usiamo getL. che ci da la
                        // misura del Text - origine x, origine y
     if (color[i] == sf::Color::Black) {
       legend[i].setOutlineColor(sf::Color::White); // serve il bordo bianco
