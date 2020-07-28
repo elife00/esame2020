@@ -45,7 +45,7 @@ int main() {
   bool quarantine = input_quarantine();
 
     
-    int iterationTime = 250;
+    std::chrono::microseconds iterationTime(250000);
     sf::Font font;
     // load font from file
     if (!font.loadFromFile("../aBlackLives.ttf")) { //upload + controllo obbligatorio sfml
@@ -53,11 +53,12 @@ int main() {
     };
     std::array<std::string, 7> string = {
         "Susceptible", "Infectious",   "Recovered",     "Quarantine",
-        "Empty",       "<-        ->", "slower  faster"};
+        "Empty", "<-        ->", "slower  faster"};
     std::array<sf::Color, 5> color = {Blue, Red, Yellow, sf::Color::White,
                                       sf::Color::Black};
     // cration of a legend of the colors used for differents states
     std::array<sf::Text, 7> legend = representLegend<5, 2>(font, string, color);
+    
     /*
     for (int i = 0; i != 5; ++i) {
       legend[i].setFont(font);
@@ -147,18 +148,18 @@ int main() {
     // control of interation time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
       // left key is pressed: faster
-      iterationTime -= 50;
-      std::cout << iterationTime << '\n';
+      iterationTime -= std::chrono::microseconds(50000);
+      //std::cout << iterationTime << '\n';
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
       // left key is pressed: slower
-      iterationTime += 50;
-      std::cout << iterationTime << '\n';
+      iterationTime += std::chrono::milliseconds(50);
+      //std::cout << iterationTime << '\n';
     }
     // evolution of the epidemic
     population = population.epidemic(pInf, avgTime, range, quarantine);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(iterationTime));
+    std::this_thread::sleep_for(iterationTime);
   }
   return 0;
 }
