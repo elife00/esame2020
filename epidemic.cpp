@@ -62,8 +62,8 @@ void Board::swap(int x, int y) {
 
 Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
-  Situation sit = {evolution_.back().t + 1, 0, 0, 0};
-  Board next(n_, density_);
+  Situation sit = {evolution_.back().t + 1, 0, 0, 0}; //before creating the new Board
+  Board next(n_, density_);  //here the constructor fills evolution_ whith the initial sit.
   next.stay_ = stay_;
   
   // OLD VERSION
@@ -137,7 +137,7 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   // OLD VERSION
   //sit.t = ++evolution_.back().t;
   //next.evolution_.push_back(sit);
-  evolution_.back() = sit;
+  evolution_.back() = sit; // just modifying the last sit. that comes from the constructor of next
 
   return next;
 }

@@ -117,6 +117,25 @@ inline std::array<double, 5> random_parameters() {
   return parameters;
 }
 
+inline std::array<double, 5> start () {
+    std::array<double, 5> parameters;
+    std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
+                 "will be produced a random epidemic). (Y/N): "
+              << '\n';
+    char ans;
+    std::cin >> ans;
+    while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n') {
+      std::cout << "Invalid answer. Enter Y or N : ";
+      std::cin >> ans;
+    }
+    if (ans == 'y' || ans == 'Y') {
+      parameters = input_parameters();
+    } else if (ans == 'n' || ans == 'N') {
+      parameters = random_parameters();
+    }
+    return parameters;
+}
+
 inline bool input_quarantine() {
   char ans2;
   bool quarantine = true;
