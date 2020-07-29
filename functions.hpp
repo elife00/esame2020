@@ -92,13 +92,13 @@ inline std::array<double, 5> random_parameters() {
   std::mt19937 gen(rd());
 
   std::uniform_real_distribution<> d(0.1, 0.75);
-  std::uniform_real_distribution<> perc(0.01, 0.2);
+  std::uniform_real_distribution<> rat_inf(0.001, 0.05);
   std::uniform_int_distribution<> t(5, 30);
   std::uniform_int_distribution<> r(1, 3);
 
   parameters[0] = d(gen);
-  parameters[1] = perc(gen);
-  parameters[2] = perc(gen);
+  parameters[1] = rat_inf(gen);
+  parameters[2] = d(gen);
   parameters[3] = t(gen);
   parameters[4] = r(gen);
 
@@ -117,23 +117,23 @@ inline std::array<double, 5> random_parameters() {
   return parameters;
 }
 
-inline std::array<double, 5> start () {
-    std::array<double, 5> parameters;
-    std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
-                 "will be produced a random epidemic). (Y/N): "
-              << '\n';
-    char ans;
+inline std::array<double, 5> start() {
+  std::array<double, 5> parameters;
+  std::cout << "Do you want to enter the epidemic's parameters? (Otherwise "
+               "will be produced a random epidemic). (Y/N): "
+            << '\n';
+  char ans;
+  std::cin >> ans;
+  while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n') {
+    std::cout << "Invalid answer. Enter Y or N : ";
     std::cin >> ans;
-    while (ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n') {
-      std::cout << "Invalid answer. Enter Y or N : ";
-      std::cin >> ans;
-    }
-    if (ans == 'y' || ans == 'Y') {
-      parameters = input_parameters();
-    } else if (ans == 'n' || ans == 'N') {
-      parameters = random_parameters();
-    }
-    return parameters;
+  }
+  if (ans == 'y' || ans == 'Y') {
+    parameters = input_parameters();
+  } else if (ans == 'n' || ans == 'N') {
+    parameters = random_parameters();
+  }
+  return parameters;
 }
 
 inline bool input_quarantine() {

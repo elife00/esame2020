@@ -3,7 +3,7 @@
 // static member variables
 std::vector<Situation> Board::evolution_;
 
-State const& Board::get(int x, int y) const {
+State const &Board::get(int x, int y) const {
   return (x < 1 || x > n_ || y < 1 || y > n_) ? E
                                               : board_[(y - 1) * n_ + (x - 1)];
 }
@@ -29,6 +29,7 @@ int Board::contact(int x, int y, int r) const {
 void Board::infection(double ratInf) {
   assert(ratInf > 0 && ratInf < 1);
   int infected = static_cast<int>(ratInf * density_ * n_ * n_);
+    if (infected == 0) {++infected;} // there's at least 1 infectious
   for (int i = 0, j = 0; i != infected; ++j) {
     if (board_[j] == S) {
       board_[j] = I;
@@ -44,14 +45,14 @@ void Board::infection(double ratInf) {
 void Board::swap(int x, int y) {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(-1, 1);
+  std::uniform_int_distribution<> dis(-5, 5);
 
   int i = dis(gen);
   int j = dis(gen);
   int x2 = x + i;
   int y2 = y + j;
   if (((i != 0) || (j != 0)) && x2 > 0 && x2 <= n_ && y2 > 0 &&
-      y2 <= n_ && // if i = j = 0 the cell doesn't move
+      y2 <= n_ && // if i = j = 0 or exits the board the cell doesn't move
       get(x2, y2) == E) {
     set(x2, y2, get(x, y));
     set(x, y, E);
@@ -62,13 +63,16 @@ void Board::swap(int x, int y) {
 
 Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
-  Situation sit = {evolution_.back().t + 1, 0, 0, 0}; //before creating the new Board
-  Board next(n_, density_);  //here the constructor fills evolution_ whith the initial sit.
+  Situation sit = {evolution_.back().t + 1, 0, 0,
+                   0}; // before creating the new Board
+  Board next(
+      n_,
+      density_); // here the constructor fills evolution_ whith the initial sit.
   next.stay_ = stay_;
-  
+
   // OLD VERSION
-  //Situation sit = {};
-  //next.evolution_ = evolution_;
+  // Situation sit = {};
+  // next.evolution_ = evolution_;
 
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -135,22 +139,25 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
     }
   }
   // OLD VERSION
-  //sit.t = ++evolution_.back().t;
-  //next.evolution_.push_back(sit);
-  evolution_.back() = sit; // just modifying the last sit. that comes from the constructor of next
+  // sit.t = ++evolution_.back().t;
+  // next.evolution_.push_back(sit);
+  evolution_.back() = sit; // just modifying the last sit. that comes from the
+                           // constructor of next
 
   return next;
 }
 
-representBoard Board::draw() const { // we need access to board_ (scelta opzionale)
+representBoard
+Board::draw() const { // we need access to board_ (scelta opzionale)
   representBoard rappresentation(board_);
   return rappresentation;
 }
 
 double Board::avg_time() const {
-  int i = std::count_if(stay_.begin(), stay_.end(), [](int i){return i != 0;});
+  int i =
+      std::count_if(stay_.begin(), stay_.end(), [](int i) { return i != 0; });
   int a = std::accumulate(stay_.begin(), stay_.end(), 0);
-  
+
   /* OLD VERSION
   double i = 0.;
   for (auto v : stay_) {
@@ -160,7 +167,7 @@ double Board::avg_time() const {
   }
   return a / i;
   */
-  
+
   return static_cast<double>(a) / i;
 }
 
@@ -180,8 +187,7 @@ Situation Board::situation() const {
   return evolution_.back();
 } // ERRORE: deve essere const
 
-bool Board::end()
-    const { // ERRORE: abbiamo usato un int ma è un bool
+bool Board::end() const { // ERRORE: abbiamo usato un int ma è un bool
   bool i = true;
   for (auto v : board_) {
     if (v == I || v == Q) {
