@@ -25,7 +25,7 @@ TEST_CASE("testing contact(), get() and set()") {
 }
 
 // every check is done on the previous situation
-TEST_CASE("testing epidemic, infection(), avg_time()") {
+  TEST_CASE("testing epidemic, infection(), avg_time()") {
   int dim = 120;
 
   double density;
@@ -52,17 +52,23 @@ TEST_CASE("testing epidemic, infection(), avg_time()") {
   Situation So = {0, S, 0, 0};
 
   Board population(dim, density);
-
-  CHECK(population.situation() == So);
+  //Board::push_back(So);
+  //CHECK(population.situation() == So);
 
   population.infection(ratInf);
-  population = population.epidemic(pInf, avgTime, range, false);
-
+  auto [pop1,sit1] =  population.epidemic(pInf, avgTime, range, false);
+  population = pop1;
+  Board::push_back(sit1);
+    
   Situation Suno = {1, S - I, I, 0};
-  CHECK(population.situation() == Suno);
+  CHECK(sit1 == Suno);
+
 
   while (population.situation().i != 0) {
-    population = population.epidemic(pInf, avgTime, range, false);
+    auto [pop,sit] =  population.epidemic(pInf, avgTime, range, false);
+    population = pop;
+    Board::push_back(sit);
+      
     CHECK((population.situation().i + population.situation().s +
                population.situation().r ==
            S));
@@ -70,3 +76,4 @@ TEST_CASE("testing epidemic, infection(), avg_time()") {
 
   CHECK(population.avg_time() == doctest::Approx(avgTime).epsilon(0.5));
 }
+

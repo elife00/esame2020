@@ -2,6 +2,7 @@
 #define epidemic_hpp
 
 #include "sfml.hpp"
+#include<utility>
 
 #include <algorithm>
 #include <cassert>
@@ -56,13 +57,11 @@ public: // the constructor sets all alive cells (people)
     std::random_device seed;
     std::mt19937 g(seed());
     std::shuffle(board_.begin(), board_.end(), g);
-
-    evolution_.push_back({0, people, 0, 0});
   }
 
   State const &get(int x, int y) const;
 
-  void infection(double ratInf);
+  int infection(double ratInf);
 
   int contact(int x, int y, int r) const;
 
@@ -70,7 +69,7 @@ public: // the constructor sets all alive cells (people)
 
   void swap(int x, int y);
 
-  Board epidemic(double pInf, int avgTime, int range, bool quarantine);
+  std::pair<Board,Situation> epidemic(double pInf, int avgTime, int range, bool quarantine);
 
   representBoard draw() const;
 
@@ -79,6 +78,10 @@ public: // the constructor sets all alive cells (people)
   void trend() const;
 
   Situation situation() const;
+  
+  static void push_back (Situation const& s) {
+      evolution_.push_back(s);
+    }
 
   bool end() const; // necessary becouse the first situation is (0 S 0 0)
 };

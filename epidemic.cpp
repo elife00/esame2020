@@ -26,7 +26,7 @@ int Board::contact(int x, int y, int r) const {
   return count;
 }
 
-void Board::infection(double ratInf) {
+int Board::infection(double ratInf) {
   assert(ratInf > 0 && ratInf < 1);
   int infected = static_cast<int>(ratInf * density_ * n_ * n_);
     if (infected == 0) {++infected;} // there's at least 1 infectious
@@ -40,12 +40,13 @@ void Board::infection(double ratInf) {
   std::random_device seed;
   std::mt19937 g(seed());
   std::shuffle(board_.begin(), board_.end(), g);
+    return infected;
 }
 
 void Board::swap(int x, int y) {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(-5, 5);
+  std::uniform_int_distribution<> dis(-3, 3);
 
   int i = dis(gen);
   int j = dis(gen);
@@ -61,7 +62,7 @@ void Board::swap(int x, int y) {
   }
 }
 
-Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
+std::pair<Board,Situation> Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   assert(pInf > 0 && pInf < 1 && avgTime > 0 && avgTime < 40 && range > 0);
   Situation sit = {evolution_.back().t + 1, 0, 0,
                    0}; // before creating the new Board
@@ -141,10 +142,10 @@ Board Board::epidemic(double pInf, int avgTime, int range, bool quarantine) {
   // OLD VERSION
   // sit.t = ++evolution_.back().t;
   // next.evolution_.push_back(sit);
-  evolution_.back() = sit; // just modifying the last sit. that comes from the
+  //evolution_.back() = sit; // just modifying the last sit. that comes from the
                            // constructor of next
-
-  return next;
+  
+    return {next,sit};
 }
 
 representBoard
@@ -186,6 +187,7 @@ void Board::trend() const {
 Situation Board::situation() const {
   return evolution_.back();
 } // ERRORE: deve essere const
+
 
 bool Board::end() const { // ERRORE: abbiamo usato un int ma è un bool
   bool i = true;

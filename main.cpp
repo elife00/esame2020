@@ -65,8 +65,9 @@ int main() {
       (sf::VideoMode::getDesktopMode().height - legendWindow.getSize().y) / 2));
 
   Board population(dim, density);
+  Board::push_back({0,static_cast<int>(dim * dim * density), 0, 0});
   population.infection(percInf);
-
+    
   // run the program as long as the window is open
   while (epidemicWindow.isOpen()) {
     // check all the window's events that were triggered since the last
@@ -106,8 +107,12 @@ int main() {
     if (population.end()) {
       std::this_thread::sleep_for(std::chrono::seconds(3));
       epidemicWindow.close();
-      legendWindow.close();
-      population.trend();
+        legendWindow.close();
+        population.trend();
+        Situation final_s = population.situation();
+        std::cout << '\n' << "Final Situation: " << '\n' << "Day: " << final_s.t << '\n' <<
+        "Susceptibles: " << final_s.s << '\n' << "Infected: " << final_s.i << '\n' <<
+        "Recovered: " << final_s.r << '\n';
 
       system("root");
     }
@@ -124,7 +129,9 @@ int main() {
       // std::cout << iterationTime << '\n';
     }
     // evolution of the epidemic
-    population = population.epidemic(pInf, avgTime, range, quarantine);
+    auto [pop,sit] =  population.epidemic(pInf, avgTime, range, quarantine);
+    population = pop;
+    Board::push_back(sit);
 
     std::this_thread::sleep_for(iterationTime);
   }
