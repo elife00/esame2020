@@ -48,7 +48,7 @@ TEST_CASE("testing epidemic, infection(), avg_time()") {
   range = r(gen);
 
   int S = static_cast<int>(dim * dim * density);
-  int I = static_cast<int>(S * ratInf);
+  int I = static_cast<int>(dim * dim * density * ratInf);
   Situation So = {0, S, 0, 0};
 
   Board population(dim, density);
@@ -57,10 +57,6 @@ TEST_CASE("testing epidemic, infection(), avg_time()") {
 
   population.infection(ratInf);
   population = population.epidemic(pInf, avgTime, range, false);
-
-  if (population.situation().i != I) { // fixes an eventual approximation error
-    ++I;
-  }
 
   Situation Suno = {1, S - I, I, 0};
   CHECK(population.situation() == Suno);

@@ -80,7 +80,7 @@ public: // the constructor sets all alive cells (people)
 
   Situation situation() const;
 
-  bool end() const;
+  bool end() const; // necessary becouse the first situation is (0 S 0 0)
 };
 
 #endif /* epidemic_hpp */
