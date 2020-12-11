@@ -14,6 +14,7 @@ enum class State : char {
   Recovered,
   Quarantine
 };
+
 constexpr State S = State::Susceptible;
 constexpr State I = State::Infectious;
 constexpr State R = State::Recovered;
@@ -103,9 +104,8 @@ public:
 };
 
 template <unsigned LL, unsigned AL = 0> // Legend's lines and Added lines
-std::array<sf::Text, LL + AL>
-representLegend(sf::Font const &font,
-                std::array<std::string, LL + AL> const &string,
+std::array<sf::Text, LL + AL> representLegend (sf::Font const &font,
+                std::string const string [LL + AL],
                 std::array<sf::Color, LL> const &color) {
   std::array<sf::Text, LL + AL> legend;
   for (int i = 0; i != LL; ++i) {

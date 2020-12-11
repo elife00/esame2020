@@ -21,7 +21,7 @@ find_package(SFML COMPONENTS graphics window system REQUIRED)
 
 #add instructions to build a program
 add_executable(epidemic-sfml main.cpp epidemic.cpp)
-target_compile_options(epidemic-sfml PRIVATE -Wall -Wextra -fsanitize=address)
+target_compile_options(epidemic-sfml PRIVATE -I$HOME/root-build/include/ -Wall -Wextra -fsanitize=address)
 target_link_libraries(epidemic-sfml sfml-system sfml-window sfml-graphics sfml-audio sfml-network -fsanitize=address)
 
 add_executable(run_epidemic_tests epidemic.test.cpp epidemic.cpp)

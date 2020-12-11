@@ -1,4 +1,18 @@
-{
+
+#include "TMath.h"
+#include "TStyle.h"
+#include "TH1F.h"
+#include "TF1.h"
+#include "TCanvas.h"
+#include "TLegend.h"
+#include "TGraph.h"
+#include "TFile.h"
+#include "TMatrixD.h"
+#include "TFitResult.h"
+#include "TROOT.h"
+
+
+int main () {
   TGraph *graph_s = new TGraph("trend.txt", "%lg %lg %*lg %*lg");
   graph_s->SetTitle("epidemic's trend;"
                     "t (days);"

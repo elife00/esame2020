@@ -44,15 +44,6 @@ public: // the constructor sets all alive cells (people)
     std::fill(board_.begin(), board_.begin() + people, S);
     std::fill(board_.begin() + people, board_.end(), E);
     
-    /* OLD VERSION
-    for (int i = 0; i < people; ++i) {
-      board_[i] = S;
-    }
-    for (int i = people; i < n_ * n_; ++i) {
-      board_[i] = E;
-    }
-    */
-    
     std::random_device seed;
     std::mt19937 g(seed());
     std::shuffle(board_.begin(), board_.end(), g);
