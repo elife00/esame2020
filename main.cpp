@@ -64,11 +64,7 @@ int main() {
   std::array<sf::Text, 11> legend = representLegend<5, 6>(font, string, color);
 
   sf::Texture texture;
-  if (!texture.loadFromFile(
-          "ModelloSir.gif")) { // upload + controllo obbligatorio sfml
-    throw std::runtime_error{"file not loaded"};
-  };
-
+  
   int windowSize = sf::VideoMode::getDesktopMode().height * 3. / 4. +
                    50; // funzione che restituisce le dimensioni del dekstop -
                        // la window e la fa 3/4 + 50 pixel (proporzionata)
